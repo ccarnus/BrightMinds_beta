@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Banner from './components/Banner';
+import BottomNavigation from './components/BottomNavigation';
+import CastScreen from './components/CastScreen';
+import TrackScreen from './components/TrackScreen';
+import LibraryScreen from './components/LibraryScreen';
+import LeaderBoardScreen from './components/LeaderBoardScreen';
+import ProfileScreen from './components/ProfileScreen';
 
-export default function App() {
+const Tab = createBottomTabNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Banner />
+      <Tab.Navigator tabBar={(props) => <BottomNavigation {...props} />}>
+        <Tab.Screen name="Cast" component={CastScreen} options={{ headerShown: false }}/>
+        <Tab.Screen name="Track" component={TrackScreen} options={{ headerShown: false }}/>
+        <Tab.Screen name="Library" component={LibraryScreen} options={{ headerShown: false }}/>
+        <Tab.Screen name="Leaderboard" component={LeaderBoardScreen} options={{ headerShown: false }}/>
+      </Tab.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
