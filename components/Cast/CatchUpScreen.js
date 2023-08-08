@@ -1,18 +1,23 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Video from 'react-native-video';
+import React, { useRef, useState } from 'react';
+import { View, StyleSheet, Button } from 'react-native';
+import { Video } from 'expo-av';
 
 const CatchUpScreen = () => {
+  const video = useRef(null);
+  const [status, setStatus] = useState({});
+
   return (
     <View style={styles.container}>
       <Video
+        ref={video}
+        style={styles.video}
         source={{
-          uri: 'http://3.17.219.54/backend/media/cast_videos/phd3.mp41686419427878.mp4'
+          uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
         }}
-        controls={true}
-        ref={(ref) => {
-        this.player = ref
-    }}
+        useNativeControls
+        resizeMode="contain"
+        isLooping
+        onPlaybackStatusUpdate={status => setStatus(status)}
       />
     </View>
   );
@@ -22,13 +27,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: '#ecf0f1',
   },
   video: {
-    width: 300,
-    height: 200,
-    marginTop: 20,
+    alignSelf: 'center',
+    width: 350,
+    height: 220,
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
