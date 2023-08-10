@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { Video } from 'expo-av';
 import { Dimensions } from 'react-native';
 
@@ -54,6 +54,12 @@ const CatchUpScreen = () => {
               resizeMode="cover"
               style={styles.video}
             />
+            <Text style={styles.title}>{video.title}</Text>
+            <View style={styles.banner}>
+              <Image source={require('../../assets/Cast_icons/bookmark_icon.png')} style={styles.icon} />
+              <Image source={require('../../assets/Cast_icons/comment_icon.png')} style={styles.icon} />
+              <Image source={require('../../assets/Cast_icons/share_icon.png')} style={styles.icon} />
+            </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -73,12 +79,37 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   videoContainer: {
+    position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    position: 'absolute',
+    top: 30,
+    width: '100%',
   },
   video: {
     width: '100%',
     height: '100%',
+    backgroundColor: '#000',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+  banner: {
+    position: 'absolute',
+    bottom: 150, // Adjust the distance from the bottom
+    left: 20,
+    right: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)', // Add a background color to the banner
+    paddingVertical: 10,
   },
 });
 
