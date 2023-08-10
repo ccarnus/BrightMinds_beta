@@ -1,29 +1,69 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 
 const LeaderBoardScreen = () => {
-  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [usersLeaderboard, setUsersLeaderboard] = useState([]);
+  const [universitiesLeaderboard, setUniversitiesLeaderboard] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('Users'); // Default to Users leaderboard
 
   useEffect(() => {
-    // Fetch leaderboard data from the API
-    fetch('http://3.17.219.54/user/leaderboard/by/score')
-      .then((response) => response.json())
-      .then((data) => setLeaderboardData(data))
-      .catch((error) => console.error(error));
-  }, []);
+    // Fetch users leaderboard data
+    if (selectedCategory === 'Users') {
+      fetch('http://3.17.219.54/user/leaderboard/by/score')
+        .then((response) => response.json())
+        .then((data) => setUsersLeaderboard(data))
+        .catch((error) => console.error(error));
+    }
+    // Fetch universities leaderboard data
+    else if (selectedCategory === 'Universities') {
+      fetch('http://3.17.219.54/university')
+        .then((response) => response.json())
+        .then((data) => setUniversitiesLeaderboard(data))
+        .catch((error) => console.error(error));
+    }
+  }, [selectedCategory]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {leaderboardData.map((user, index) => (
-        <View key={index} style={styles.userContainer}>
-          <Image source={{ uri: user.profilePictureUrl }} style={styles.profilePicture} />
-          <View style={styles.userInfo}>
-            <Text style={styles.userName}>{user.username}</Text>
-            <Text style={styles.userRole}>{user.role}</Text>
+      <View style={styles.categoryButtons}>
+        <TouchableOpacity
+          style={[styles.categoryButton, selectedCategory === 'Users' && styles.selectedCategory]}
+          onPress={() => setSelectedCategory('Users')}
+        >
+          <Text style={[styles.categoryButtonText, selectedCategory === 'Users' && styles.selectedCategoryText]}>Users</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.categoryButton, selectedCategory === 'Universities' && styles.selectedCategory]}
+          onPress={() => setSelectedCategory('Universities')}
+        >
+          <Text style={[styles.categoryButtonText, selectedCategory === 'Universities' && styles.selectedCategoryText]}>Universities</Text>
+        </TouchableOpacity>
+      </View>
+
+      {selectedCategory === 'Users' && (
+        usersLeaderboard.map((user, index) => (
+          <View key={index} style={styles.entryContainer}>
+            <Image source={{ uri: user.profilePictureUrl }} style={styles.profilePicture} />
+            <View style={styles.infoContainer}>
+              <Text style={styles.name}>{user.username}</Text>
+              <Text style={styles.role}>{user.role}</Text>
+            </View>
+            <Text style={styles.score}>{user.score}</Text>
           </View>
-          <Text style={styles.userScore}>{user.score}</Text>
-        </View>
-      ))}
+        ))
+      )}
+
+      {selectedCategory === 'Universities' && (
+        universitiesLeaderboard.map((university, index) => (
+          <View key={index} style={styles.entryContainer}>
+            <Image source={{ uri: university.iconurl }} style={styles.universityPicture} resizeMode="contain" />
+            <View style={styles.infoContainer}>
+              <Text style={styles.name}>{university.name}</Text>
+            </View>
+            <Text style={styles.score}>{university.score}</Text>
+          </View>
+        ))
+      )}
     </ScrollView>
   );
 };
@@ -35,7 +75,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#f1f1f1',
   },
-  userContainer: {
+  categoryButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  categoryButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginRight: 10,
+    backgroundColor: '#3498db',
+  },
+  selectedCategory: {
+    backgroundColor: '#2980b9',
+  },
+  categoryButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  selectedCategoryText: {
+    color: '#f1f1f1',
+  },
+  entryContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -46,24 +108,28 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   profilePicture: {
-    width: 60,
-    height: 60,
+    width: 45,
+    height: 45,
     borderRadius: 30,
   },
-  userInfo: {
+  universityPicture: {
+    width: 45,
+    height: 45,
+  },
+  infoContainer: {
     flex: 1,
     marginLeft: 10,
   },
-  userName: {
+  name: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#1c1c1c',
   },
-  userRole: {
+  role: {
     fontSize: 14,
     color: '#1c1c1c',
   },
-  userScore: {
+  score: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#3498db',
