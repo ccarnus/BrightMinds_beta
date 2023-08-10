@@ -5,7 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Banner from './components/Banner';
 import BottomNavigation from './components/BottomNavigation';
 import CastScreen from './components/CastScreen';
-import CatchUpScreen from './components/Cast/CatchUpScreen'; // Import the CatchUpScreen component
+import CatchUpScreen from './components/Cast/CatchUpScreen';
+import PostCast from './components/PostCast/PostCast';
 import TrackScreen from './components/TrackScreen';
 import LibraryScreen from './components/LibraryScreen';
 import LeaderBoardScreen from './components/LeaderBoardScreen';
@@ -26,7 +27,7 @@ const App = () => {
     <NavigationContainer>
       <Banner />
       <Tab.Navigator tabBar={(props) => <BottomNavigation {...props} />}>
-        <Tab.Screen name="Cast" component={CastStack} options={{ headerShown: false }} />
+        <Tab.Screen name="Cast" component={NestedCastStack} options={{ headerShown: false }} />
         <Tab.Screen name="Track" component={TrackScreen} options={{ headerShown: false }} />
         <Tab.Screen name="Library" component={LibraryScreen} options={{ headerShown: false }} />
         <Tab.Screen name="Leaderboard" component={LeaderBoardScreen} options={{ headerShown: false }} />
@@ -34,5 +35,12 @@ const App = () => {
     </NavigationContainer>
   );
 };
+
+const NestedCastStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="CastStack" component={CastStack} options={{ headerShown: false }} />
+    <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: false }} />
+  </Stack.Navigator>
+);
 
 export default App;

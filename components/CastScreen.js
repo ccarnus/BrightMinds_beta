@@ -17,10 +17,14 @@ const categories = [
 ];
 
 const CastScreen = () => {
-  const navigation = useNavigation(); // Initialize the navigation
+  const navigation = useNavigation();
 
   const handleCatchUpPress = () => {
-    navigation.navigate('CatchUpScreen'); // Navigate to the CatchUpScreen
+    navigation.navigate('CatchUpScreen'); 
+  };
+
+  const handlePostCastPress = () => {
+    navigation.navigate('PostCast'); 
   };
 
   const numRows = Math.ceil(categories.length / 2);
@@ -60,7 +64,7 @@ const CastScreen = () => {
         ))}
       </ScrollView>
 
-      <TouchableOpacity style={styles.floatingButton}>
+      <TouchableOpacity style={styles.floatingButton} onPress={handlePostCastPress}>
         <MaterialCommunityIcons name="plus" size={32} color="#fff" />
       </TouchableOpacity>
     </View>
