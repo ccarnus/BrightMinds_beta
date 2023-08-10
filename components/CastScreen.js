@@ -1,7 +1,20 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+
+const categories = [
+  { name: 'Robotics', color: '#FF8C00', notification: 2 },
+  { name: 'AI', color: '#228B22', notification: 1 },
+  { name: 'Medicine', color: '#4682B4', notification: 0 },
+  { name: 'Economics', color: '#8A2BE2', notification: 0 },
+  { name: 'Electronics', color: '#DC143C', notification: 0 },
+  { name: 'Computer Science', color: '#20B2AA', notification: 0 },
+  { name: 'Astronomy', color: '#556B2F', notification: 1 },
+  { name: 'Biology', color: '#800000', notification: 0 },
+  { name: 'Chemistry', color: '#2F4F4F', notification: 0 },
+  { name: 'Physics', color: '#4B0082', notification: 0 },
+];
 
 const CastScreen = () => {
   const navigation = useNavigation(); // Initialize the navigation
@@ -10,36 +23,42 @@ const CastScreen = () => {
     navigation.navigate('CatchUpScreen'); // Navigate to the CatchUpScreen
   };
 
+  const numRows = Math.ceil(categories.length / 2);
+  const categoryRows = Array.from({ length: numRows }, (_, rowIndex) =>
+    categories.slice(rowIndex * 2, rowIndex * 2 + 2)
+  );
+
   return (
     <View style={styles.container}>
-      <View style={styles.searchBar}>
-        {/* Your search bar component */}
-      </View>
-
       <TouchableOpacity style={styles.catchUpButton} onPress={handleCatchUpPress}>
         <Text style={styles.buttonText}>Catch Up</Text>
       </TouchableOpacity>
 
-      <View style={styles.categoryButtons}>
-        <TouchableOpacity style={styles.categoryButton}>
-          <Text style={styles.categoryButtonText}>Robotics</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.categoryButton}>
-          <Text style={styles.categoryButtonText}>AI</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.categoryButton}>
-          <Text style={styles.categoryButtonText}>Medicine</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.categoryButton}>
-          <Text style={styles.categoryButtonText}>Economics</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.categoryButton}>
-          <Text style={styles.categoryButtonText}>Electronics</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.categoryButton}>
-          <Text style={styles.categoryButtonText}>Computer Science</Text>
-        </TouchableOpacity>
-      </View>
+      <ScrollView style={styles.categoryButtons}>
+        {categoryRows.map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.row}>
+            {row.map(category => (
+              <TouchableOpacity
+                key={category.name}
+                style={[styles.categoryButton, { backgroundColor: category.color }]}
+              >
+                {category.notification > 0 && (
+                  <View style={styles.notificationContainer}>
+                    <MaterialCommunityIcons
+                      name="star"
+                      size={16}
+                      color="#FFD700"
+                      style={styles.notificationIcon}
+                    />
+                    <Text style={styles.notificationText}>{category.notification}</Text>
+                  </View>
+                )}
+                <Text style={styles.categoryButtonText}>{category.name}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))}
+      </ScrollView>
 
       <TouchableOpacity style={styles.floatingButton}>
         <MaterialCommunityIcons name="plus" size={32} color="#fff" />
@@ -54,10 +73,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1f1f1',
     padding: 20,
   },
-  searchBar: {
-    // Your search bar styles
-    marginBottom: 20,
-  },
   catchUpButton: {
     backgroundColor: '#3498db',
     paddingVertical: 15,
@@ -71,27 +86,41 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   categoryButtons: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
     marginBottom: 30,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
   },
   categoryButton: {
     width: '48%',
-    aspectRatio: 1, // This ensures square buttons
-    backgroundColor: '#fff',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    aspectRatio: 1,
     borderRadius: 8,
-    marginBottom: 15,
     borderWidth: 1,
     borderColor: '#ddd',
     alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
   },
   categoryButtonText: {
-    color: '#3498db',
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  notificationContainer: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  notificationIcon: {
+    marginRight: 2,
+  },
+  notificationText: {
+    color: '#FFD700',
+    fontSize: 14,
   },
   floatingButton: {
     position: 'absolute',

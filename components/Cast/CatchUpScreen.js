@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { Video } from 'expo-av';
 import { Dimensions } from 'react-native';
 
-const CatchUpScreen = () => {
+const CatchUpScreen = ({ navigation }) => {
   const [videos, setVideos] = useState([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [videoStatus, setVideoStatus] = useState([]);
+  const videoRefs = useRef([]);
 
   useEffect(() => {
     // Fetch data from the endpoint
@@ -16,10 +17,26 @@ const CatchUpScreen = () => {
       .catch(error => console.error(error));
   }, []);
 
+  useEffect(() => {
+    // setVideoStatus(videos.map(() => false));
+    setVideoStatus(videos.map((_, index) => index === 0));
+  }, [videos]);
+
   const handleVideoPress = index => {
     setFocusedIndex(index);
-    setIsPlaying(!isPlaying);
+    setVideoStatus(prevStatus => prevStatus.map((status, idx) => (idx === index ? !status : false)));
   };
+
+  useEffect(() => {
+    // Pause the video when the screen loses focus
+    const pauseVideo = () => {
+      setVideoStatus(prevStatus => prevStatus.map(() => false));
+    };
+
+    const unsubscribe = navigation.addListener('blur', pauseVideo);
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -32,7 +49,9 @@ const CatchUpScreen = () => {
           const offsetX = event.nativeEvent.contentOffset.x;
           const index = Math.round(offsetX / windowWidth);
           setFocusedIndex(index);
-          setIsPlaying(true);
+          setVideoStatus(prevStatus =>
+            prevStatus.map((status, idx) => (idx === index ? !status : false))
+          );
         }}
       >
         {videos.map((video, index) => (
@@ -48,17 +67,35 @@ const CatchUpScreen = () => {
             ]}
             onPress={() => handleVideoPress(index)}
           >
-            <Video
-              source={{ uri: video.casturl }}
-              shouldPlay={focusedIndex === index && isPlaying}
-              resizeMode="cover"
-              style={styles.video}
-            />
+            <View style={styles.videoWrapper}>
+              <Video
+                ref={ref => (videoRefs.current[index] = ref)}
+                source={{ uri: video.casturl }}
+                shouldPlay={videoStatus[index]}
+                resizeMode="cover"
+                style={styles.video}
+              />
+            </View>
             <Text style={styles.title}>{video.title}</Text>
             <View style={styles.banner}>
-              <Image source={require('../../assets/Cast_icons/bookmark_icon.png')} style={styles.icon} />
-              <Image source={require('../../assets/Cast_icons/comment_icon.png')} style={styles.icon} />
-              <Image source={require('../../assets/Cast_icons/share_icon.png')} style={styles.icon} />
+              <TouchableOpacity style={styles.button}>
+                <Image
+                  source={require('../../assets/Cast_icons/bookmark_icon.png')}
+                  style={styles.icon}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button}>
+                <Image
+                  source={require('../../assets/Cast_icons/comment_icon.png')}
+                  style={styles.icon}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button}>
+                <Image
+                  source={require('../../assets/Cast_icons/share_icon.png')}
+                  style={styles.icon}
+                />
+              </TouchableOpacity>
             </View>
           </TouchableOpacity>
         ))}
@@ -73,7 +110,9 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#F1F1F1',
+    borderRadius: 10,
+    overflow: 'hidden',
   },
   scrollView: {
     flex: 1,
@@ -82,6 +121,15 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  videoWrapper: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
   title: {
     fontSize: 24,
@@ -95,21 +143,25 @@ const styles = StyleSheet.create({
   video: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#000',
-    position: 'absolute',
-    top: 0,
-    left: 0,
   },
   banner: {
     position: 'absolute',
-    bottom: 150, // Adjust the distance from the bottom
-    left: 20,
-    right: 20,
+    bottom: 150,
+    left: 25,
+    right: 25,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)', // Add a background color to the banner
+    backgroundColor: 'rgba(241, 241, 241, 0.8)',
     paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 18,
+  },
+  icon: {
+    width: 32,
+    height: 32,
+    tintColor: '#1C1C1C',
+    marginHorizontal: 12,
   },
 });
 
