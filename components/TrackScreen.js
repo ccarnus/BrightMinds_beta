@@ -20,7 +20,7 @@ const TrackScreen = () => {
     const animate = () => {
       const currentTime = Date.now();
       const deltaTime = currentTime - startTime;
-      const divisor = 8000; // Adjust this value for slower/faster animation
+      const divisor = 10000; // Adjust this value for slower/faster animation
 
       const progress = Math.min(deltaTime / divisor, 1);
 
@@ -38,45 +38,73 @@ const TrackScreen = () => {
     };
   }, []);
 
+  const castWatchGoal = 0.7; // Goal for Cast Watching Time
+  const [castWatchProgress, setCastWatchProgress] = useState(0);
+
+  useEffect(() => {
+    let animationFrameId;
+    const startTime = Date.now();
+
+    const animateCastWatch = () => {
+      const currentTime = Date.now();
+      const deltaTime = currentTime - startTime;
+      const divisor = 4000; // Adjust this value for slower/faster animation
+
+      const progress = Math.min(deltaTime / divisor, 1);
+
+      setCastWatchProgress(progress);
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(animateCastWatch);
+      }
+    };
+
+    animateCastWatch();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Cast Watching Time */}
       <View style={styles.categoryContainer}>
-  <View style={styles.categoryTitleContainer}>
-    <Text style={styles.categoryTitle}>Cast Watching Time</Text>
-  </View>
-  <View style={styles.iconContainer}>
-    <Svg width={60} height={60}>
-      <Circle
-        cx={30}
-        cy={30}
-        r={27}
-        stroke="#ccc"
-        strokeWidth={6} // Adjust the thickness
-        fill="none"
-      />
-      <Circle
-        cx={30}
-        cy={30}
-        r={27}
-        stroke="#3498db"
-        strokeWidth={6} // Adjust the thickness
-        fill="none"
-        strokeDasharray="162" // Circumference of a circle with radius 27 (2 * pi * 27)
-        strokeDashoffset={162 * (1 - 0.7)} // Fill 70% of the circle
-        strokeLinecap="round"
-        transform="rotate(-90 30 30)"
-      />
-      <SvgImage
-        x={12} // Adjust the x coordinate for horizontal alignment
-        y={12} // Adjust the y coordinate for vertical alignment
-        width={36} // Adjust the width and height of the image
-        height={36}
-        href={require('../assets/Track_icons/clock.png')}
-      />
-    </Svg>
-  </View>
-</View>
+        <View style={styles.categoryTitleContainer}>
+          <Text style={styles.categoryTitle}>Cast Watching Time</Text>
+        </View>
+        <View style={styles.iconContainer}>
+          <Svg width={60} height={60}>
+            <Circle
+              cx={30}
+              cy={30}
+              r={27}
+              stroke="#ccc"
+              strokeWidth={6}
+              fill="none"
+            />
+            <Circle
+              cx={30}
+              cy={30}
+              r={27}
+              stroke="#3498db"
+              strokeWidth={6}
+              fill="none"
+              strokeDasharray="162"
+              strokeDashoffset={162 * (1 - Math.min(castWatchProgress, castWatchGoal))}
+              strokeLinecap="round"
+              transform="rotate(-90 30 30)"
+            />
+            <SvgImage
+              x={12}
+              y={12}
+              width={36}
+              height={36}
+              href={require('../assets/Track_icons/clock.png')}
+            />
+          </Svg>
+        </View>
+      </View>
       {/* Demarcation */}
       <View style={styles.demarcation} />
 
