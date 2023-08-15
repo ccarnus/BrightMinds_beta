@@ -20,7 +20,7 @@ const TrackScreen = () => {
     const animate = () => {
       const currentTime = Date.now();
       const deltaTime = currentTime - startTime;
-      const divisor = 10000; // Adjust this value for slower/faster animation
+      const divisor = 1000; // Adjust this value for slower/faster animation
 
       const progress = Math.min(deltaTime / divisor, 1);
 
@@ -48,7 +48,7 @@ const TrackScreen = () => {
     const animateCastWatch = () => {
       const currentTime = Date.now();
       const deltaTime = currentTime - startTime;
-      const divisor = 4000; // Adjust this value for slower/faster animation
+      const divisor = 1000; // Adjust this value for slower/faster animation
 
       const progress = Math.min(deltaTime / divisor, 1);
 

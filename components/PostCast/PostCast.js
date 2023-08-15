@@ -1,30 +1,224 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert, Image, ActivityIndicator } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
+import { Video } from 'expo-av';
 
 const PostCast = () => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [department, setDepartment] = useState('');
+  const [type, setType] = useState('');
+  const [brightmindid, setBrightmindid] = useState('');
+  const [university, setUniversity] = useState('');
+  const [category, setCategory] = useState('');
+  const [video, setVideo] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const pickVideo = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'video/*',
+      });
+      if (!result.cancelled) {
+        setVideo(result);
+      }
+    } catch (error) {
+      console.error('Error picking video:', error);
+    }
+  };
+
+  const takeNewVideo = async () => {
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      });
+      if (!result.cancelled) {
+        setVideo(result);
+      }
+    } catch (error) {
+      console.error('Error taking new video:', error);
+    }
+  };
+
+  const sendCast = async () => {
+    setLoading(true);
+    const castData = {
+      title,
+      description,
+      department,
+      type,
+      brightmindid,
+      university,
+      category,
+    };
+
+    const formData = new FormData();
+    formData.append('cast', JSON.stringify(castData));
+    if (video) {
+      formData.append('video', {
+        uri: video.uri,
+        type: 'video/mp4',
+        name: 'video.mp4',
+      });
+    }
+
+    try {
+      const response = await fetch('http://3.17.219.54/cast', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.ok) {
+        Alert.alert('Success', 'Cast posted successfully!');
+      } else {
+        Alert.alert('Error', 'Failed to post cast.');
+      }
+    } catch (error) {
+      console.error('Error sending cast:', error);
+      Alert.alert('Error', 'An error occurred while sending the cast.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <View>
-      <Text>PostCast Screen</Text>
-    </View>
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      <View style={styles.content}>
+        <Text style={styles.heading}>Post a Cast</Text>
+        <Text style={styles.fieldDescription}>Title</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Title"
+          value={title}
+          onChangeText={setTitle}
+        />
+        <Text style={styles.fieldDescription}>Description</Text>
+        <TextInput
+          style={[styles.input, styles.multilineInput]}
+          placeholder="Description"
+          value={description}
+          onChangeText={setDescription}
+          multiline
+        />
+        <Text style={styles.fieldDescription}>Department</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Department"
+          value={department}
+          onChangeText={setDepartment}
+        />
+        <Text style={styles.fieldDescription}>Department</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Type"
+          value={type}
+          onChangeText={setType}
+        />
+        <Text style={styles.fieldDescription}>Department</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="University"
+          value={university}
+          onChangeText={setUniversity}
+        />
+        <Text style={styles.fieldDescription}>Department</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Brightmind ID"
+          value={brightmindid}
+          onChangeText={setBrightmindid}
+        />
+        <Text style={styles.fieldDescription}>Department</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Category"
+          value={category}
+          onChangeText={setCategory}
+        />
+        <View style={styles.videoPicker}>
+          <TouchableOpacity style={styles.videoButton} onPress={takeNewVideo}>
+            <Text style={styles.videoButtonText}>Take a New Video</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.videoButton} onPress={pickVideo}>
+            <Text style={styles.videoButtonText}>Choose from Existing</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.sendButton} onPress={sendCast} disabled={loading}>
+        {loading ? (
+          <ActivityIndicator color="#fff" /> // Show loading indicator
+        ) : (
+          <Text style={styles.sendButtonText}>Send Cast</Text>
+        )}
+      </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f1f1f1', // Background color
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+  },
+  content: {
+    paddingHorizontal: 20,
   },
   heading: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1c1c1c', // Text color
-    marginBottom: 10,
+    color: '#1c1c1c',
+    marginBottom: 20,
   },
-  content: {
+  fieldDescription: {
     fontSize: 16,
-    color: '#1c1c1c', // Text color
+    color: '#1c1c1c',
+    marginBottom: 5,
+  },
+  input: {
+    marginBottom: 15,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+  },
+  multilineInput: {
+    height: 100,
+    textAlignVertical: 'top',
+  },
+  videoPicker: {
+    marginBottom: 15,
+  },
+  videoButton: {
+    marginBottom: 5,
+    padding: 10,
+    backgroundColor: '#3498db',
+    borderRadius: 5,
+  },
+  videoButtonText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
+  selectedVideo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  sendButton: {
+    padding: 15,
+    backgroundColor: '#e74c3c',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  sendButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 
