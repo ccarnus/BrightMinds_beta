@@ -14,27 +14,30 @@ const PostCast = () => {
   const [category, setCategory] = useState('');
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [thumbnailUri, setThumbnailUri] = useState(null);
 
   const pickVideo = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: 'video/*',
       });
-      if (!result.cancelled) {
+      if (!result.canceled && result.uri) {
         setVideo(result);
+        setThumbnailUri(result.uri); // Set thumbnailUri here
       }
     } catch (error) {
       console.error('Error picking video:', error);
     }
-  };
+  };  
 
   const takeNewVideo = async () => {
     try {
       const result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       });
-      if (!result.cancelled) {
-        setVideo(result);
+      if (!result.cancelled && result.assets && result.assets.length > 0) {
+        setVideo(result.assets[0]);
+        setThumbnailUri(result.assets[0].uri);
       }
     } catch (error) {
       console.error('Error taking new video:', error);
@@ -87,6 +90,13 @@ const PostCast = () => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#fff" />
+          </View>
+        </View>
+      )}
       <View style={styles.content}>
         <Text style={styles.heading}>Post a Cast</Text>
         <Text style={styles.fieldDescription}>Title</Text>
@@ -139,6 +149,11 @@ const PostCast = () => {
           value={category}
           onChangeText={setCategory}
         />
+        {thumbnailUri ? (
+          <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
+        ) : (
+          <ActivityIndicator size="large" color="#3498db" style={styles.loadingThumbnail} />
+        )}
         <View style={styles.videoPicker}>
           <TouchableOpacity style={styles.videoButton} onPress={takeNewVideo}>
             <Text style={styles.videoButtonText}>Take a New Video</Text>
@@ -148,14 +163,10 @@ const PostCast = () => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.sendButton} onPress={sendCast} disabled={loading}>
-        {loading ? (
-          <ActivityIndicator color="#fff" /> // Show loading indicator
-        ) : (
-          <Text style={styles.sendButtonText}>Send Cast</Text>
-        )}
+        <Text style={styles.sendButtonText}>Send Cast</Text>
       </TouchableOpacity>
-      </View>
-    </ScrollView>
+    </View>
+  </ScrollView>
   );
 };
 
@@ -167,6 +178,22 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 20,
     paddingBottom: 40,
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 50% transparent black background
+    zIndex: 1000, // Ensure the overlay is on top
+  },
+  loadingContainer: {
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Slightly darker overlay for the loading container
   },
   content: {
     paddingHorizontal: 20,
@@ -219,6 +246,21 @@ const styles = StyleSheet.create({
   sendButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  thumbnail: {
+    width: 100,
+    height: 100,
+    resizeMode: 'cover',
+    marginBottom: 10,
+    justifyContent: 'center', // Center vertically
+    alignItems: 'center', // Center horizontally
+  },
+  loadingThumbnail: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+    justifyContent: 'center', // Center vertically
+    alignItems: 'center', // Center horizontally
   },
 });
 

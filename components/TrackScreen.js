@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import { Svg, Circle, Image as SvgImage } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 
 const TrackScreen = () => {
+  const navigation = useNavigation();
+
+  const handleTakeTestPress = () => {
+    navigation.navigate('TakeTest'); 
+  };
   const fields = [
     { name: 'Aerodynamics', progress: 0.2, color: '#e74c3c' },
     { name: 'Robotics', progress: 0.5, color: '#3498db' },
@@ -113,7 +119,7 @@ const TrackScreen = () => {
         <View style={styles.categoryTitleContainer}>
           <Text style={styles.categoryTitle}>Weekly Evaluation</Text>
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleTakeTestPress}>
           <Text style={styles.buttonText}>Take the Test</Text>
         </TouchableOpacity>
       </View>
