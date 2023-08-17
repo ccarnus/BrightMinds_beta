@@ -7,9 +7,10 @@ import { useNavigation } from '@react-navigation/native';
 const TrackScreen = () => {
   const navigation = useNavigation();
 
-  const handleTakeTestPress = () => {
-    navigation.navigate('TakeTest'); 
+  const handleReadyScreenPress = () => {
+    navigation.navigate('ReadyScreen'); 
   };
+
   const fields = [
     { name: 'Aerodynamics', progress: 0.2, color: '#e74c3c' },
     { name: 'Robotics', progress: 0.5, color: '#3498db' },
@@ -119,7 +120,7 @@ const TrackScreen = () => {
         <View style={styles.categoryTitleContainer}>
           <Text style={styles.categoryTitle}>Weekly Evaluation</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={handleTakeTestPress}>
+        <TouchableOpacity style={styles.button} onPress={handleReadyScreenPress}>
           <Text style={styles.buttonText}>Take the Test</Text>
         </TouchableOpacity>
       </View>

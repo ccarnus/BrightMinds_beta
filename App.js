@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Banner from './components/Banner';
 import BottomNavigation from './components/BottomNavigation';
 import CastScreen from './components/CastScreen';
+import ReadyScreen from './components/Track/ready';
 import CatchUpScreen from './components/Cast/CatchUpScreen';
 import TakeTest from './components/Track/evaluation';
 import PostCast from './components/PostCast/PostCast';
@@ -27,6 +28,7 @@ const CastStack = () => (
 const TrackStack = () => (
   <Stack.Navigator>
     <Stack.Screen name="TrackScreen" component={TrackScreen} options={{ headerShown: false }} />
+    <Stack.Screen name="ReadyScreen" component={ReadyScreen} options={{ headerShown: false }} />
     <Stack.Screen name="TakeTest" component={TakeTest} options={{ headerShown: false }} />
   </Stack.Navigator>
 );
