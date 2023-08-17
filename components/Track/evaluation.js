@@ -29,7 +29,9 @@ const TakeTest = ({ route, navigation }) => {
     const currentQuestion = questions[currentQuestionIndex];
     const correctAnswer = currentQuestion.correct;
     const isCorrect = selectedAnswer === correctAnswer;
-    console.log("CORRECT ANSWER");
+    if(isCorrect){
+      console.log("CORRECT ANSWER");
+    }
 
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
