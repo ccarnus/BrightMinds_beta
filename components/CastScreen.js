@@ -1,19 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 const categories = [
-  { name: 'Robotics', color: '#FF8C00', notification: 2 },
-  { name: 'AI', color: '#228B22', notification: 1 },
-  { name: 'Medicine', color: '#4682B4', notification: 0 },
-  { name: 'Economics', color: '#8A2BE2', notification: 0 },
-  { name: 'Electronics', color: '#DC143C', notification: 0 },
-  { name: 'Computer Science', color: '#20B2AA', notification: 0 },
-  { name: 'Astronomy', color: '#556B2F', notification: 1 },
-  { name: 'Biology', color: '#800000', notification: 0 },
-  { name: 'Chemistry', color: '#2F4F4F', notification: 0 },
-  { name: 'Physics', color: '#4B0082', notification: 0 },
+  { name: 'Robotics', image: require('../assets/Cast_screen_icons/Robotics.png'), color: '#FF8C00', notification: 2 },
+  { name: 'AI', image: require('../assets/Cast_screen_icons/AI.png'), color: '#228B22', notification: 1 },
+  { name: 'Medicine', image: require('../assets/Cast_screen_icons/Medicine.png'), color: '#4682B4', notification: 0 },
+  { name: 'Economics', image: require('../assets/Cast_screen_icons/Economic.png'), color: '#8A2BE2', notification: 0 },
+  { name: 'Electronics', image: require('../assets/Cast_screen_icons/Electronics.png'), color: '#DC143C', notification: 0 },
+  { name: 'Computer Science', image: require('../assets/Cast_screen_icons/Computer_science.png'), color: '#20B2AA', notification: 0 },
+  { name: 'Aerospace', image: require('../assets/Cast_screen_icons/Aerospace.png'), color: '#556B2F', notification: 1 },
+  { name: 'Biology', image: require('../assets/Cast_screen_icons/Biology.png'), color: '#800000', notification: 0 },
+  { name: 'Chemistry', image: require('../assets/Cast_screen_icons/Chemistry.png'), color: '#2F4F4F', notification: 0 },
+  { name: 'Physics', image: require('../assets/Cast_screen_icons/Physics.png'), color: '#4B0082', notification: 0 },
 ];
 
 const CastScreen = () => {
@@ -39,30 +39,31 @@ const CastScreen = () => {
       </TouchableOpacity>
 
       <ScrollView style={styles.categoryButtons}>
-        {categoryRows.map((row, rowIndex) => (
-          <View key={rowIndex} style={styles.row}>
-            {row.map(category => (
-              <TouchableOpacity
-                key={category.name}
-                style={[styles.categoryButton, { backgroundColor: category.color }]}
-              >
-                {category.notification > 0 && (
-                  <View style={styles.notificationContainer}>
-                    <MaterialCommunityIcons
-                      name="star"
-                      size={16}
-                      color="#FFD700"
-                      style={styles.notificationIcon}
-                    />
-                    <Text style={styles.notificationText}>{category.notification}</Text>
-                  </View>
-                )}
-                <Text style={styles.categoryButtonText}>{category.name}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        ))}
-      </ScrollView>
+  {categoryRows.map((row, rowIndex) => (
+    <View key={rowIndex} style={styles.row}>
+      {row.map(category => (
+        <TouchableOpacity
+          key={category.name}
+          style={[styles.categoryButton, { backgroundColor: category.color }]}
+        >
+          {category.notification > 0 && (
+            <View style={styles.notificationContainer}>
+              <MaterialCommunityIcons
+                name="star"
+                size={16}
+                color="#FFD700"
+                style={styles.notificationIcon}
+              />
+              <Text style={styles.notificationText}>{category.notification}</Text>
+            </View>
+          )}
+          <Image source={category.image} style={styles.categoryImage} />
+        {/*<Text style={styles.categoryButtonText}>{category.name}</Text>*/}
+        </TouchableOpacity>
+      ))}
+    </View>
+  ))}
+</ScrollView>
 
       <TouchableOpacity style={styles.floatingButton} onPress={handlePostCastPress}>
         <MaterialCommunityIcons name="plus" size={32} color="#fff" />
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   catchUpButton: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#1c1c1c',
     paddingVertical: 15,
     borderRadius: 10,
     marginBottom: 20,
@@ -137,6 +138,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 4,
+  },
+  categoryImage: {
+    width: 40,
+    height: 40,
+    marginBottom: 5,
   },
 });
 

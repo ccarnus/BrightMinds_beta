@@ -24,7 +24,7 @@ const LeaderBoardScreen = () => {
   }, [selectedCategory]);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={{ flex: 1 }}>
       <View style={styles.categoryButtons}>
         <TouchableOpacity
           style={[styles.categoryButton, selectedCategory === 'Users' && styles.selectedCategory]}
@@ -40,6 +40,7 @@ const LeaderBoardScreen = () => {
         </TouchableOpacity>
       </View>
 
+      <ScrollView style={styles.scrollContainer}>
       {selectedCategory === 'Users' && (
         usersLeaderboard.map((user, index) => (
           <View key={index} style={styles.entryContainer}>
@@ -65,6 +66,7 @@ const LeaderBoardScreen = () => {
         ))
       )}
     </ScrollView>
+    </View>
   );
 };
 
@@ -75,23 +77,33 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#f1f1f1',
   },
-  categoryButtons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
   categoryButton: {
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
     marginRight: 10,
-    backgroundColor: '#3498db',
+    backgroundColor: '#1c1c1c',
+  },
+  categoryButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+  },
+  scrollContainer: {
+    marginTop: 70,
   },
   selectedCategory: {
-    backgroundColor: '#2980b9',
+    borderWidth: 2,
+    borderColor: 'red',
   },
   categoryButtonText: {
-    color: '#fff',
+    color: '#f1f1f1',
     fontWeight: 'bold',
   },
   selectedCategoryText: {
