@@ -12,10 +12,16 @@ const TrackScreen = () => {
   };
 
   const fields = [
-    { name: 'Aerodynamics', progress: 0.2, color: '#e74c3c' },
-    { name: 'Robotics', progress: 0.5, color: '#3498db' },
-    { name: 'Machine Learning', progress: 0.3, color: '#2ecc71' },
-    { name: 'Artificial Intelligence', progress: 0.8, color: '#f39c12' },
+    { name: 'Robotics', image: require('../assets/Cast_screen_icons/Robotics.png'), color: '#FF8C00', progress: 0.2 },
+    { name: 'AI', image: require('../assets/Cast_screen_icons/AI.png'), color: '#228B22', progress: 0.5 },
+    { name: 'Medicine', image: require('../assets/Cast_screen_icons/Medicine.png'), color: '#4682B4', progress: 0.27 },
+    { name: 'Economics', image: require('../assets/Cast_screen_icons/Economic.png'), color: '#8A2BE2', progress: 0.78 },
+    { name: 'Electronics', image: require('../assets/Cast_screen_icons/Electronics.png'), color: '#DC143C', progress: 0.24 },
+    { name: 'Computer Science', image: require('../assets/Cast_screen_icons/Computer_science.png'), color: '#20B2AA', progress: 0 },
+    { name: 'Aerospace', image: require('../assets/Cast_screen_icons/Aerospace.png'), color: '#556B2F', progress: 0.05 },
+    { name: 'Biology', image: require('../assets/Cast_screen_icons/Biology.png'), color: '#800000', progress: 0.8 },
+    { name: 'Chemistry', image: require('../assets/Cast_screen_icons/Chemistry.png'), color: '#2F4F4F', progress: 0.1 },
+    { name: 'Physics', image: require('../assets/Cast_screen_icons/Physics.png'), color: '#4B0082', progress: 0.5 },
   ];
 
   const [animatedProgress, setAnimatedProgress] = useState(0);
@@ -111,6 +117,7 @@ const TrackScreen = () => {
             />
           </Svg>
         </View>
+        <Text style={styles.WatchTimeText}>05:56:24</Text>
       </View>
       {/* Demarcation */}
       <View style={styles.demarcation} />
@@ -135,18 +142,20 @@ const TrackScreen = () => {
         </View>
         {fields.map((field, index) => (
           <View key={index} style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>{field.name}</Text>
-            <ProgressBar
-              progress={field.progress}
-              color={field.color}
-              style={styles.progressBar}
-              borderRadius={15}
-              borderWidth={0}
-              height={15}
-            />
-          </View>
-        ))}
-      </View>
+            <View style={styles.fieldContent}>
+              <Image source={field.image} style={styles.fieldImage} />
+              <ProgressBar
+                progress={field.progress}
+                color={field.color}
+                style={styles.progressBar}
+                borderRadius={15}
+                borderWidth={0}
+                height={15}
+              />
+            </View>
+    </View>
+  ))}
+</View>
     </ScrollView>
   );
 };
@@ -209,17 +218,27 @@ const styles = StyleSheet.create({
   fieldContainer: {
     alignItems: 'center',
     marginBottom: 20,
+    marginTop: 20,
   },
-  fieldName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1c1c1c',
+  fieldContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
   },
+  fieldImage: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
   progressBar: {
-    width: windowWidth - 100, // Adjust for spacing
+    width: windowWidth - 100,
     height: 15,
     borderRadius: 15,
+  },
+  WatchTimeText: {
+    color: '#1c1c1c',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

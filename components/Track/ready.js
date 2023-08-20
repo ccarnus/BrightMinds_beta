@@ -3,13 +3,15 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
+const USER_ID = "6474e4001eec5ee1ecd40180";
+
 const ReadyScreen = ({ navigation }) => {
   const [showButton, setShowButton] = useState(false);
-  const opacityValue = new Animated.Value(0); // Initial opacity value
+  const opacityValue = new Animated.Value(0); 
 
   const handleTakeTestPress = async () => {
     try {
-      const response = await axios.get('http://3.17.219.54/user/6474e4001eec5ee1ecd40180');
+      const response = await axios.get('http://3.17.219.54/user/' + USER_ID);
       const evaluationList = response.data.evaluation_list.filter(item => item.watched && !item.answered);
       const castIds = evaluationList.map(item => item.castid);
   
