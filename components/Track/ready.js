@@ -25,8 +25,8 @@ const ReadyScreen = ({ navigation }) => {
   useEffect(() => {
       setShowButton(true);
       Animated.timing(opacityValue, {
-        toValue: 1, // Change this value to control opacity (0 to 1)
-        duration: 3000, // Duration of the opacity animation in milliseconds
+        toValue: 1,
+        duration: 2000, 
         useNativeDriver: true,
       }).start();
   });
@@ -37,7 +37,7 @@ const ReadyScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Ready to test yourself?</Text>
+      <Text style={styles.title}>Ready for your weekly evaluation?</Text>
       <View style={styles.buttonContainer}>
         <Animated.View style={[styles.readyButton, { opacity: opacityValue }]}>
           <TouchableOpacity onPress={handleTakeTestPress}>
@@ -57,25 +57,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1f1f1',
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center',
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 100, // Adjust this value to position the button
+    bottom: 100,
     width: '100%',
     alignItems: 'center',
   },
   readyButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
     backgroundColor: '#3498db',
-    borderRadius: 5,
+    borderRadius: 10,
   },
   readyButtonText: {
-    fontSize: 16,
-    color: '#fff',
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#f1f1f1',
   },
 });
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import axios from 'axios';
 
 const USER_ID = "6474e4001eec5ee1ecd40180";
@@ -47,19 +47,19 @@ const TakeTest = ({ route, navigation }) => {
     const currentQuestion = questions[currentQuestionIndex];
     const correctAnswer = currentQuestion.correct;
     const isAnswerCorrect = selectedResponse === correctAnswer;
-  
+
     setSelectedAnswer(selectedResponse);
     setIsCorrect(isAnswerCorrect);
-  
+
     if (isAnswerCorrect) {
       addPoints(10);
     }
-  
+
     // Wait for 1 second and then move to the next question
     setTimeout(() => {
       setSelectedAnswer(null);
       setIsCorrect(null);
-  
+
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
@@ -75,7 +75,10 @@ const TakeTest = ({ route, navigation }) => {
       <View style={styles.questionContainer}>
         <Text style={styles.questionText}>{currentQuestion?.question}</Text>
       </View>
-      <View style={styles.answersContainer}>
+      <ScrollView
+        style={styles.answersContainer}
+        contentContainerStyle={styles.answersContent}
+      >
         {currentQuestion?.responses.map((response, index) => (
           <TouchableOpacity
             key={index}
@@ -85,9 +88,9 @@ const TakeTest = ({ route, navigation }) => {
                 backgroundColor:
                   selectedAnswer === response
                     ? isCorrect
-                      ? 'green'
-                      : 'red'
-                    : 'transparent',
+                      ? '#4CAF50'
+                      : '#F44336'
+                    : '#FFFFFF',
               },
             ]}
             onPress={() => handleAnswerSelection(response)}
@@ -96,7 +99,7 @@ const TakeTest = ({ route, navigation }) => {
             <Text style={styles.answerButtonText}>{response}</Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -113,28 +116,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    marginBottom: 20,
   },
   questionText: {
-    fontSize: 20,
+    fontSize: 24,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   answersContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     width: '100%',
   },
-  answerButton: {
-    padding: 10,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    width: '80%',
+  answersContent: {
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  answerButton: {
+    padding: 15,
+    marginBottom: 20,
+    borderRadius: 25,
+    width: '80%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   answerButtonText: {
-    fontSize: 16,
+    fontSize: 18,
+    color: '#1c1c1c',
+    fontWeight: 'bold',
   },
 });
 
