@@ -36,7 +36,7 @@ const ReadyScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Ready for your weekly evaluation?</Text>
+      {/*<Text style={styles.title}>Ready for your weekly evaluation?</Text>*/}
       
       {/* Image */}
       <Image source={require('../../assets/Evaluation_icons/evaluation.png')} style={styles.image} />
