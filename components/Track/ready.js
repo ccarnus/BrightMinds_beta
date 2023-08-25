@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
@@ -21,14 +21,13 @@ const ReadyScreen = ({ navigation }) => {
     }
   };
   
-
   useEffect(() => {
-      setShowButton(true);
-      Animated.timing(opacityValue, {
-        toValue: 1,
-        duration: 2000, 
-        useNativeDriver: true,
-      }).start();
+    setShowButton(true);
+    Animated.timing(opacityValue, {
+      toValue: 1,
+      duration: 2000, 
+      useNativeDriver: true,
+    }).start();
   });
 
   const handleReadyButtonPress = () => {
@@ -38,6 +37,10 @@ const ReadyScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Ready for your weekly evaluation?</Text>
+      
+      {/* Image */}
+      <Image source={require('../../assets/Evaluation_icons/evaluation.png')} style={styles.image} />
+      
       <View style={styles.buttonContainer}>
         <Animated.View style={[styles.readyButton, { opacity: opacityValue }]}>
           <TouchableOpacity onPress={handleTakeTestPress}>
@@ -59,12 +62,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 150,
     textAlign: 'center',
+  },
+  image: {
+    width: 150,
+    height: 150,
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 100,
+    bottom: 50,
     width: '100%',
     alignItems: 'center',
   },

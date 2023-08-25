@@ -100,7 +100,7 @@ const TrackScreen = () => {
               cx={30}
               cy={30}
               r={27}
-              stroke="#3498db"
+              stroke="#1c1c1c"
               strokeWidth={6}
               fill="none"
               strokeDasharray="162"
@@ -117,18 +117,15 @@ const TrackScreen = () => {
             />
           </Svg>
         </View>
-        <Text style={styles.WatchTimeText}>05:56:24</Text>
+        <Text style={styles.WatchTimeText}>05:56:24 (6hr limit)</Text>
       </View>
       {/* Demarcation */}
       <View style={styles.demarcation} />
 
       {/* Weekly Evaluation */}
       <View style={styles.categoryContainer}>
-        <View style={styles.categoryTitleContainer}>
-          <Text style={styles.categoryTitle}>Weekly Evaluation</Text>
-        </View>
         <TouchableOpacity style={styles.button} onPress={handleReadyScreenPress}>
-          <Text style={styles.buttonText}>Take the Test</Text>
+          <Text style={styles.buttonText}>Start Weekly Evaluation</Text>
         </TouchableOpacity>
       </View>
 
@@ -185,8 +182,8 @@ const styles = StyleSheet.create({
     color: '#1c1c1c',
   },
   iconContainer: {
-    width: 50,
-    height: 50,
+    width: 100,
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 8,
@@ -200,14 +197,14 @@ const styles = StyleSheet.create({
     color: '#1c1c1c',
   },
   button: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#1c1c1c',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: '#f1f1f1',
+    fontSize: 24,
     fontWeight: 'bold',
   },
   demarcation: {

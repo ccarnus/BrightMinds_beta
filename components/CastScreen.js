@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+    opacity:0.9,
   },
   categoryButtonText: {
     color: '#fff',
@@ -140,8 +141,8 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   categoryImage: {
-    width: 40,
-    height: 40,
+    width: 70,
+    height: 70,
     marginBottom: 5,
   },
 });
