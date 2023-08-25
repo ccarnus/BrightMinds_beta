@@ -1,14 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const CastTypeChoice = ({ navigation }) => {
+const CastTypeChoice = () => {
+    
+    const navigation = useNavigation();
+
   const handleChoice = (castType) => {
     switch (castType) {
       case 'Podcast':
         // Navigate to Podcast screen
         break;
       case 'Clip':
-        // Navigate to Clip screen
+        navigation.navigate('PostCast');
         break;
       case 'Article':
         // Navigate to Article screen
@@ -24,21 +28,37 @@ const CastTypeChoice = ({ navigation }) => {
         style={styles.button}
         onPress={() => handleChoice('Podcast')}
       >
-        <Image source={require('../../assets/Post_cast_icons/podcast.png')} style={styles.icon} />
-        <Text style={styles.buttonText}>Podcast</Text>
+        <View style={styles.content}>
+          <Image
+            source={require('../../assets/Post_cast_icons/podcast.png')}
+            style={styles.icon}
+          />
+          <Text style={styles.buttonText}>Podcast</Text>
+        </View>
       </TouchableOpacity>
-      <TouchableOpacity 
-        style={styles.button} 
-            onPress={() => handleChoice('Clip')}>
-        <Image source={require('../../assets/Post_cast_icons/clip.png')} style={styles.icon} />
-        <Text style={styles.buttonText}>Clip</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleChoice('Clip')}
+      >
+        <View style={styles.content}>
+          <Image
+            source={require('../../assets/Post_cast_icons/clip.png')}
+            style={styles.icon}
+          />
+          <Text style={styles.buttonText}>Clip</Text>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
         onPress={() => handleChoice('Article')}
       >
-        <Image source={require('../../assets/Post_cast_icons/article.png')} style={styles.icon} />
-        <Text style={styles.buttonText}>Article</Text>
+        <View style={styles.content}>
+          <Image
+            source={require('../../assets/Post_cast_icons/article.png')}
+            style={styles.icon}
+          />
+          <Text style={styles.buttonText}>Article</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -53,17 +73,20 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '80%',
-    padding: 40,
+    marginBottom: 30,
+  },
+  content: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    padding: 20,
     backgroundColor: '#f1f1f1',
     borderRadius: 10,
-    marginBottom: 20,
   },
   icon: {
-    width: 60,
-    height: 60,
+    width: 70,
+    height: 70,
+    marginRight: 20,
   },
   buttonText: {
     fontSize: 32,

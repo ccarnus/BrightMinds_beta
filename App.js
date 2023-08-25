@@ -52,6 +52,7 @@ const NestedCastStack = () => (
   <Stack.Navigator>
     <Stack.Screen name="CastStack" component={CastStack} options={{ headerShown: false }} />
     <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: false }} />
+    <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: false }} />
   </Stack.Navigator>
 );
 
