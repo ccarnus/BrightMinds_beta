@@ -24,7 +24,7 @@ const CastScreen = () => {
   };
 
   const handlePostCastPress = () => {
-    navigation.navigate('PostCast'); 
+    navigation.navigate('CastTypeChoice'); 
   };
 
   const numRows = Math.ceil(categories.length / 2);

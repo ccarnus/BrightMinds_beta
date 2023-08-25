@@ -9,6 +9,7 @@ import ReadyScreen from './components/Track/ready';
 import CatchUpScreen from './components/Cast/CatchUpScreen';
 import TakeTest from './components/Track/evaluation';
 import PostCast from './components/PostCast/PostCast';
+import CastTypeChoice from './components/PostCast/CastTypeChoice';
 import TrackScreen from './components/TrackScreen';
 import LibraryScreen from './components/LibraryScreen';
 import LeaderBoardScreen from './components/LeaderBoardScreen';
@@ -50,7 +51,7 @@ const App = () => {
 const NestedCastStack = () => (
   <Stack.Navigator>
     <Stack.Screen name="CastStack" component={CastStack} options={{ headerShown: false }} />
-    <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: false }} />
+    <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: false }} />
   </Stack.Navigator>
 );
 
