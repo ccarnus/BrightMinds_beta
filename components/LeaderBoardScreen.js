@@ -127,6 +127,8 @@ const styles = StyleSheet.create({
   universityPicture: {
     width: 45,
     height: 45,
+    marginLeft:20,
+    marginRight:20,
   },
   infoContainer: {
     flex: 1,
@@ -134,7 +136,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#1c1c1c',
   },
   role: {
@@ -145,6 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#3498db',
+    marginRight:20,
   },
 });
 

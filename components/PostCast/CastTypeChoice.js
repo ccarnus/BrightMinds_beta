@@ -1,10 +1,34 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const CastTypeChoice = () => {
-    
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  const [button1Visible, setButton1Visible] = useState(false);
+  const [button2Visible, setButton2Visible] = useState(false);
+  const [button3Visible, setButton3Visible] = useState(false);
+  const fadeInDuration = 500;
+  const buttonContainerHeight = 100;
+
+  useEffect(() => {
+    const timer1 = setTimeout(() => {
+      setButton1Visible(true);
+    }, fadeInDuration);
+
+    const timer2 = setTimeout(() => {
+      setButton2Visible(true);
+    }, fadeInDuration * 2);
+
+    const timer3 = setTimeout(() => {
+      setButton3Visible(true);
+    }, fadeInDuration * 3);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
+  }, []);
 
   const handleChoice = (castType) => {
     switch (castType) {
@@ -24,42 +48,59 @@ const CastTypeChoice = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleChoice('Podcast')}
-      >
-        <View style={styles.content}>
-          <Image
-            source={require('../../assets/Post_cast_icons/podcast.png')}
-            style={styles.icon}
-          />
-          <Text style={styles.buttonText}>Podcast</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleChoice('Clip')}
-      >
-        <View style={styles.content}>
-          <Image
-            source={require('../../assets/Post_cast_icons/clip.png')}
-            style={styles.icon}
-          />
-          <Text style={styles.buttonText}>Clip</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleChoice('Article')}
-      >
-        <View style={styles.content}>
-          <Image
-            source={require('../../assets/Post_cast_icons/article.png')}
-            style={styles.icon}
-          />
-          <Text style={styles.buttonText}>Article</Text>
-        </View>
-      </TouchableOpacity>
+      <View style={[styles.buttonContainer, { height: buttonContainerHeight }]}>
+        {button1Visible && (
+          <Animated.View
+            style={[styles.button, { opacity: button1Visible ? 1 : 0 }]}
+          >
+            <TouchableOpacity onPress={() => handleChoice('Podcast')}>
+              <View style={styles.content}>
+                <Image
+                  source={require('../../assets/Post_cast_icons/podcast.png')}
+                  style={styles.icon}
+                />
+                <Text style={styles.buttonText}>Podcast</Text>
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </View>
+
+      <View style={[styles.buttonContainer, { height: buttonContainerHeight }]}>
+        {button2Visible && (
+          <Animated.View
+            style={[styles.button, { opacity: button2Visible ? 1 : 0 }]}
+          >
+            <TouchableOpacity onPress={() => handleChoice('Clip')}>
+              <View style={styles.content}>
+                <Image
+                  source={require('../../assets/Post_cast_icons/clip.png')}
+                  style={styles.icon}
+                />
+                <Text style={styles.buttonText}>Clip</Text>
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </View>
+
+      <View style={[styles.buttonContainer, { height: buttonContainerHeight }]}>
+        {button3Visible && (
+          <Animated.View
+            style={[styles.button, { opacity: button3Visible ? 1 : 0 }]}
+          >
+            <TouchableOpacity onPress={() => handleChoice('Article')}>
+              <View style={styles.content}>
+                <Image
+                  source={require('../../assets/Post_cast_icons/article.png')}
+                  style={styles.icon}
+                />
+                <Text style={styles.buttonText}>Article</Text>
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </View>
     </View>
   );
 };
@@ -71,9 +112,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f1f1f1',
   },
-  button: {
+  buttonContainer: {
     width: '80%',
     marginBottom: 30,
+    alignItems: 'center', // Center the content horizontally
+  },
+  button: {
+    opacity: 0,
   },
   content: {
     flexDirection: 'row',
