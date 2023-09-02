@@ -1,59 +1,9 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import Banner from './components/Banner';
-import BottomNavigation from './components/BottomNavigation';
-import CastScreen from './components/CastScreen';
-import ReadyScreen from './components/Track/ready';
-import CatchUpScreen from './components/Cast/CatchUpScreen';
-import TakeTest from './components/Track/evaluation';
-import PostCast from './components/PostCast/PostCast';
-import CastTypeChoice from './components/PostCast/CastTypeChoice';
-import TrackScreen from './components/TrackScreen';
-import LibraryScreen from './components/LibraryScreen';
-import LeaderBoardScreen from './components/LeaderBoardScreen';
-import ProfileScreen from './components/ProfileScreen';
 
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
-const Track = createStackNavigator();
-
-const CastStack = () => (
-  <Stack.Navigator>
-    <Stack.Screen name="CastScreen" component={CastScreen} options={{ headerShown: false }} />
-    <Stack.Screen name="CatchUpScreen" component={CatchUpScreen} options={{ headerShown: false }} />
-  </Stack.Navigator>
-);
-
-const TrackStack = () => (
-  <Stack.Navigator>
-    <Stack.Screen name="TrackScreen" component={TrackScreen} options={{ headerShown: false }} />
-    <Stack.Screen name="ReadyScreen" component={ReadyScreen} options={{ headerShown: false }} />
-    <Stack.Screen name="TakeTest" component={TakeTest} options={{ headerShown: false }} />
-  </Stack.Navigator>
-);
+import MainNavigator from './components/MainNavigator';
 
 const App = () => {
-  return (
-    <NavigationContainer>
-      <Banner />
-      <Tab.Navigator tabBar={(props) => <BottomNavigation {...props} />}>
-        <Tab.Screen name="Cast" component={NestedCastStack} options={{ headerShown: false }} />
-        <Tab.Screen name="Track" component={TrackStack} options={{ headerShown: false }} />
-        <Tab.Screen name="Library" component={LibraryScreen} options={{ headerShown: false }} />
-        <Tab.Screen name="Leaderboard" component={LeaderBoardScreen} options={{ headerShown: false }} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
+  return <MainNavigator />;
 };
-
-const NestedCastStack = () => (
-  <Stack.Navigator>
-    <Stack.Screen name="CastStack" component={CastStack} options={{ headerShown: false }} />
-    <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: false }} />
-    <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: false }} />
-  </Stack.Navigator>
-);
 
 export default App;

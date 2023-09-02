@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
 const categories = [
   { name: 'Robotics', image: require('../assets/Cast_screen_icons/Robotics.png'), color: '#FF8C00', notification: 2 },
@@ -19,13 +21,9 @@ const categories = [
 const CastScreen = () => {
   const navigation = useNavigation();
 
-  const handleCatchUpPress = () => {
-    navigation.navigate('CatchUpScreen'); 
-  };
-
-  const handlePostCastPress = () => {
-    navigation.navigate('CastTypeChoice'); 
-  };
+  const handleCategoryPickerScreenPress = () => {
+    navigation.navigate('CategoryPickerScreen');
+  }
 
   const numRows = Math.ceil(categories.length / 2);
   const categoryRows = Array.from({ length: numRows }, (_, rowIndex) =>
@@ -34,7 +32,7 @@ const CastScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.catchUpButton} onPress={handleCatchUpPress}>
+      <TouchableOpacity style={styles.catchUpButton} onPress={() => navigation.navigate('CatchUpScreen')}>
         <Text style={styles.buttonText}>Catch Up</Text>
       </TouchableOpacity>
 
@@ -45,6 +43,7 @@ const CastScreen = () => {
         <TouchableOpacity
           key={category.name}
           style={[styles.categoryButton, { backgroundColor: category.color }]}
+          onPress={handleCategoryPickerScreenPress}
         >
           {category.notification > 0 && (
             <View style={styles.notificationContainer}>
@@ -65,7 +64,7 @@ const CastScreen = () => {
   ))}
 </ScrollView>
 
-      <TouchableOpacity style={styles.floatingButton} onPress={handlePostCastPress}>
+      <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('CastTypeChoice')}>
         <MaterialCommunityIcons name="plus" size={32} color="#fff" />
       </TouchableOpacity>
     </View>
@@ -76,11 +75,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f1f1f1',
-    padding: 20,
+    padding: 30,
   },
   catchUpButton: {
     backgroundColor: '#1c1c1c',
-    paddingVertical: 15,
+    paddingVertical: 20,
     borderRadius: 10,
     marginBottom: 20,
   },
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   categoryButtons: {
-    marginBottom: 30,
+    marginBottom: -30,
   },
   row: {
     flexDirection: 'row',
@@ -130,8 +129,8 @@ const styles = StyleSheet.create({
   },
   floatingButton: {
     position: 'absolute',
-    bottom: 30,
-    right: 30,
+    bottom: 15,
+    right: 15,
     backgroundColor: '#3498db',
     width: 60,
     height: 60,

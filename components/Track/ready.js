@@ -15,7 +15,7 @@ const ReadyScreen = ({ navigation }) => {
       const evaluationList = response.data.evaluation_list.filter(item => item.watched && !item.answered);
       const castIds = evaluationList.map(item => item.castid);
   
-      navigation.navigate('TakeTest', { castIds });
+      navigation.navigate('Evaluation', { castIds });
     } catch (error) {
       console.error('Error fetching evaluation list:', error);
     }

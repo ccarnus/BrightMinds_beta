@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { Video } from 'expo-av';
 import { Dimensions } from 'react-native';
+import {colors, shadow, sizes, spacing} from '../theme';
 
 const CatchUpScreen = ({ navigation }) => {
   const [videos, setVideos] = useState([]);
@@ -132,12 +133,12 @@ const styles = StyleSheet.create({
     left: 0,
   },
   title: {
-    fontSize: 24,
+    fontSize: 40,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#f1f1f1',
     textAlign: 'center',
     position: 'absolute',
-    top: 30,
+    top: 50,
     width: '100%',
   },
   video: {
@@ -146,13 +147,13 @@ const styles = StyleSheet.create({
   },
   banner: {
     position: 'absolute',
-    bottom: 150,
+    bottom: 40,
     left: 25,
     right: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'rgba(241, 241, 241, 0.8)',
+    backgroundColor: 'rgba(241, 241, 241, 0.5)',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 18,

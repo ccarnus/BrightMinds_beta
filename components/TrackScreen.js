@@ -8,7 +8,7 @@ const TrackScreen = () => {
   const navigation = useNavigation();
 
   const handleReadyScreenPress = () => {
-    navigation.navigate('ReadyScreen'); 
+    navigation.navigate('Ready'); 
   };
 
   const fields = [

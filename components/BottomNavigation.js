@@ -1,88 +1,100 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import CastScreen from './CastScreen';
+import TrackScreen from './TrackScreen';
+import LibraryScreen from './LibraryScreen';
+import LeaderBoardScreen from './LeaderBoardScreen';
+import {colors, sizes} from './theme';
+import {StyleSheet, Animated} from 'react-native';
+import Icon from '../assets/Bottom_icons/Icon';
 
-const iconMapping = {
-  Cast: {
-    unselected: require('../assets/Bottom_icons/cast.png'),
-    selected: require('../assets/Bottom_icons/cast.png'),
+const tabs = [
+  {
+    name: 'Cast',
+    screen: CastScreen,
   },
-  Track: {
-    unselected: require('../assets/Bottom_icons/track.png'),
-    selected: require('../assets/Bottom_icons/track.png'),
+  {
+    name: 'Track',
+    screen: TrackScreen,
   },
-  Library: {
-    unselected: require('../assets/Bottom_icons/library.png'),
-    selected: require('../assets/Bottom_icons/library.png'),
+  {
+    name: 'Library',
+    screen: LibraryScreen,
   },
-  Leaderboard: {
-    unselected: require('../assets/Bottom_icons/leaderboard.png'),
-    selected: require('../assets/Bottom_icons/leaderboard.png'),
+  {
+    name: 'LeaderBoard',
+    screen: LeaderBoardScreen,
   },
-  // Add more routes and their respective icon paths here
-};
+];
 
-const BottomNavigation = ({ state, descriptors, navigation }) => {
+const Tab = createBottomTabNavigator();
+
+const BottomNavigation = () => {
+  const offsetAnimation = React.useRef(new Animated.Value(0)).current;
   return (
-    <View style={styles.bottomNav}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const isFocused = state.index === index;
-
-        const icon = iconMapping[route.name];
-        const iconSource = isFocused ? icon.selected : icon.unselected;
-
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
-
-        return (
-          <TouchableOpacity
-            key={index}
-            onPress={onPress}
-            style={[
-              styles.tabButton,
+    <>
+      <Tab.Navigator
+        initialRouteName="Cast"
+        screenOptions={{
+          headerShown: false,
+          tabBarShowLabel: false,
+        }}>
+        {tabs.map(({name, screen}, index) => {
+          return (
+            <Tab.Screen
+              key={name}
+              name={name}
+              component={screen}
+              options={{
+                tabBarIcon: ({focused}) => {
+                  return (
+                    <Icon
+                      icon={name}
+                      size={32}
+                      style={{
+                        tintColor: focused ? colors.primary : colors.gray,
+                      }}
+                    />
+                  );
+                },
+              }}
+              listeners={{
+                focus: () => {
+                  Animated.spring(offsetAnimation, {
+                    toValue: index * (sizes.width / tabs.length),
+                    useNativeDriver: true,
+                  }).start();
+                },
+              }}
+            />
+          );
+        })}
+      </Tab.Navigator>
+      <Animated.View
+        style={[
+          styles.indicator,
+          {
+            transform: [
               {
-                backgroundColor: isFocused ? '#829aab' : '#f1f1f1',
-                borderTopWidth: isFocused ? 2 : 0,
-                borderColor: '#829aab',
+                translateX: offsetAnimation,
               },
-            ]}
-          >
-            <Image source={iconSource} style={styles.icon} />
-          </TouchableOpacity>
-        );
-      })}
-    </View>
+            ],
+          },
+        ]}
+      />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#f1f1f1', // Background color
-  },
-  tabButton: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 8,
-    borderRadius: 5,
-    backgroundColor: '#f1f1f1', // Button background color
-  },
-  icon: {
-    width: 28,
-    height: 28,
-    tintColor: '#1c1c1c', // Icon color
+  indicator: {
+    position: 'absolute',
+    width: 24,
+    height: 2,
+    left: sizes.width / tabs.length / 2 - 12,
+    bottom: 40,
+    backgroundColor: colors.primary,
+    zIndex: 100,
   },
 });
 

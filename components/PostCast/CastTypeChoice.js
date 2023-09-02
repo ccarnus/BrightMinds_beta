@@ -7,7 +7,7 @@ const CastTypeChoice = () => {
   const [button1Visible, setButton1Visible] = useState(false);
   const [button2Visible, setButton2Visible] = useState(false);
   const [button3Visible, setButton3Visible] = useState(false);
-  const fadeInDuration = 500;
+  const fadeInDuration = 250;
   const buttonContainerHeight = 100;
 
   useEffect(() => {

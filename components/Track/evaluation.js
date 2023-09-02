@@ -63,7 +63,7 @@ const TakeTest = ({ route, navigation }) => {
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
-        navigation.navigate('TrackScreen');
+        navigation.navigate('Track');
       }
     }, 1000);
   };
