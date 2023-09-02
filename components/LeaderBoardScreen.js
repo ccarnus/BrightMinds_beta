@@ -113,10 +113,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 15,
-    backgroundColor: '#fff',
+    marginBottom: 10,
+    backgroundColor: colors.light,
+    marginLeft: 10,
+    marginRight: 10,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: sizes.radius,
     elevation: 3,
   },
   profilePicture: {
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
   score: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#3498db',
+    color: colors.black,
     marginRight:20,
   },
 });

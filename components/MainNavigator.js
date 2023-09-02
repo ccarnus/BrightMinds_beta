@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import BottomNavigation from './BottomNavigation';
-import CatchUpScreen from './Cast/CatchUpScreen';
+import WatchScreen from './WatchScreen';
 import PostCast from './PostCast/PostCast';
 import CastTypeChoice from './PostCast/CastTypeChoice';
 import Ready from './Track/ready';
@@ -28,7 +28,7 @@ const MainNavigator = () => {
         <Stack.Screen name="Evaluation" component={Evaluation} options={{ headerShown: false }} />
         <Stack.Screen name="Ready" component={Ready} options={{ headerShown: false }} />
         <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: false }} />
-        <Stack.Screen name="CatchUpScreen" component={CatchUpScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="WatchScreen" component={WatchScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>

@@ -2,8 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { colors } from './theme';
 
 const categories = [
   { name: 'Robotics', image: require('../assets/Cast_screen_icons/Robotics.png'), color: '#FF8C00', notification: 2 },
@@ -32,10 +31,6 @@ const CastScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.catchUpButton} onPress={() => navigation.navigate('CatchUpScreen')}>
-        <Text style={styles.buttonText}>Catch Up</Text>
-      </TouchableOpacity>
-
       <ScrollView style={styles.categoryButtons}>
   {categoryRows.map((row, rowIndex) => (
     <View key={rowIndex} style={styles.row}>
@@ -74,7 +69,7 @@ const CastScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f1f1f1',
+    backgroundColor: colors.white,
     padding: 30,
   },
   catchUpButton: {
@@ -85,7 +80,7 @@ const styles = StyleSheet.create({
     marginTop:20,
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -110,7 +105,7 @@ const styles = StyleSheet.create({
     opacity:0.9,
   },
   categoryButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -132,7 +127,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 15,
     right: 15,
-    backgroundColor: '#3498db',
+    backgroundColor: colors.black,
     width: 60,
     height: 60,
     borderRadius: 30,

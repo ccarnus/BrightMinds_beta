@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { Video } from 'expo-av';
 import { Dimensions } from 'react-native';
-import {colors, shadow, sizes, spacing} from '../theme';
+import {colors, shadow, sizes, spacing} from './theme';
 
-const CatchUpScreen = ({ navigation }) => {
+const WatchScreen = ({ navigation }) => {
   const [videos, setVideos] = useState([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [videoStatus, setVideoStatus] = useState([]);
@@ -81,19 +81,19 @@ const CatchUpScreen = ({ navigation }) => {
             <View style={styles.banner}>
               <TouchableOpacity style={styles.button}>
                 <Image
-                  source={require('../../assets/Cast_icons/bookmark_icon.png')}
+                  source={require('../assets/Cast_icons/bookmark_icon.png')}
                   style={styles.icon}
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.button}>
                 <Image
-                  source={require('../../assets/Cast_icons/comment_icon.png')}
+                  source={require('../assets/Cast_icons/comment_icon.png')}
                   style={styles.icon}
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.button}>
                 <Image
-                  source={require('../../assets/Cast_icons/share_icon.png')}
+                  source={require('../assets/Cast_icons/share_icon.png')}
                   style={styles.icon}
                 />
               </TouchableOpacity>
@@ -111,7 +111,7 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F1F1F1',
+    backgroundColor: colors.white,
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: sizes.title,
     fontWeight: 'bold',
-    color: '#f1f1f1',
+    color: colors.white,
     textAlign: 'center',
     position: 'absolute',
     top: 50,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'rgba(241, 241, 241, 0.5)',
+    backgroundColor: colors.lightGray,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 18,
@@ -161,9 +161,9 @@ const styles = StyleSheet.create({
   icon: {
     width: 32,
     height: 32,
-    tintColor: '#1C1C1C',
+    tintColor: colors.black,
     marginHorizontal: 12,
   },
 });
 
-export default CatchUpScreen;
+export default WatchScreen;
