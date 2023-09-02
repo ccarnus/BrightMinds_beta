@@ -71,11 +71,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: sizes.h2,
     fontWeight: 'bold',
-    color: colors.white,
+    color: colors.black,
   },
   location: {
     fontSize: sizes.h3,
-    color: colors.white,
+    color: colors.black,
+    backgroundColor:colors.white,
+    borderRadius: sizes.radius,
   },
 });
 

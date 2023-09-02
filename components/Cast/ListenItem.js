@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import {colors, shadow, sizes, spacing} from '../theme';
 
 const ListenItem = ({ title, duration }) => (
   <View style={styles.container}>
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: '#1c1c1c',
+    backgroundColor: colors.lightGray,
     marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontStyle: 'italic',
-    color: '#f1f1f1',
+    color: colors.white,
     // fontFamily: 'Montserrat',
   },
   playButtonContainer: {
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   },
   durationText: {
     fontSize: 14,
-    color: 'green',
+    color: colors.black,
     fontStyle: 'italic',
     marginTop: 3,
   },

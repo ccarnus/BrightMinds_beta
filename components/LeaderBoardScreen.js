@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import {colors, shadow, sizes, spacing} from './theme';
 
 const LeaderBoardScreen = () => {
   const [usersLeaderboard, setUsersLeaderboard] = useState([]);
@@ -82,32 +83,31 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 20,
     marginRight: 10,
-    backgroundColor: '#1c1c1c',
+    backgroundColor: colors.lightGray,
   },
   categoryButtons: {
     flexDirection: 'row',
-    justifyContent: 'center',
     paddingHorizontal: 10,
     paddingVertical: 15,
     position: 'absolute',
-    top: 0,
+    top: 20,
     left: 0,
     right: 0,
     zIndex: 1,
   },
   scrollContainer: {
-    marginTop: 70,
+    marginTop: 90,
   },
   selectedCategory: {
     borderWidth: 2,
-    borderColor: 'red',
+    borderColor: colors.black,
   },
   categoryButtonText: {
-    color: '#f1f1f1',
+    color: colors.black,
     fontWeight: 'bold',
   },
   selectedCategoryText: {
-    color: '#f1f1f1',
+    color: colors.black,
   },
   entryContainer: {
     flexDirection: 'row',

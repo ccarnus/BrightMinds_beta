@@ -59,11 +59,11 @@ const App = () => {
 
 
     return (
-    <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: sizes.xl, fontWeight: 'bold', margin: spacing.l }}>Watch</Text>
+    <View style={{ flex: 1 , top:20}}>
+            <Text style={{ fontSize: sizes.title, fontWeight: 'bold', margin: spacing.l }}>Watch</Text>
             <Carousel list={Watch} />
 
-            <Text style={{ fontSize: sizes.xl, fontWeight: 'bold', margin: spacing.l }}>Listen</Text>
+            <Text style={{ fontSize: sizes.title, fontWeight: 'bold', margin: spacing.l }}>Listen</Text>
             <FlatList
                 data={listenData}
                 keyExtractor={item => item.id}

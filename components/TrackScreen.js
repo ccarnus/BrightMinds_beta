@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, ScrollView
 import { ProgressBar } from 'react-native-paper';
 import { Svg, Circle, Image as SvgImage } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
+import {colors, shadow, sizes, spacing} from './theme';
 
 const TrackScreen = () => {
   const navigation = useNavigation();
@@ -119,8 +120,6 @@ const TrackScreen = () => {
         </View>
         <Text style={styles.WatchTimeText}>05:56:24 (6hr limit)</Text>
       </View>
-      {/* Demarcation */}
-      <View style={styles.demarcation} />
 
       {/* Weekly Evaluation */}
       <View style={styles.categoryContainer}>
@@ -128,9 +127,6 @@ const TrackScreen = () => {
           <Text style={styles.buttonText}>Start Weekly Evaluation</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Demarcation */}
-      <View style={styles.demarcation} />
 
       {/* Track Progress */}
       <View style={styles.categoryContainer}>
@@ -163,11 +159,12 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: '#f1f1f1',
-    padding: 20,
+    padding: 10,
   },
   categoryContainer: {
     marginBottom: 20,
     alignItems: 'center',
+    top:40,
   },
   categoryTitleContainer: {
     flexDirection: 'row',
@@ -177,7 +174,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   categoryTitle: {
-    fontSize: 20,
+    fontSize: sizes.title,
     fontWeight: 'bold',
     color: '#1c1c1c',
   },
@@ -193,24 +190,19 @@ const styles = StyleSheet.create({
     height: 50,
   },
   valueText: {
-    fontSize: 18,
+    fontSize: sizes.h2,
     color: '#1c1c1c',
   },
   button: {
-    backgroundColor: '#1c1c1c',
+    backgroundColor: colors.lightGray,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
   },
   buttonText: {
     color: '#f1f1f1',
-    fontSize: 24,
+    fontSize: sizes.h3,
     fontWeight: 'bold',
-  },
-  demarcation: {
-    height: 1,
-    backgroundColor: '#ccc',
-    marginVertical: 20,
   },
   fieldContainer: {
     alignItems: 'center',
