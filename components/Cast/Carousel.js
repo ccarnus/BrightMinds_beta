@@ -76,8 +76,6 @@ const styles = StyleSheet.create({
   location: {
     fontSize: sizes.h3,
     color: colors.black,
-    backgroundColor:colors.white,
-    borderRadius: sizes.radius,
   },
 });
 
