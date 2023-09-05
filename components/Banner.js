@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import {colors, shadow, sizes, spacing} from './theme';
 
 const Banner = ({ onProfilePress }) => {
   return (
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
     backgroundColor: '#f1f1f1', // Background color,
-    marginTop: 10, // Add margin to the top
+    marginTop: 10,
   },
   appNameContainer: {
     flex: 1,
@@ -38,16 +39,16 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     padding: 10,
-    backgroundColor: '#f1f1f1',
+    backgroundColor: colors.white,
     borderRadius: 5,
   },
   profileImage: {
     width: 24,
     height: 24,
-    tintColor: '#1c1c1c', // Icon color
+    tintColor: colors.black, // Icon color
   },
   profileText: {
-    color: '#1c1c1c', // Text color
+    color: colors.black,
     fontWeight: 'bold',
   },
 });

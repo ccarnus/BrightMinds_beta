@@ -1,34 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert, Image, ActivityIndicator } from 'react-native';
-import * as DocumentPicker from 'expo-document-picker';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert, Image, ActivityIndicator} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import {Picker} from '@react-native-picker/picker';
 import { Video } from 'expo-av';
+import universities from '../../lists/universities';
+import types from '../../lists/types';
+import departments from '../../lists/departments';
+import {colors, shadow, sizes, spacing} from '../theme';
 
 const PostCast = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [department, setDepartment] = useState('');
   const [type, setType] = useState('');
-  const [brightmindid, setBrightmindid] = useState('');
   const [university, setUniversity] = useState('');
-  const [category, setCategory] = useState('');
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [thumbnailUri, setThumbnailUri] = useState(null);
-
-  const pickVideo = async () => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: 'video/*',
-      });
-      if (!result.canceled && result.uri) {
-        setVideo(result);
-        setThumbnailUri(result.uri); // Set thumbnailUri here
-      }
-    } catch (error) {
-      console.error('Error picking video:', error);
-    }
-  };  
 
   const takeNewVideo = async () => {
     try {
@@ -51,9 +39,9 @@ const PostCast = () => {
       description,
       department,
       type,
-      brightmindid,
       university,
-      category,
+      category: 'Breakthrough',
+      brightmindid: '101',
     };
 
     const formData = new FormData();
@@ -115,40 +103,35 @@ const PostCast = () => {
           multiline
         />
         <Text style={styles.fieldDescription}>Department</Text>
-        <TextInput
+        <Picker
+          selectedValue={department}
           style={styles.input}
-          placeholder="Department"
-          value={department}
-          onChangeText={setDepartment}
-        />
-        <Text style={styles.fieldDescription}>Department</Text>
-        <TextInput
+          onValueChange={(itemValue) => setDepartment(itemValue)}
+        >
+          {departments.map((dep, index) => (
+            <Picker.Item key={index} label={dep} value={dep} />
+          ))}
+        </Picker>
+        <Text style={styles.fieldDescription}>Type</Text>
+        <Picker
+          selectedValue={type}
           style={styles.input}
-          placeholder="Type"
-          value={type}
-          onChangeText={setType}
-        />
-        <Text style={styles.fieldDescription}>Department</Text>
-        <TextInput
+          onValueChange={(itemValue) => setType(itemValue)}
+        >
+          {types.map((type, index) => (
+            <Picker.Item key={index} label={type} value={type} />
+          ))}
+        </Picker>
+        <Text style={styles.fieldDescription}>University</Text>
+        <Picker
+          selectedValue={university}
           style={styles.input}
-          placeholder="University"
-          value={university}
-          onChangeText={setUniversity}
-        />
-        <Text style={styles.fieldDescription}>Department</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Brightmind ID"
-          value={brightmindid}
-          onChangeText={setBrightmindid}
-        />
-        <Text style={styles.fieldDescription}>Department</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Category"
-          value={category}
-          onChangeText={setCategory}
-        />
+          onValueChange={(itemValue) => setUniversity(itemValue)}
+        >
+          {universities.map((univ, index) => (
+            <Picker.Item key={index} label={univ} value={univ} />
+          ))}
+        </Picker>
         {thumbnailUri ? (
           <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
         ) : (
@@ -156,10 +139,7 @@ const PostCast = () => {
         )}
         <View style={styles.videoPicker}>
           <TouchableOpacity style={styles.videoButton} onPress={takeNewVideo}>
-            <Text style={styles.videoButtonText}>Take a New Video</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.videoButton} onPress={pickVideo}>
-            <Text style={styles.videoButtonText}>Choose from Existing</Text>
+            <Text style={styles.videoButtonText}>Film Cast</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.sendButton} onPress={sendCast} disabled={loading}>
@@ -205,7 +185,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   fieldDescription: {
-    fontSize: 16,
+    fontSize: sizes.h2,
     color: '#1c1c1c',
     marginBottom: 5,
   },
@@ -213,7 +193,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor:  colors.lightGray,
     borderRadius: 5,
   },
   multilineInput: {
@@ -226,25 +206,25 @@ const styles = StyleSheet.create({
   videoButton: {
     marginBottom: 5,
     padding: 10,
-    backgroundColor: '#3498db',
+    backgroundColor: colors.black,
     borderRadius: 5,
+    borderRadius: sizes.radius,
   },
   videoButtonText: {
-    color: '#fff',
+    fontSize: sizes.h2,
+    color: colors.white,
     textAlign: 'center',
-  },
-  selectedVideo: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   sendButton: {
     padding: 15,
-    backgroundColor: '#e74c3c',
+    backgroundColor: colors.black,
     borderRadius: 5,
     alignItems: 'center',
+    borderRadius: sizes.radius,
   },
   sendButtonText: {
-    color: '#fff',
+    fontSize: sizes.h2,
+    color: colors.white,
     fontWeight: 'bold',
   },
   thumbnail: {

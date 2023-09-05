@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
   categoryContainer: {
     marginBottom: 20,
     alignItems: 'center',
-    top:40,
   },
   categoryTitleContainer: {
     flexDirection: 'row',

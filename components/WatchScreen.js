@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    borderRadius: 10,
     overflow: 'hidden',
   },
   scrollView: {
@@ -122,7 +121,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
     overflow: 'hidden',
   },
   videoWrapper: {

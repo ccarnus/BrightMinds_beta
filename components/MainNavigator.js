@@ -8,28 +8,32 @@ import CastTypeChoice from './PostCast/CastTypeChoice';
 import Ready from './Track/ready';
 import Evaluation from './Track/evaluation';
 import Track from './TrackScreen';
-import CategoryPickerScreen from './Cast/CategoryPickerScreen';
+import Banner from './Banner';
 
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        initialRouteName="Root"
+        screenOptions={{
+          header: () => <Banner />,
+        }}
+      >
         <Stack.Screen
           name="Root"
           component={BottomNavigation}
           options={{
-            headerShown: false,
+            headerShown: true,
           }}
         />
-        <Stack.Screen name="CategoryPickerScreen" component={CategoryPickerScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Track" component={Track} options={{ headerShown: false }} />
-        <Stack.Screen name="Evaluation" component={Evaluation} options={{ headerShown: false }} />
-        <Stack.Screen name="Ready" component={Ready} options={{ headerShown: false }} />
-        <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: false }} />
-        <Stack.Screen name="WatchScreen" component={WatchScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: false }}/>
+        <Stack.Screen name="Track" component={Track} options={{ headerShown: true }} />
+        <Stack.Screen name="Evaluation" component={Evaluation} options={{ headerShown: true }} />
+        <Stack.Screen name="Ready" component={Ready} options={{ headerShown: true }} />
+        <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: true }} />
+        <Stack.Screen name="WatchScreen" component={WatchScreen} options={{ headerShown: true }}/>
+        <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: true }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -72,12 +72,6 @@ const LeaderBoardScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    backgroundColor: '#f1f1f1',
-  },
   categoryButton: {
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -88,9 +82,8 @@ const styles = StyleSheet.create({
   categoryButtons: {
     flexDirection: 'row',
     paddingHorizontal: 10,
-    paddingVertical: 15,
+    paddingVertical: 5,
     position: 'absolute',
-    top: 20,
     left: 0,
     right: 0,
     zIndex: 1,

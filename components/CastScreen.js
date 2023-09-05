@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { colors } from './theme';
+import { colors, sizes, spacing } from './theme';
+import Carousel from './Cast/Carousel';
 
 const categories = [
   { name: 'Robotics', image: require('../assets/Cast_screen_icons/Robotics.png'), color: '#FF8C00', notification: 2 },
@@ -17,50 +18,67 @@ const categories = [
   { name: 'Physics', image: require('../assets/Cast_screen_icons/Physics.png'), color: '#4B0082', notification: 0 },
 ];
 
+const Watch = [
+  {
+    id: 1,
+    image: require('../assets/Cast_icons/Watch/download.jpg'),
+    title: 'Granada',
+    location: 'Spain',
+    description:
+      'Granada is the capital city of the province of Granada, in the autonomous community of Andalusia, Spain',
+  },
+  {
+    id: 2,
+    image: require('../assets/Cast_icons/Watch/toto.jpg'),
+    title: 'Cherry blossoms',
+    location: 'Japan',
+    description:
+      "Cherry blossoms usually bloom between mid-March and early May. In 2022, Tokyo's cherry blossom season officially began on March 20",
+  },
+    {
+      id: 3,
+      image: require('../assets/Cast_icons/Watch/img1.png'),
+      title: 'Amalfi',
+      location: 'Italy',
+      description:
+        'The ultimate Amalfi Coast travel guide, where to stay, where to eat, and what areas to visit in the Amalfi Coast of Italy. Positano, Ravello, Amalfi and more',
+    },
+    {
+      id: 4,
+      image: require('../assets/Cast_icons/Watch/download.jpg'),
+      title: 'Granada',
+      location: 'Spain',
+      description:
+        'Granada is the capital city of the province of Granada, in the autonomous community of Andalusia, Spain',
+    },
+    {
+      id: 5,
+      image: require('../assets/Cast_icons/Watch/toto.jpg'),
+      title: 'Cherry blossoms',
+      location: 'Japan',
+      description:
+        "Cherry blossoms usually bloom between mid-March and early May. In 2022, Tokyo's cherry blossom season officially began on March 20",
+    },
+  ];
+
 const CastScreen = () => {
   const navigation = useNavigation();
 
-  const handleCategoryPickerScreenPress = () => {
-    navigation.navigate('CategoryPickerScreen');
-  }
-
-  const numRows = Math.ceil(categories.length / 2);
-  const categoryRows = Array.from({ length: numRows }, (_, rowIndex) =>
-    categories.slice(rowIndex * 2, rowIndex * 2 + 2)
-  );
-
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.categoryButtons}>
-  {categoryRows.map((row, rowIndex) => (
-    <View key={rowIndex} style={styles.row}>
-      {row.map(category => (
-        <TouchableOpacity
-          key={category.name}
-          style={[styles.categoryButton, { backgroundColor: category.color }]}
-          onPress={handleCategoryPickerScreenPress}
-        >
-          {category.notification > 0 && (
-            <View style={styles.notificationContainer}>
-              <MaterialCommunityIcons
-                name="star"
-                size={16}
-                color="#FFD700"
-                style={styles.notificationIcon}
-              />
-              <Text style={styles.notificationText}>{category.notification}</Text>
-            </View>
-          )}
-          <Image source={category.image} style={styles.categoryImage} />
-        {/*<Text style={styles.categoryButtonText}>{category.name}</Text>*/}
-        </TouchableOpacity>
-      ))}
-    </View>
-  ))}
-</ScrollView>
-
+      <ScrollView style={styles.container}>
+        {categories.map((category) => (
+          <View key={category.name} style={styles.categoryContainer}>
+          <View style={styles.categoryHeader}>
+            <Image source={category.image} style={styles.categoryImage} />
+            <Text style={[styles.categoryTitle, { color: category.color }]}>{category.name}</Text>
+          </View>
+          <Carousel list={Watch} />
+        </View>
+        ))}
+      </ScrollView>
       <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('CastTypeChoice')}>
-        <MaterialCommunityIcons name="plus" size={32} color="#fff" />
+        <MaterialCommunityIcons name="plus" size={32} color='#f1f1f1' />
       </TouchableOpacity>
     </View>
   );
@@ -70,62 +88,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    padding: 30,
   },
-  catchUpButton: {
-    backgroundColor: '#1c1c1c',
-    paddingVertical: 20,
-    borderRadius: 10,
-    marginBottom: 20,
-    marginTop:20,
+  categoryContainer: {
+    marginVertical: 10,
+    paddingHorizontal: spacing.m,
   },
-  buttonText: {
-    color: colors.white,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  categoryButtons: {
-    marginBottom: -30,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
-  },
-  categoryButton: {
-    width: '48%',
-    aspectRatio: 1,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    opacity:0.9,
-  },
-  categoryButtonText: {
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  notificationContainer: {
-    position: 'absolute',
-    top: 4,
-    right: 4,
+  categoryHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: spacing.s,
   },
-  notificationIcon: {
-    marginRight: 2,
+  categoryTitle: {
+    fontSize: sizes.title,
+    fontWeight: 'bold',
+    marginBottom: spacing.s,
   },
-  notificationText: {
-    color: '#FFD700',
-    fontSize: 14,
+  categoryImage: {
+    width: 24,
+    height: 24,
+    marginRight: spacing.s,
+    marginBottom: spacing.s-2,
   },
   floatingButton: {
     position: 'absolute',
-    bottom: 15,
+    bottom: 25,
     right: 15,
     backgroundColor: colors.black,
     width: 60,
@@ -134,11 +120,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 4,
-  },
-  categoryImage: {
-    width: 70,
-    height: 70,
-    marginBottom: 5,
   },
 });
 
