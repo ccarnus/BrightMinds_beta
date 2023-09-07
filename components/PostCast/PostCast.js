@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert, Image, ActivityIndicator} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {Picker} from '@react-native-picker/picker';
-import { Video } from 'expo-av';
 import universities from '../../lists/universities';
 import types from '../../lists/types';
 import departments from '../../lists/departments';
 import {colors, shadow, sizes, spacing} from '../theme';
+import Slider from '@react-native-community/slider';
+import visibilityCategories from '../../lists/visibilityCategories';
 
 const PostCast = () => {
   const [title, setTitle] = useState('');
@@ -17,6 +18,7 @@ const PostCast = () => {
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [thumbnailUri, setThumbnailUri] = useState(null);
+  const [visibility, setVisibility] = useState(1);
 
   const takeNewVideo = async () => {
     try {
@@ -42,6 +44,7 @@ const PostCast = () => {
       university,
       category: 'Breakthrough',
       brightmindid: '101',
+      visibility,
     };
 
     const formData = new FormData();
@@ -132,6 +135,19 @@ const PostCast = () => {
             <Picker.Item key={index} label={univ} value={univ} />
           ))}
         </Picker>
+        <Text style={styles.fieldDescription}>Visibility</Text>
+        <Text style={styles.visibilityLabel}>{visibilityCategories[visibility - 1].label}</Text>
+        <Slider
+          style={{ width: '100%', height: 20 }}
+          minimumValue={1}
+          maximumValue={5}
+          step={1}
+          value={visibility}
+          onValueChange={(value) => setVisibility(value)}
+          thumbTintColor={colors.darkblue}
+          minimumTrackTintColor={colors.darkblue}
+          maximumTrackTintColor={colors.lightblue}
+        />
         {thumbnailUri ? (
           <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
         ) : (
@@ -232,15 +248,17 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: 'cover',
     marginBottom: 10,
-    justifyContent: 'center', // Center vertically
-    alignItems: 'center', // Center horizontally
   },
   loadingThumbnail: {
-    width: 100,
     height: 100,
+    marginTop:10,
     marginBottom: 10,
-    justifyContent: 'center', // Center vertically
-    alignItems: 'center', // Center horizontally
+  },
+  visibilityLabel: {
+    fontSize: sizes.h3,
+    textAlign: 'center',
+    marginVertical: 10,
+    color: colors.darkblue,
   },
 });
 
