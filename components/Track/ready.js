@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { colors, sizes } from '../theme';
 
 const USER_ID = "6474e4001eec5ee1ecd40180";
 
@@ -36,7 +37,7 @@ const ReadyScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/*<Text style={styles.title}>Ready for your weekly evaluation?</Text>*/}
+      <Text style={styles.title}>Ready for your weekly evaluation?</Text>
       
       {/* Image */}
       <Image source={require('../../assets/Evaluation_icons/evaluation.png')} style={styles.image} />
@@ -60,9 +61,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1f1f1',
   },
   title: {
-    fontSize: 32,
+    fontSize: sizes.title,
     fontWeight: 'bold',
-    marginBottom: 150,
+    marginBottom: 50,
+    marginTop:-180,
     textAlign: 'center',
   },
   image: {
@@ -74,11 +76,12 @@ const styles = StyleSheet.create({
     bottom: 50,
     width: '100%',
     alignItems: 'center',
+    marginBottom: 80,
   },
   readyButton: {
     paddingVertical: 15,
     paddingHorizontal: 30,
-    backgroundColor: '#3498db',
+    backgroundColor: colors.darkblue,
     borderRadius: 10,
   },
   readyButtonText: {

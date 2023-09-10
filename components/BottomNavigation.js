@@ -50,7 +50,7 @@ const BottomNavigation = () => {
                   return (
                     <Icon
                       icon={name}
-                      size={32}
+                      size={28}
                       style={{
                         tintColor: focused ? colors.primary : colors.gray,
                       }}
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     height: 2,
     left: sizes.width / tabs.length / 2 - 12,
     bottom: 40,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.black,
     zIndex: 100,
   },
 });

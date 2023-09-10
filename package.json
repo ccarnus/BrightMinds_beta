@@ -26,6 +26,7 @@
     "react": "^18.2.0",
     "react-native": "0.72.3",
     "react-native-animatable": "^1.3.3",
+    "react-native-create-thumbnail": "^1.6.4",
     "react-native-dotenv": "^3.4.9",
     "react-native-gesture-handler": "^2.12.1",
     "react-native-media-controls": "^2.3.0",
@@ -35,7 +36,10 @@
     "react-native-slider": "^0.11.0",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^13.11.0",
-    "react-native-video": "^5.2.1"
+    "react-native-thumbnail": "^1.1.3",
+    "react-native-thumbnail-video": "^0.1.2",
+    "react-native-video": "^5.2.1",
+    "react-native-video-thumbnails": "^0.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

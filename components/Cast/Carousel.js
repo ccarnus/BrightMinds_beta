@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  FlatList,
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {FlatList, Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {colors, shadow, sizes, spacing} from '../theme';
 
 const CARD_WIDTH = sizes.width - 80;
@@ -32,11 +25,13 @@ const Carousel = ({list}) => {
             }}>
             <View style={[styles.card, shadow.dark]}>
               <View style={styles.imageBox}>
-                <Image source={item.image} style={styles.image} />
+              <Image
+                  source={{ uri: item.image }}
+                  style={styles.image} 
+                />
               </View>
               <View style={styles.titleBox}>
                 <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.location}>{item.location}</Text>
               </View>
             </View>
           </TouchableOpacity>

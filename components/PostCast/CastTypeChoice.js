@@ -33,13 +33,11 @@ const CastTypeChoice = () => {
   const handleChoice = (castType) => {
     switch (castType) {
       case 'Podcast':
-        // Navigate to Podcast screen
         break;
       case 'Clip':
         navigation.navigate('PostCast');
         break;
       case 'Article':
-        // Navigate to Article screen
         break;
       default:
         break;

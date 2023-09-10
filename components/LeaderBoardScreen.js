@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import {colors, shadow, sizes, spacing} from './theme';
+import UserSection from './LeaderBoard/UserSection';
 
 const LeaderBoardScreen = () => {
   const [usersLeaderboard, setUsersLeaderboard] = useState([]);
@@ -40,6 +41,8 @@ const LeaderBoardScreen = () => {
           <Text style={[styles.categoryButtonText, selectedCategory === 'Universities' && styles.selectedCategoryText]}>Universities</Text>
         </TouchableOpacity>
       </View>
+
+      <UserSection />
 
       <ScrollView style={styles.scrollContainer}>
       {selectedCategory === 'Users' && (
@@ -89,7 +92,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   scrollContainer: {
-    marginTop: 90,
+    marginTop: 20,
   },
   selectedCategory: {
     borderWidth: 2,
