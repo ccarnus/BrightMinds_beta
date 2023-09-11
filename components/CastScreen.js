@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, ScrollV } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { colors, sizes, spacing } from './theme';
@@ -32,7 +32,9 @@ const CastScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        >
         {categories.map((category) => (
           <View key={category.name} style={styles.categoryContainer}>
           <View style={styles.categoryHeader}>

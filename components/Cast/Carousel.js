@@ -1,13 +1,37 @@
-import React from 'react';
-import {FlatList, Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import {colors, shadow, sizes, spacing} from '../theme';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { colors, shadow, sizes, spacing } from '../theme';
+import { Video } from 'expo-av';
+import { getThumbnailAsync } from 'expo-video-thumbnails';
 
-const CARD_WIDTH = sizes.width - 80;
-const CARD_HEIGHT = 200;
+const CARD_WIDTH = sizes.width /1.5;
+const CARD_HEIGHT = 400;
 const CARD_HEIGHT_TOTAL = 400;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
 
-const Carousel = ({list}) => {
+const Carousel = ({ list }) => {
+  const [thumbnailUri, setThumbnailUri] = useState({});
+
+  useEffect(() => {
+    async function fetchThumbnails() {
+      const thumbnails = {};
+      for (const item of list) {
+        try {
+          console.log(item.image);
+          const { uri } = await getThumbnailAsync(item.image, {
+            time: 0,
+          });
+          thumbnails[item.id] = uri;
+        } catch (e) {
+          console.error(`Error fetching thumbnail for item ${item.id}:`, e);
+        }
+      }
+      setThumbnailUri(thumbnails);
+    }
+
+    fetchThumbnails();
+  }, [list]);
+
   return (
     <FlatList
       data={list}
@@ -16,7 +40,7 @@ const Carousel = ({list}) => {
       decelerationRate="fast"
       showsHorizontalScrollIndicator={false}
       keyExtractor={i => i.id}
-      renderItem={({item, index}) => {
+      renderItem={({ item, index }) => {
         return (
           <TouchableOpacity
             style={{
@@ -25,9 +49,9 @@ const Carousel = ({list}) => {
             }}>
             <View style={[styles.card, shadow.dark]}>
               <View style={styles.imageBox}>
-              <Image
-                  source={{ uri: item.image }}
-                  style={styles.image} 
+                <Image
+                  source={{ uri: thumbnailUri[item.id] }}
+                  style={styles.image}
                 />
               </View>
               <View style={styles.titleBox}>
