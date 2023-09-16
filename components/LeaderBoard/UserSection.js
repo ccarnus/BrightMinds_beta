@@ -23,7 +23,7 @@ const UserProfile = () => {
       <View style={styles.userInfo}>
         <Text style={styles.name}>{userData.username}</Text>
         <Text style={styles.score}>{userData.score}</Text>
-        <Text style={styles.rank}>13%</Text>
+        <Text style={styles.rank}>Better than 73%</Text>
       </View>
       <Image source={{ uri: 'http://3.17.219.54/backend/media/university_icon/GT.png1691613590597.png' }} style={styles.universityPicture} />
     </View>

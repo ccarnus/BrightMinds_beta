@@ -1,4 +1,5 @@
 const departments = [
+    'AI',
     'Aerospace Engineering',
     'Anthropology',
     'Architecture',
@@ -26,6 +27,7 @@ const departments = [
     'Political Science',
     'Psychology',
     'Public Health',
+    'Robotics',
     'Social Work',
     'Sociology',
   ];

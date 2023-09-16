@@ -4,9 +4,9 @@ import { colors, shadow, sizes, spacing } from '../theme';
 import { Video } from 'expo-av';
 import { getThumbnailAsync } from 'expo-video-thumbnails';
 
-const CARD_WIDTH = sizes.width /1.5;
-const CARD_HEIGHT = 400;
-const CARD_HEIGHT_TOTAL = 400;
+const CARD_WIDTH = sizes.width /3;
+const CARD_HEIGHT = 200;
+const CARD_HEIGHT_TOTAL = 200;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
 
 const Carousel = ({ list }) => {
@@ -86,16 +86,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: CARD_HEIGHT - 80,
     left: 16,
+    backgroundColor: colors.white,
   },
   title: {
-    fontSize: sizes.h2,
+    fontSize: sizes.h3,
     fontWeight: 'bold',
     color: colors.black,
-  },
-  location: {
-    fontSize: sizes.h3,
-    color: colors.black,
-  },
+  }
 });
 
 export default Carousel;

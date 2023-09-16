@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, ScrollV } from 'react-native';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { colors, sizes, spacing } from './theme';
-import Carousel from './Cast/Carousel'; 
+import Carousel from './Cast/Carousel';
 
 const categories = [
   { name: 'Robotics', image: require('../assets/Cast_screen_icons/Robotics.png'), color: '#FF8C00', notification: 2 },
@@ -13,11 +13,15 @@ const categories = [
 
 const CastScreen = () => {
   const navigation = useNavigation();
-  const [castData, setCastData] = useState([]);
+  const [castData, setCastData] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const scrollViewRef = useRef(null);
 
-  useEffect(() => {
-    // Fetch cast data from the API
-    fetch('http://3.17.219.54/cast')
+  const fetchCastData = (category) => {
+    // Construct the endpoint URL based on the category
+    const endpoint = `http://3.17.219.54/cast/department/${category}`;
+
+    fetch(endpoint)
       .then((response) => response.json())
       .then((data) => {
         const watchList = data.map((cast, index) => ({
@@ -25,24 +29,67 @@ const CastScreen = () => {
           image: cast.casturl,
           title: cast.title,
         }));
-        setCastData(watchList);
+        setCastData((prevData) => ({
+          ...prevData,
+          [category]: watchList, // Store data for the category using its name as the key
+        }));
+        setIsRefreshing(false);
+        scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        setIsRefreshing(false);
+      });
+  };
+
+  const handleRefresh = useCallback(() => {
+    setIsRefreshing(true);
+
+    // Refresh data for each category
+    categories.forEach((category) => {
+      fetchCastData(category.name);
+    });
   }, []);
+
+  useEffect(() => {
+    // Fetch cast data from the API when the component mounts
+    handleRefresh();
+  }, [handleRefresh]);
 
   return (
     <View style={styles.container}>
       <ScrollView
         style={styles.container}
-        >
+        onScroll={(event) => {
+          const offsetY = event.nativeEvent.contentOffset.y;
+          const scrollHeight = event.nativeEvent.contentSize.height;
+          const screenHeight = event.nativeEvent.layoutMeasurement.height;
+
+          // Check if the user has scrolled to the top (you can adjust the threshold as needed)
+          if (offsetY <= -50) {
+            handleRefresh(); // Trigger refresh when scrolled to the top
+          }
+          if (offsetY + screenHeight >= scrollHeight) {
+            // Implement your logic when the user reaches the bottom
+            // For example, you can load more content when the user reaches the bottom
+          }
+        }}
+        ref={scrollViewRef}
+      >
+        {isRefreshing && (
+          <View style={styles.refreshIndicator}>
+            <ActivityIndicator size="small" color={colors.black} />
+            <Text style={styles.refreshText}>Refreshing...</Text>
+          </View>
+        )}
         {categories.map((category) => (
           <View key={category.name} style={styles.categoryContainer}>
-          <View style={styles.categoryHeader}>
-            <Image source={category.image} style={styles.categoryImage} />
-            <Text style={[styles.categoryTitle, { color: category.color }]}>{category.name}</Text>
+            <View style={styles.categoryHeader}>
+              <Image source={category.image} style={styles.categoryImage} />
+              <Text style={[styles.categoryTitle, { color: category.color }]}>{category.name}</Text>
+            </View>
+            <Carousel list={castData[category.name] || []} />
           </View>
-          <Carousel list={castData} />
-        </View>
         ))}
       </ScrollView>
       <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('CastTypeChoice')}>
@@ -75,7 +122,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     marginRight: spacing.s,
-    marginBottom: spacing.s-2,
+    marginBottom: spacing.s - 2,
   },
   floatingButton: {
     position: 'absolute',
@@ -88,6 +135,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 4,
+  },
+  refreshIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.s,
+  },
+  refreshText: {
+    marginLeft: spacing.s,
+    color: colors.black,
   },
 });
 

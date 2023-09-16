@@ -16,24 +16,18 @@ const MainNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Root"
+        initialRouteName="BottomNav"
         screenOptions={{
-          header: () => <Banner />,
+          header: () => <Banner />
         }}
       >
-        <Stack.Screen
-          name="Root"
-          component={BottomNavigation}
-          options={{
-            headerShown: true,
-          }}
-        />
-        <Stack.Screen name="Track" component={Track} options={{ headerShown: true }} />
-        <Stack.Screen name="Evaluation" component={Evaluation} options={{ headerShown: true }} />
-        <Stack.Screen name="Ready" component={Ready} options={{ headerShown: true }} />
-        <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: true }} />
+        <Stack.Screen name="BottomNav" component={BottomNavigation} options={{ headerShown: true, tabBarVisible: true}} />
+        <Stack.Screen name="Track" component={Track} options={{ headerShown: true, tabBarVisible: true}} />
+        <Stack.Screen name="Evaluation" component={Evaluation} options={{ headerShown: true, tabBarVisible: true }} />
+        <Stack.Screen name="Ready" component={Ready} options={{ headerShown: true, tabBarVisible: true }} />
+        <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: true, tabBarVisible: true }} />
         <Stack.Screen name="WatchScreen" component={WatchScreen} options={{ headerShown: true }}/>
-        <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: true }}/>
+        <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: true, tabBarVisible: true }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

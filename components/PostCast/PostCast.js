@@ -9,7 +9,7 @@ import {colors, shadow, sizes, spacing} from '../theme';
 import Slider from '@react-native-community/slider';
 import visibilityCategories from '../../lists/visibilityCategories';
 
-const PostCast = () => {
+const PostCast = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [department, setDepartment] = useState('');
@@ -68,6 +68,7 @@ const PostCast = () => {
 
       if (response.ok) {
         Alert.alert('Success', 'Cast posted successfully!');
+        navigation.navigate('Cast');
       } else {
         Alert.alert('Error', 'Failed to post cast.');
       }
