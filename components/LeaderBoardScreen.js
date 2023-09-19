@@ -11,7 +11,7 @@ const LeaderBoardScreen = () => {
   useEffect(() => {
     // Fetch users leaderboard data
     if (selectedCategory === 'Users') {
-      fetch('http://3.17.219.54/user/leaderboard/by/score')
+      fetch('http://3.17.219.54/user')
         .then((response) => response.json())
         .then((data) => setUsersLeaderboard(data))
         .catch((error) => console.error(error));
