@@ -19,7 +19,7 @@ const Carousel = ({ list }) => {
         try {
           console.log(item.image);
           const { uri } = await getThumbnailAsync(item.image, {
-            time: 0,
+            time: 1000,
           });
           thumbnails[item.id] = uri;
         } catch (e) {
