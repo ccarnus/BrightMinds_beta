@@ -109,11 +109,16 @@ const PostCast = ({navigation}) => {
         <Text style={styles.fieldDescription}>Department</Text>
         <Picker
           selectedValue={department}
-          style={styles.input}
+          style={styles.picker}
           onValueChange={(itemValue) => setDepartment(itemValue)}
         >
           {departments.map((dep, index) => (
-            <Picker.Item key={index} label={dep} value={dep} />
+            <Picker.Item key={index} label={dep.name} value={dep.name}>
+              <View style={styles.departmentItem}>
+                <Image source={dep.image} style={styles.departmentImage} />
+                <Text style={styles.departmentName}>{dep.name}</Text>
+              </View>
+            </Picker.Item>
           ))}
         </Picker>
         <Text style={styles.fieldDescription}>Type</Text>
@@ -160,10 +165,10 @@ const PostCast = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.sendButton} onPress={sendCast} disabled={loading}>
-        <Text style={styles.sendButtonText}>Send Cast</Text>
-      </TouchableOpacity>
-    </View>
-  </ScrollView>
+          <Text style={styles.sendButtonText}>Send Cast</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -260,6 +265,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 10,
     color: colors.darkblue,
+  },
+  picker: {
+    marginBottom: 15,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: colors.lightGray,
+    borderRadius: 5,
+  },
+  departmentItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  departmentImage: {
+    width: 30, // Adjust the size as needed
+    height: 30, // Adjust the size as needed
+    marginRight: 10,
+  },
+  departmentName: {
+    fontSize: sizes.h2,
   },
 });
 
