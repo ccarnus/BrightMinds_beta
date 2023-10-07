@@ -26,7 +26,7 @@ const CastScreen = () => {
       .then((data) => {
         const watchList = data.map((cast, index) => ({
           id: index + 1,
-          image: cast.casturl,
+          image: cast.castimageurl,
           title: cast.title,
         }));
         setCastData((prevData) => ({
@@ -45,7 +45,6 @@ const CastScreen = () => {
   const handleRefresh = useCallback(() => {
     setIsRefreshing(true);
 
-    // Refresh data for each category
     categories.forEach((category) => {
       fetchCastData(category.name);
     });

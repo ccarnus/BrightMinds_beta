@@ -1,4 +1,4 @@
-const departments = [
+/*const departments = [
     'AI',
     'Aerospace Engineering',
     'Anthropology',
@@ -30,6 +30,19 @@ const departments = [
     'Robotics',
     'Social Work',
     'Sociology',
+  ];*/
+
+  const departments = [
+    { name: 'Robotics', image: require('../assets/Cast_screen_icons/Robotics.png'), color: '#FF8C00', progress: 0.2 },
+    { name: 'AI', image: require('../assets/Cast_screen_icons/AI.png'), color: '#228B22', progress: 0.5 },
+    { name: 'Medicine', image: require('../assets/Cast_screen_icons/Medicine.png'), color: '#4682B4', progress: 0.27 },
+    { name: 'Economics', image: require('../assets/Cast_screen_icons/Economic.png'), color: '#8A2BE2', progress: 0.78 },
+    { name: 'Electronics', image: require('../assets/Cast_screen_icons/Electronics.png'), color: '#DC143C', progress: 0.24 },
+    { name: 'Computer Science', image: require('../assets/Cast_screen_icons/Computer_science.png'), color: '#20B2AA', progress: 0 },
+    { name: 'Aerospace', image: require('../assets/Cast_screen_icons/Aerospace.png'), color: '#556B2F', progress: 0.05 },
+    { name: 'Biology', image: require('../assets/Cast_screen_icons/Biology.png'), color: '#800000', progress: 0.8 },
+    { name: 'Chemistry', image: require('../assets/Cast_screen_icons/Chemistry.png'), color: '#2F4F4F', progress: 0.1 },
+    { name: 'Physics', image: require('../assets/Cast_screen_icons/Physics.png'), color: '#4B0082', progress: 0.5 },
   ];
 
   export default departments;

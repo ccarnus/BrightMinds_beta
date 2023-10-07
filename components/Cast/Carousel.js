@@ -1,36 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { colors, shadow, sizes, spacing } from '../theme';
-import { Video } from 'expo-av';
-import { getThumbnailAsync } from 'expo-video-thumbnails';
 
-const CARD_WIDTH = sizes.width /3;
-const CARD_HEIGHT = 200;
-const CARD_HEIGHT_TOTAL = 200;
+const CARD_WIDTH = sizes.width /2.5;
+const CARD_HEIGHT = 250;
+const CARD_HEIGHT_TOTAL = 250;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
 
 const Carousel = ({ list }) => {
-  const [thumbnailUri, setThumbnailUri] = useState({});
-
-  useEffect(() => {
-    async function fetchThumbnails() {
-      const thumbnails = {};
-      for (const item of list) {
-        try {
-          console.log(item.image);
-          const { uri } = await getThumbnailAsync(item.image, {
-            time: 1000,
-          });
-          thumbnails[item.id] = uri;
-        } catch (e) {
-          console.error(`Error fetching thumbnail for item ${item.id}:`, e);
-        }
-      }
-      setThumbnailUri(thumbnails);
-    }
-
-    fetchThumbnails();
-  }, [list]);
 
   return (
     <FlatList
@@ -50,8 +27,9 @@ const Carousel = ({ list }) => {
             <View style={[styles.card, shadow.dark]}>
               <View style={styles.imageBox}>
                 <Image
-                  source={{ uri: thumbnailUri[item.id] }}
+                  source={{ uri: item.image }}
                   style={styles.image}
+                  onError={() => console.log(`Error loading image for ${item.title}`)}
                 />
               </View>
               <View style={styles.titleBox}>
@@ -70,6 +48,7 @@ const styles = StyleSheet.create({
     width: CARD_WIDTH,
     height: CARD_HEIGHT_TOTAL,
     marginVertical: 10,
+    position: 'relative',
   },
   imageBox: {
     width: CARD_WIDTH,
@@ -84,15 +63,21 @@ const styles = StyleSheet.create({
   },
   titleBox: {
     position: 'absolute',
-    top: CARD_HEIGHT - 80,
-    left: 16,
-    backgroundColor: colors.white,
+    borderRadius: 5,
+    backgroundColor: colors.lightGray,
+    top: CARD_HEIGHT - 50,
+    maxHeight: 50,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: sizes.h3,
     fontWeight: 'bold',
     color: colors.black,
-  }
+    paddingRight: 10,
+  },
 });
 
 export default Carousel;
