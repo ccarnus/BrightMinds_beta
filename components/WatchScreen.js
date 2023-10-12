@@ -69,6 +69,19 @@ const WatchScreen = ({ navigation }) => {
         console.error(error);
       });
   };
+
+  const handleCastDonePlaying = () => {
+    const castId = videos[focusedIndex]._id;
+
+    axios
+      .post(`http://3.17.219.54/user/add/cast/${userId}`, { castId: castId })
+      .then(response => {
+        setBookmarkedCasts([...bookmarkedCasts, { castId }]);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
   
 
   useEffect(() => {
@@ -110,13 +123,19 @@ const WatchScreen = ({ navigation }) => {
             onPress={() => handleVideoPress(index)}
           >
             <View style={styles.videoWrapper}>
-              <Video
-                ref={ref => (videoRefs.current[index] = ref)}
-                source={{ uri: video.casturl }}
-                shouldPlay={videoStatus[index]}
-                resizeMode="cover"
-                style={styles.video}
-              />
+            <Video
+              ref={ref => (videoRefs.current[index] = ref)}
+              source={{ uri: video.casturl }}
+              shouldPlay={videoStatus[index]}
+              resizeMode="cover"
+              style={styles.video}
+              onPlaybackStatusUpdate={(status) => {
+                if (status.didJustFinish) {
+                  videoRefs.current[index].setPositionAsync(0);
+                  handleCastDonePlaying();
+                }
+              }}
+            />
             </View>
             <Text style={styles.title}>{video.title}</Text>
             <View style={styles.banner}>
