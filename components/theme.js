@@ -40,6 +40,7 @@ export const sizes = {
   h3: 18,
   body: 14,
   radius: 16,
+  gauge: 8,
 };
 
 export const spacing = {
