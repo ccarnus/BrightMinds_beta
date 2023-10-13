@@ -33,6 +33,7 @@ const CastScreen = () => {
           ...prevData,
           [category]: watchList, // Store data for the category using its name as the key
         }));
+        console.log(castData);
         setIsRefreshing(false);
         scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
       })
