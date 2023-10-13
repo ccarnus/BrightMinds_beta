@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import axios from 'axios';
+import Gauge from './Gauge';
 
 const USER_ID = "6474e4001eec5ee1ecd40180";
 
@@ -72,6 +73,7 @@ const TakeTest = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Gauge total={questions.length} current={currentQuestionIndex} />
       <View style={styles.questionContainer}>
         <Text style={styles.questionText}>{currentQuestion?.question}</Text>
       </View>
