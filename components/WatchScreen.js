@@ -74,7 +74,7 @@ const WatchScreen = ({ navigation }) => {
     const castId = videos[focusedIndex]._id;
 
     axios
-      .post(`http://3.17.219.54/user/add/cast/${userId}`, { castId: castId })
+      .post(`http://3.17.219.54/user/add/cast/${userId}`, { cast_id: castId })
       .then(response => {
         setBookmarkedCasts([...bookmarkedCasts, { castId }]);
       })
