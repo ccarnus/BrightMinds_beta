@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert, Image, ActivityIndicator} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image, ActivityIndicator} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {Picker} from '@react-native-picker/picker';
 import universities from '../../lists/universities';
@@ -8,6 +8,7 @@ import departments from '../../lists/departments';
 import {colors, shadow, sizes, spacing} from '../theme';
 import Slider from '@react-native-community/slider';
 import visibilityCategories from '../../lists/visibilityCategories';
+import { TextInput, Dropdown } from 'react-native-paper';
 
 const PostCast = ({navigation}) => {
   const [title, setTitle] = useState('');
@@ -44,6 +45,7 @@ const PostCast = ({navigation}) => {
       university,
       category: 'Breakthrough',
       brightmindid: '101',
+      castimageurl: 'https://cloudfront-eu-central-1.images.arcpublishing.com/leparisien/JZ6CMNQY2VEH5OQW3PDX33HLQI.jpg',
       visibility,
     };
 
@@ -65,6 +67,7 @@ const PostCast = ({navigation}) => {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log(formData);
 
       if (response.ok) {
         Alert.alert('Success', 'Cast posted successfully!');
@@ -80,6 +83,13 @@ const PostCast = ({navigation}) => {
     }
   };
 
+  const totos = [
+    'Type 1',
+    'Type 2',
+    'Type 3',
+    // Add more types as needed
+  ];
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       {loading && (
@@ -91,19 +101,19 @@ const PostCast = ({navigation}) => {
       )}
       <View style={styles.content}>
         <Text style={styles.heading}>Post a Cast</Text>
-        <Text style={styles.fieldDescription}>Title</Text>
         <TextInput
+          label="Title"
           style={styles.input}
-          placeholder="Title"
           value={title}
           onChangeText={setTitle}
+          mode="outlined"
         />
-        <Text style={styles.fieldDescription}>Description</Text>
         <TextInput
           style={[styles.input, styles.multilineInput]}
-          placeholder="Description"
+          label="Description"
           value={description}
           onChangeText={setDescription}
+          mode="outlined"
           multiline
         />
         <Text style={styles.fieldDescription}>Department</Text>
@@ -122,6 +132,7 @@ const PostCast = ({navigation}) => {
           ))}
         </Picker>
         <Text style={styles.fieldDescription}>Type</Text>
+        
         <Picker
           selectedValue={type}
           style={styles.input}
@@ -131,6 +142,7 @@ const PostCast = ({navigation}) => {
             <Picker.Item key={index} label={type} value={type} />
           ))}
         </Picker>
+
         <Text style={styles.fieldDescription}>University</Text>
         <Picker
           selectedValue={university}
@@ -161,12 +173,14 @@ const PostCast = ({navigation}) => {
         )}
         <View style={styles.videoPicker}>
           <TouchableOpacity style={styles.videoButton} onPress={takeNewVideo}>
-            <Text style={styles.videoButtonText}>Film Cast</Text>
+            <Text style={styles.videoButtonText}>FILM</Text>
+          </TouchableOpacity>
+        </View >
+        <View style={styles.videoPicker}>
+          <TouchableOpacity style={styles.sendButton} onPress={sendCast} disabled={loading}>
+            <Text style={styles.sendButtonText}>POST</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.sendButton} onPress={sendCast} disabled={loading}>
-          <Text style={styles.sendButtonText}>Send Cast</Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -211,30 +225,28 @@ const styles = StyleSheet.create({
     color: '#1c1c1c',
     marginBottom: 5,
   },
-  input: {
-    marginBottom: 15,
-    padding: 10,
-    borderWidth: 1,
-    borderColor:  colors.lightGray,
-    borderRadius: 5,
-  },
   multilineInput: {
     height: 100,
     textAlignVertical: 'top',
   },
   videoPicker: {
     marginBottom: 15,
+    width: "100%",
+
   },
   videoButton: {
     marginBottom: 5,
     padding: 10,
-    backgroundColor: colors.black,
-    borderRadius: 5,
+    backgroundColor: colors.white,
     borderRadius: sizes.radius,
+    borderColor: colors.black,
+    borderWidth: 1,
+    width:"80%",
+    marginLeft: "10%",
   },
   videoButtonText: {
     fontSize: sizes.h2,
-    color: colors.white,
+    color: colors.black,
     textAlign: 'center',
   },
   sendButton: {
@@ -243,6 +255,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     borderRadius: sizes.radius,
+    width:"80%",
+    marginLeft: "10%",
   },
   sendButtonText: {
     fontSize: sizes.h2,
@@ -266,12 +280,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     color: colors.darkblue,
   },
+  input: {
+    marginBottom: 15,
+    backgroundColor: 'transparent',
+    
+  },
   picker: {
     marginBottom: 15,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: colors.lightGray,
-    borderRadius: 5,
+    backgroundColor: 'transparent',
   },
   departmentItem: {
     flexDirection: 'row',
