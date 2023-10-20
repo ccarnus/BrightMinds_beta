@@ -53,7 +53,7 @@ const CastWatchingTimeTab = () => {
               cx={30}
               cy={30}
               r={27}
-              stroke="#ccc"
+              stroke="#cce7c9"
               strokeWidth={6}
               fill="none"
             />
@@ -61,7 +61,7 @@ const CastWatchingTimeTab = () => {
               cx={30}
               cy={30}
               r={27}
-              stroke="#1c1c1c"
+              stroke="#276221"
               strokeWidth={6}
               fill="none"
               strokeDasharray="162"
@@ -230,13 +230,14 @@ const styles = StyleSheet.create({
     color: '#1c1c1c',
   },
   buttonStartWeeklyEvaluation: {
-    backgroundColor: colors.lightGray,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    borderColor: colors.black,
     borderRadius: sizes.radius,
+    borderWidth: 2,
   },
   buttonText: {
-    color: '#f1f1f1',
+    color: colors.black,
     fontSize: sizes.h3,
     fontWeight: 'bold',
   },

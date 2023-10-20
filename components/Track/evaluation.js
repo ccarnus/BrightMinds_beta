@@ -30,6 +30,17 @@ const TakeTest = ({ route, navigation }) => {
     }
   };
 
+  const removeCastFromEvaluationList = async (castId) => {
+    try {
+      await axios.post(`http://3.17.219.54/user/mark/cast/as/answered/${USER_ID}`, {
+        castId: castId,
+      });
+      console.log(`Cast ${castId} marked as answered`);
+    } catch (error) {
+      console.error(`Error marking cast ${castId} as answered:`, error);
+    }
+  };
+
   const fetchQuestions = async () => {
     try {
       const questionsPromises = castIds.map(castId =>
@@ -54,6 +65,7 @@ const TakeTest = ({ route, navigation }) => {
 
     if (isAnswerCorrect) {
       addPoints(10);
+      removeCastFromEvaluationList(castIds[currentQuestionIndex]);
     }
 
     // Wait for 1 second and then move to the next question
