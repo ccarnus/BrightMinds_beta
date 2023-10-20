@@ -1,51 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { colors, sizes } from '../theme';
+import { Shape } from 'react-native-svg';
 
 const USER_ID = "6474e4001eec5ee1ecd40180";
+let castIds;
 
 const ReadyScreen = ({ navigation }) => {
   const [showButton, setShowButton] = useState(false);
-  const opacityValue = new Animated.Value(0); 
+  const [numQuestions, setNumQuestions] = useState(0);
+  const opacityValue = new Animated.Value(0);
 
-  const handleTakeTestPress = async () => {
+  const getCastList = async () => {
     try {
       const response = await axios.get('http://3.17.219.54/user/' + USER_ID);
       const evaluationList = response.data.evaluation_list.filter(item => item.watched && !item.answered);
-      const castIds = evaluationList.map(item => item.castid);
-  
-      navigation.navigate('Evaluation', { castIds });
+      castIds = evaluationList.map(item => item.castid);
+      setNumQuestions(castIds.length);
     } catch (error) {
       console.error('Error fetching evaluation list:', error);
     }
   };
   
+  getCastList();
+
   useEffect(() => {
     setShowButton(true);
     Animated.timing(opacityValue, {
       toValue: 1,
-      duration: 2000, 
+      duration: 2000,
       useNativeDriver: true,
     }).start();
   });
 
   const handleReadyButtonPress = () => {
-    navigation.navigate('Evaluation');
+    navigation.navigate('Evaluation', { castIds });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Ready for your weekly evaluation?</Text>
-      
-      {/* Image */}
-      <Image source={require('../../assets/Evaluation_icons/evaluation.png')} style={styles.image} />
-      
+      <Text style={styles.title}>You have</Text>
+      <Text style={styles.numQuestions}>{numQuestions}</Text>
+      <Text style={styles.title}>{numQuestions === 1 ? 'Question' : 'Questions'}</Text>
       <View style={styles.buttonContainer}>
         <Animated.View style={[styles.readyButton, { opacity: opacityValue }]}>
-          <TouchableOpacity onPress={handleTakeTestPress}>
-            <Text style={styles.readyButtonText}>Ready!</Text>
+          <TouchableOpacity onPress={handleReadyButtonPress}>
+            <Text style={styles.readyButtonText}>Let's GO!</Text>
           </TouchableOpacity>
         </Animated.View>
       </View>
@@ -56,20 +58,28 @@ const ReadyScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: colors.darkblue,
+    paddingTop: 200,
     alignItems: 'center',
-    backgroundColor: '#f1f1f1',
   },
   title: {
     fontSize: sizes.title,
+    color: colors.white,
     fontWeight: 'bold',
-    marginBottom: 50,
-    marginTop:-180,
+    marginBottom: 10,
     textAlign: 'center',
   },
-  image: {
-    width: 150,
-    height: 150,
+  numQuestions: {
+    fontSize: 48,
+    color: colors.white,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    textAlign: 'center',
+  },
+  questionsText: {
+    fontSize: 20,
+    color: colors.white,
+    textAlign: 'center',
   },
   buttonContainer: {
     position: 'absolute',
@@ -81,13 +91,14 @@ const styles = StyleSheet.create({
   readyButton: {
     paddingVertical: 15,
     paddingHorizontal: 30,
-    backgroundColor: colors.darkblue,
-    borderRadius: 10,
+    borderColor: colors.white,
+    borderRadius: sizes.radius,
+    borderWidth: 2,
   },
   readyButtonText: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#f1f1f1',
+    color: colors.white,
   },
 });
 
