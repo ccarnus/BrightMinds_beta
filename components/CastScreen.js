@@ -76,6 +76,12 @@ const CastScreen = () => {
         }}
         ref={scrollViewRef}
       >
+        <TouchableOpacity 
+        style={styles.roundButton}
+        onPress={() => navigation.navigate('WatchScreen')}>
+          <Image source={require('../assets/Cast_screen_icons/random_icon.png')} 
+          style={styles.roundButtonImage} />
+        </TouchableOpacity>
         {isRefreshing && (
           <View style={styles.refreshIndicator}>
             <ActivityIndicator size="small" color={colors.black} />
@@ -103,6 +109,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  roundButton: {
+    top: 5,
+    marginBottom:5,
+    left: '50%',
+    marginLeft: -30,
+    backgroundColor: colors.white,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 4,
+    borderColor: colors.black,
+    borderWidth: 2,
+  },
+  roundButtonImage: {
+    width: 30,
+    height: 30,
   },
   categoryContainer: {
     marginVertical: 10,
