@@ -78,7 +78,7 @@ const CastScreen = () => {
       >
         <TouchableOpacity 
         style={styles.roundButton}
-        onPress={() => navigation.navigate('WatchScreen')}>
+        onPress={() => navigation.navigate('Watch')}>
           <Image source={require('../assets/Cast_screen_icons/random_icon.png')} 
           style={styles.roundButtonImage} />
         </TouchableOpacity>

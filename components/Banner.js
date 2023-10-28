@@ -1,15 +1,22 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import {colors, shadow, sizes, spacing} from './theme';
+import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import { colors, shadow, sizes, spacing } from './theme';
 
-const Banner = ({ onProfilePress }) => {
+const Banner = () => {
+  const navigation = useNavigation(); // Get the navigation object
+
+  const handleProfilePress = () => {
+    navigation.navigate('ProfileScreen'); // Navigate to the ProfileScreen
+  };
+
   return (
     <View style={styles.bannerContainer}>
       <View style={styles.appNameContainer}>
         <Text style={styles.appName}>BrightMinds</Text>
       </View>
-      <TouchableOpacity onPress={onProfilePress} style={styles.profileContainer}>
-      <Image
+      <TouchableOpacity onPress={handleProfilePress} style={styles.profileContainer}>
+        <Image
           source={require('../assets/Bottom_icons/profile.png')} // Replace with the actual path to the profile image
           style={styles.profileImage}
         />
@@ -52,6 +59,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 
 export default Banner;
