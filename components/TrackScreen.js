@@ -112,7 +112,8 @@ const TrackProgressTab = () => {
               <Image source={field.image} style={styles.fieldImage} />
               <ProgressBar
                 progress={field.progress}
-                color={field.color}
+                //color={field.light}
+                color={colors.lightBlue}
                 style={styles.progressBar}
                 borderRadius={15}
                 borderWidth={0}

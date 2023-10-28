@@ -6,6 +6,7 @@ import { colors, sizes, spacing } from './theme';
 import Carousel from './Cast/Carousel';
 
 const categories = [
+  { name: 'Aerospace', image: require('../assets/Cast_screen_icons/Aerospace.png'), color: '#4682B4', notification: 0 },
   { name: 'Robotics', image: require('../assets/Cast_screen_icons/Robotics.png'), color: '#FF8C00', notification: 2 },
   { name: 'AI', image: require('../assets/Cast_screen_icons/AI.png'), color: '#228B22', notification: 1 },
   { name: 'Medicine', image: require('../assets/Cast_screen_icons/Medicine.png'), color: '#4682B4', notification: 0 }

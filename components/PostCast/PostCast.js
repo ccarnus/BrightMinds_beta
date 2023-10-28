@@ -45,7 +45,7 @@ const PostCast = ({navigation}) => {
       university,
       category: 'Breakthrough',
       brightmindid: '101',
-      castimageurl: 'https://cloudfront-eu-central-1.images.arcpublishing.com/leparisien/JZ6CMNQY2VEH5OQW3PDX33HLQI.jpg',
+      castimageurl: 'https://cdn-icons-png.flaticon.com/512/5969/5969020.png',
       visibility,
     };
 
@@ -83,13 +83,6 @@ const PostCast = ({navigation}) => {
     }
   };
 
-  const totos = [
-    'Type 1',
-    'Type 2',
-    'Type 3',
-    // Add more types as needed
-  ];
-
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       {loading && (
@@ -124,10 +117,6 @@ const PostCast = ({navigation}) => {
         >
           {departments.map((dep, index) => (
             <Picker.Item key={index} label={dep.name} value={dep.name}>
-              <View style={styles.departmentItem}>
-                <Image source={dep.image} style={styles.departmentImage} />
-                <Text style={styles.departmentName}>{dep.name}</Text>
-              </View>
             </Picker.Item>
           ))}
         </Picker>
@@ -141,7 +130,7 @@ const PostCast = ({navigation}) => {
           {types.map((type, index) => (
             <Picker.Item key={index} label={type} value={type} />
           ))}
-        </Picker>
+          </Picker>
 
         <Text style={styles.fieldDescription}>University</Text>
         <Picker
@@ -156,7 +145,7 @@ const PostCast = ({navigation}) => {
         <Text style={styles.fieldDescription}>Visibility</Text>
         <Text style={styles.visibilityLabel}>{visibilityCategories[visibility - 1].label}</Text>
         <Slider
-          style={{ width: '100%', height: 20 }}
+          style={{ width: '100%', height: 20,  }}
           minimumValue={1}
           maximumValue={5}
           step={1}
@@ -166,11 +155,13 @@ const PostCast = ({navigation}) => {
           minimumTrackTintColor={colors.darkblue}
           maximumTrackTintColor={colors.lightblue}
         />
-        {thumbnailUri ? (
-          <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
-        ) : (
-          <ActivityIndicator size="large" color="#3498db" style={styles.loadingThumbnail} />
-        )}
+        <View style={styles.thumbnailContainer}>
+          {thumbnailUri ? (
+            <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
+          ) : (
+            <ActivityIndicator size="large" color="#3498db" style={styles.loadingThumbnail} />
+          )}
+        </View>
         <View style={styles.videoPicker}>
           <TouchableOpacity style={styles.videoButton} onPress={takeNewVideo}>
             <Text style={styles.videoButtonText}>FILM</Text>
@@ -263,9 +254,14 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: 'bold',
   },
+  thumbnailContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   thumbnail: {
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 200,
     resizeMode: 'cover',
     marginBottom: 10,
   },

@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { colors, sizes } from '../theme';
-import { Shape } from 'react-native-svg';
 
 const USER_ID = "6474e4001eec5ee1ecd40180";
 let castIds;
@@ -23,7 +22,7 @@ const ReadyScreen = ({ navigation }) => {
       console.error('Error fetching evaluation list:', error);
     }
   };
-  
+
   getCastList();
 
   useEffect(() => {
@@ -36,7 +35,11 @@ const ReadyScreen = ({ navigation }) => {
   });
 
   const handleReadyButtonPress = () => {
-    navigation.navigate('Evaluation', { castIds });
+    if (numQuestions === 0) {
+      navigation.goBack();
+    } else {
+      navigation.navigate('Evaluation', { castIds });
+    }
   };
 
   return (
@@ -45,11 +48,13 @@ const ReadyScreen = ({ navigation }) => {
       <Text style={styles.numQuestions}>{numQuestions}</Text>
       <Text style={styles.title}>{numQuestions === 1 ? 'Question' : 'Questions'}</Text>
       <View style={styles.buttonContainer}>
-        <Animated.View style={[styles.readyButton, { opacity: opacityValue }]}>
-          <TouchableOpacity onPress={handleReadyButtonPress}>
-            <Text style={styles.readyButtonText}>Let's GO!</Text>
-          </TouchableOpacity>
-        </Animated.View>
+          <Animated.View style={[styles.readyButton, { opacity: opacityValue }]}>
+            <TouchableOpacity onPress={handleReadyButtonPress}>
+              <Text style={styles.readyButtonText}>
+                {numQuestions === 0 ? 'Go Back' : "Let's GO!"}
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
       </View>
     </View>
   );
@@ -78,6 +83,12 @@ const styles = StyleSheet.create({
   },
   questionsText: {
     fontSize: 20,
+    color: colors.white,
+    textAlign: 'center',
+  },
+  noQuestionsText: {
+    fontSize: 22,
+    fontWeight: 'bold',
     color: colors.white,
     textAlign: 'center',
   },
