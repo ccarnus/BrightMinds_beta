@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { colors, shadow, sizes, spacing } from '../theme';
+import { useNavigation } from '@react-navigation/native';
 
 const CARD_WIDTH = sizes.width /2.5;
 const CARD_HEIGHT = 250;
 const CARD_HEIGHT_TOTAL = 250;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
 
-const Carousel = ({ list }) => {
+const Carousel = ({ list}) => {
+  const navigation = useNavigation();
 
   return (
     <FlatList
@@ -23,7 +25,8 @@ const Carousel = ({ list }) => {
             style={{
               marginLeft: spacing.l,
               marginRight: index === list.length - 1 ? spacing.l : 0,
-            }}>
+            }}
+            onPress={() => navigation.navigate('SuggestedForYou', { selectedVideoId: item.id })}>
             <View style={[styles.card, shadow.dark]}>
               <View style={styles.imageBox}>
                 <Image
