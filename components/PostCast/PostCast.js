@@ -264,10 +264,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   thumbnail: {
-    width: 100,
-    height: 100,
+    width:"70%",
+    marginLeft: "15%",
+    height: 200,
     resizeMode: 'cover',
     marginBottom: 10,
+    borderRadius: sizes.radius,
+    marginTop: spacing.m,
+    marginBottom: spacing.m,
   },
   loadingThumbnail: {
     height: 100,

@@ -188,17 +188,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   videoContainer: {
+    width: '100%',
+    height: '100%',
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    marginBottom:50,
   },
   videoWrapper: {
     width: '100%',
     height: '100%',
     position: 'absolute',
-    top: 0,
-    left: 0,
   },
   title: {
     fontSize: sizes.title,
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
   },
   banner: {
     position: 'absolute',
-    bottom: 120,
+    bottom: 50,
     left: 25,
     right: 25,
     flexDirection: 'row',
@@ -224,7 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(211, 211, 211, 0.7)',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 18,
+    borderRadius: sizes.radius,
   },
   icon: {
     width: 32,

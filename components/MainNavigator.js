@@ -27,7 +27,7 @@ const MainNavigator = () => {
         <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: true, tabBarVisible: true }} />
         <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: true, tabBarVisible: true }}/>
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: true, tabBarVisible: true }}/>
-        <Stack.Screen name="SuggestedForYou" component={SuggestedForYou} options={{ headerShown: true, tabBarVisible: true }}/>
+        <Stack.Screen name="SuggestedForYou" component={SuggestedForYou} options={{ headerShown: false, tabBarVisible: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
