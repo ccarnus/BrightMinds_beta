@@ -85,11 +85,8 @@ const CastScreen = () => {
               />
             }
           >
-          <TouchableOpacity 
-            style={styles.roundButton}
-            onPress={() => navigation.navigate('Watch')}>
-              <Image source={require('../assets/Cast_screen_icons/random_icon.png')} 
-              style={styles.roundButtonImage} />
+          <TouchableOpacity style={styles.SuffleButton} onPress={() => navigation.navigate('Watch')}>
+            <Text style={styles.SuffleButtonText}>Follow the Bear</Text>
           </TouchableOpacity>
           <View style={styles.categoryHeader}>
             <Text style={styles.categoryTitle}>Suggested for you</Text>
@@ -115,25 +112,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-  },
-  roundButton: {
-    top: 5,
-    marginBottom:5,
-    left: '50%',
-    marginLeft: -30,
-    backgroundColor: colors.white,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 4,
-    borderColor: colors.black,
-    borderWidth: 2,
-  },
-  roundButtonImage: {
-    width: 30,
-    height: 30,
   },
   categoryHeader: {
     flexDirection: 'row',
@@ -163,6 +141,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: spacing.s,
+  },
+  SuffleButton: {
+    padding: 15,
+    backgroundColor: colors.black,
+    borderRadius: 5,
+    alignItems: 'center',
+    borderRadius: sizes.radius,
+    width:"80%",
+    marginLeft: "10%",
+  },
+  SuffleButtonText: {
+    fontSize: sizes.h2,
+    color: colors.white,
+    fontWeight: 'bold',
   },
 });
 
