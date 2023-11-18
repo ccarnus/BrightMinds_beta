@@ -8,7 +8,7 @@ const CARD_HEIGHT = 250;
 const CARD_HEIGHT_TOTAL = 250;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
 
-const Carousel = ({ list}) => {
+const Carousel = ({ list, carouselType}) => {
   const navigation = useNavigation();
 
   return (
@@ -26,7 +26,10 @@ const Carousel = ({ list}) => {
               marginLeft: spacing.l,
               marginRight: index === list.length - 1 ? spacing.l : 0,
             }}
-            onPress={() => navigation.navigate('SuggestedForYou', { selectedVideoId: item.id })}>
+            onPress={() => navigation.navigate(
+              carouselType === 'trending' ? 'Trending' : 'SuggestedForYou', 
+              { selectedVideoId: item.id }
+            )}>
             <View style={[styles.card, shadow.dark]}>
               <View style={styles.imageBox}>
                 <Image
