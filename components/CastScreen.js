@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, ActivityIndicator } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { colors, sizes, spacing } from './theme';
 import Carousel from './Cast/Carousel';
@@ -99,7 +98,10 @@ const CastScreen = () => {
         </ScrollView>
       )}
       <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('CastTypeChoice')}>
-        <MaterialCommunityIcons name="plus" size={32} color='#f1f1f1' />
+        <Image 
+          source={require('../assets/Cast_screen_icons/plus_icon.png')} 
+          style={styles.imageIcon} 
+        />
       </TouchableOpacity>
     </View>
   );
@@ -128,13 +130,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 25,
     right: 15,
-    backgroundColor: colors.black,
     width: 60,
     height: 60,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 4,
+    backgroundColor: 'transparent', // Set the background to transparent
+  },
+  imageIcon: {
+    width: '100%',  // Fill the entire space of the button
+    height: '100%',
+    resizeMode: 'contain', // Ensure the image is scaled correctly
   },
   refreshIndicator: {
     flexDirection: 'row',
