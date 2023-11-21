@@ -119,11 +119,19 @@ const CastScreen = () => {
             />
           }
         >
-          <TextInput
-            style={styles.searchBar}
-            placeholder="Search casts..."
-            onChangeText={(text) => handleSearch(text)}
-          />
+          <View style={styles.searchBarContainer}>
+            <TextInput
+              style={styles.searchBar}
+              placeholder="Search casts..."
+              onChangeText={handleSearch}
+              value={searchQuery}
+            />
+            {searchQuery.length > 0 && (
+              <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
+                <Text style={styles.clearButtonText}>✕</Text>
+              </TouchableOpacity>
+            )}
+          </View>
           {searchResults.length > 0 ? (
             searchResults.map((cast) => (
               <TouchableOpacity key={cast._id} onPress={() => handleSearchResultPress(cast._id)}>
@@ -204,6 +212,25 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
+  },
+  searchBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    margin: 10,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  searchBar: {
+    flex: 1,
+  },
+  clearButton: {
+    marginLeft: 10,
+  },
+  clearButtonText: {
+    color: 'gray',
+    fontSize: 20,
   },
 });
 

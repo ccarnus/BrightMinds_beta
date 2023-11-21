@@ -172,59 +172,60 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.white,
-      overflow: 'hidden',
-    },
-    scrollView: {
-      flex: 1,
-    },
-    videoContainer: {
-      position: 'relative',
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflow: 'hidden',
-    },
-    videoWrapper: {
-      width: '100%',
-      height: '100%',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-    },
-    title: {
-      fontSize: sizes.title,
-      fontWeight: 'bold',
-      color: colors.white,
-      textAlign: 'center',
-      position: 'absolute',
-      top: 50,
-      width: '100%',
-    },
-    video: {
-      width: '100%',
-      height: '100%',
-    },
-    banner: {
-      position: 'absolute',
-      bottom: 120,
-      left: 25,
-      right: 25,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: 'rgba(211, 211, 211, 0.7)',
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      borderRadius: 18,
-    },
-    icon: {
-      width: 32,
-      height: 32,
-      tintColor: colors.black,
-      marginHorizontal: 12,
-    },
-  });
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+    overflow: 'hidden',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  videoContainer: {
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    marginBottom:50,
+  },
+  videoWrapper: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  title: {
+    fontSize: sizes.title,
+    fontWeight: 'bold',
+    color: colors.white,
+    textAlign: 'center',
+    position: 'absolute',
+    top: 50,
+    width: '100%',
+  },
+  video: {
+    width: '100%',
+    height: '100%',
+  },
+  banner: {
+    position: 'absolute',
+    bottom: 50,
+    left: 25,
+    right: 25,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'rgba(211, 211, 211, 0.7)',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: sizes.radius,
+  },
+  icon: {
+    width: 32,
+    height: 32,
+    tintColor: colors.black,
+    marginHorizontal: 12,
+  },
+});
 
 export default SearchResultScreen;
