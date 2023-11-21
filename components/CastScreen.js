@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, ActivityIndicator, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { colors, sizes, spacing } from './theme';
 import Carousel from './Cast/Carousel';
 import { RefreshControl } from 'react-native';
-
 
 const CastScreen = () => {
   const navigation = useNavigation();
@@ -13,13 +12,48 @@ const CastScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const USER_ID = "6474e4001eec5ee1ecd40180";
   const [refreshing, setRefreshing] = useState(false);
+  const [allCasts, setAllCasts] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     fetchSuggestedCastData();
     fetchTrendingCastData();
+    fetchAllCastData();
     setRefreshing(false);
   }, []);
+
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+    if (!text.trim()) {
+      setSearchResults([]);
+      return;
+    }
+    const filteredCasts = allCasts.filter((cast) =>
+      cast.title.toLowerCase().includes(text.toLowerCase())
+    );
+    setSearchResults(filteredCasts);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+  };
+
+  const handleSearchResultPress = (id) => {
+    navigation.navigate('SearchResult', { selectedCastId: id });
+  };
+
+  const fetchAllCastData = async () => {
+    try {
+      const response = await fetch('http://3.17.219.54/cast');
+      const data = await response.json();
+      setAllCasts(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchSuggestedCastData = () => {
     const endpoint_suggested_for_you = `http://3.17.219.54/user/${USER_ID}/suggested/for/you`;
@@ -28,7 +62,7 @@ const CastScreen = () => {
     fetch(endpoint_suggested_for_you)
       .then((response) => response.json())
       .then((data) => {
-        const formattedData = data.map((cast, index) => ({
+        const formattedData = data.map((cast) => ({
           id: cast._id,
           image: cast.castimageurl,
           title: cast.title,
@@ -49,7 +83,7 @@ const CastScreen = () => {
     fetch(endpoint_suggested_for_you)
       .then((response) => response.json())
       .then((data) => {
-        const formattedData = data.map((cast, index) => ({
+        const formattedData = data.map((cast) => ({
           id: cast._id,
           image: cast.castimageurl,
           title: cast.title,
@@ -66,6 +100,7 @@ const CastScreen = () => {
   useEffect(() => {
     fetchSuggestedCastData();
     fetchTrendingCastData();
+    fetchAllCastData();
   }, []);
 
   return (
@@ -75,26 +110,46 @@ const CastScreen = () => {
           <ActivityIndicator size="large" color={colors.black} />
         </View>
       ) : (
-          <ScrollView
-            style={styles.container}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-              />
-            }
-          >
-          <TouchableOpacity style={styles.SuffleButton} onPress={() => navigation.navigate('Watch')}>
-            <Text style={styles.SuffleButtonText}>Follow the Bear</Text>
-          </TouchableOpacity>
-          <View style={styles.categoryHeader}>
-            <Text style={styles.categoryTitle}>Suggested for you</Text>
+        <ScrollView
+          style={styles.container}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
+          <View style={styles.searchBarContainer}>
+            <TextInput
+              style={styles.searchBar}
+              placeholder="Search casts..."
+              onChangeText={handleSearch}
+              value={searchQuery}
+            />
+            {searchQuery.length > 0 && (
+              <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
+                <Text style={styles.clearButtonText}>✕</Text>
+              </TouchableOpacity>
+            )}
           </View>
-          <Carousel list={SuggestedCastData} carouselType="suggested" />
-          <View style={styles.categoryHeader}>
-            <Text style={styles.categoryTitle}>Trending</Text>
-          </View>
-          <Carousel list={TrendingCastData} carouselType="trending" />
+          {searchResults.length > 0 ? (
+            searchResults.map((cast) => (
+              <TouchableOpacity key={cast._id} onPress={() => handleSearchResultPress(cast._id)}>
+                <Text style={styles.searchResultItem}>{cast.title}</Text>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <>
+              <View style={styles.categoryHeader}>
+                <Text style={styles.categoryTitle}>Suggested for you</Text>
+              </View>
+              <Carousel list={SuggestedCastData} carouselType="suggested" />
+              <View style={styles.categoryHeader}>
+                <Text style={styles.categoryTitle}>Trending</Text>
+              </View>
+              <Carousel list={TrendingCastData} carouselType="trending" />
+            </>
+          )}
         </ScrollView>
       )}
       <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('CastTypeChoice')}>
@@ -111,9 +166,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-  },
-  scrollView: {
-    flex: 1,
   },
   categoryHeader: {
     flexDirection: 'row',
@@ -136,12 +188,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 4,
-    backgroundColor: 'transparent', // Set the background to transparent
+    backgroundColor: 'transparent',
   },
   imageIcon: {
-    width: '100%',  // Fill the entire space of the button
+    width: '100%',
     height: '100%',
-    resizeMode: 'contain', // Ensure the image is scaled correctly
+    resizeMode: 'contain',
   },
   refreshIndicator: {
     flexDirection: 'row',
@@ -149,19 +201,36 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: spacing.s,
   },
-  SuffleButton: {
-    padding: 15,
-    backgroundColor: colors.black,
-    borderRadius: 5,
-    alignItems: 'center',
+  searchBar: {
+    padding: 10,
+    margin: 10,
+    borderColor: 'gray',
+    borderWidth: 1,
     borderRadius: sizes.radius,
-    width:"80%",
-    marginLeft: "10%",
   },
-  SuffleButtonText: {
-    fontSize: sizes.h2,
-    color: colors.white,
-    fontWeight: 'bold',
+  searchResultItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray',
+  },
+  searchBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    margin: 10,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  searchBar: {
+    flex: 1,
+  },
+  clearButton: {
+    marginLeft: 10,
+  },
+  clearButtonText: {
+    color: 'gray',
+    fontSize: 20,
   },
 });
 

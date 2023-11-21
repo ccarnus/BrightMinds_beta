@@ -10,6 +10,7 @@ import Banner from './Banner';
 import ProfileScreen from './ProfileScreen';
 import SuggestedForYou from './Cast/SuggestedForYouScreen';
 import Trending from './Cast/TrendingScreen';
+import SearchResult from './Cast/SearchResultScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,7 @@ const MainNavigator = () => {
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: true, tabBarVisible: true }}/>
         <Stack.Screen name="SuggestedForYou" component={SuggestedForYou} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="Trending" component={Trending} options={{ headerShown: false, tabBarVisible: false }}/>
+        <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false, tabBarVisible: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
