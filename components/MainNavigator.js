@@ -11,6 +11,7 @@ import ProfileScreen from './ProfileScreen';
 import SuggestedForYou from './Cast/SuggestedForYouScreen';
 import Trending from './Cast/TrendingScreen';
 import SearchResult from './Cast/SearchResultScreen';
+import SimpleHeader from './Profile/SimpleHeader';
 
 const Stack = createStackNavigator();
 
@@ -26,9 +27,9 @@ const MainNavigator = () => {
         <Stack.Screen name="BottomNav" component={BottomNavigation} options={{ headerShown: true, tabBarVisible: true}} />
         <Stack.Screen name="Evaluation" component={Evaluation} options={{ headerShown: true, tabBarVisible: true }} />
         <Stack.Screen name="Ready" component={Ready} options={{ headerShown: false, tabBarVisible: true }} />
-        <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: true, tabBarVisible: true }} />
-        <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: true, tabBarVisible: true }}/>
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: true, tabBarVisible: true }}/>
+        <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: false, tabBarVisible: false }} />
+        <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: false, tabBarVisible: false }}/>
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ header: () => <SimpleHeader /> }}/>
         <Stack.Screen name="SuggestedForYou" component={SuggestedForYou} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="Trending" component={Trending} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false, tabBarVisible: false }}/>
