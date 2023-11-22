@@ -141,7 +141,7 @@ const CastScreen = () => {
           ) : (
             <>
               <View style={styles.categoryHeader}>
-                <Text style={styles.categoryTitle}>Suggested for you</Text>
+                <Text style={styles.categoryTitle}>For you</Text>
               </View>
               <Carousel list={SuggestedCastData} carouselType="suggested" />
               <View style={styles.categoryHeader}>
@@ -175,8 +175,7 @@ const styles = StyleSheet.create({
   },
   categoryTitle: {
     fontSize: sizes.title,
-    fontWeight: 'bold',
-    marginBottom: spacing.s,
+    color: colors.black,
   },
   floatingButton: {
     position: 'absolute',
@@ -201,13 +200,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: spacing.s,
   },
-  searchBar: {
-    padding: 10,
-    margin: 10,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: sizes.radius,
-  },
   searchResultItem: {
     padding: 10,
     borderBottomWidth: 1,
@@ -220,7 +212,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: sizes.radius,
   },
   searchBar: {
     flex: 1,
