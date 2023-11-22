@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import axios from 'axios';
 import Gauge from './Gauge';
@@ -11,10 +11,34 @@ const TakeTest = ({ route, navigation }) => {
   const [questions, setQuestions] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
+  const [displayedQuestion, setDisplayedQuestion] = useState('');
+  const typingIntervalRef = useRef(null);
 
   useEffect(() => {
     fetchQuestions();
   }, []);
+
+  useEffect(() => {
+    const currentQuestion = questions[currentQuestionIndex]?.question;
+    if (currentQuestion) {
+      setDisplayedQuestion('');
+      typeQuestion(currentQuestion);
+    }
+    return () => {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+      }
+    };
+  }, [currentQuestionIndex, questions]);
+
+  const typeQuestion = (questionText) => {
+    let i = 0;
+    typingIntervalRef.current = setInterval(() => {
+      setDisplayedQuestion((prev) => prev + questionText.charAt(i));
+      i++;
+      if (i > questionText.length) clearInterval(typingIntervalRef.current);
+    }, 50); // Adjust the speed by changing the interval time
+  };
 
   const addPoints = async (points) => {
     try {
@@ -56,6 +80,9 @@ const TakeTest = ({ route, navigation }) => {
   };
 
   const handleAnswerSelection = async (selectedResponse) => {
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+    }
     const currentQuestion = questions[currentQuestionIndex];
     const correctAnswer = currentQuestion.correct;
     const isAnswerCorrect = selectedResponse === correctAnswer;
@@ -87,7 +114,7 @@ const TakeTest = ({ route, navigation }) => {
     <View style={styles.container}>
       <Gauge total={questions.length} current={currentQuestionIndex} />
       <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>{currentQuestion?.question}</Text>
+      <Text style={styles.questionText}>{displayedQuestion}</Text>
       </View>
       <ScrollView
         style={styles.answersContainer}
