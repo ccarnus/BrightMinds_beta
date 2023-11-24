@@ -3,9 +3,9 @@ import { FlatList, Text, View, StyleSheet, TouchableOpacity, Image } from 'react
 import { colors, shadow, sizes, spacing } from '../theme';
 import { useNavigation } from '@react-navigation/native';
 
-const CARD_WIDTH = sizes.width /2.5;
-const CARD_HEIGHT = 250;
-const CARD_HEIGHT_TOTAL = 250;
+const CARD_WIDTH = sizes.width /1.8;
+const CARD_HEIGHT = 150;
+const CARD_HEIGHT_TOTAL = 150;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
 
 const Carousel = ({ list, carouselType}) => {
