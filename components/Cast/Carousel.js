@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const CARD_WIDTH = sizes.width /1.8;
 const CARD_HEIGHT = 150;
-const CARD_HEIGHT_TOTAL = 150;
+const CARD_HEIGHT_TOTAL = 200;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
 
 const Carousel = ({ list, carouselType}) => {
@@ -70,12 +70,10 @@ const styles = StyleSheet.create({
   titleBox: {
     position: 'absolute',
     borderRadius: 5,
-    backgroundColor: colors.lightGray,
-    top: CARD_HEIGHT - 50,
+    top: CARD_HEIGHT_TOTAL - 50,
     maxHeight: 50,
     width: '100%',
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
@@ -83,6 +81,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.black,
     paddingRight: 10,
+    textAlign: 'justify',
   },
 });
 
