@@ -38,6 +38,9 @@ const BottomNavigation = () => {
         screenOptions={{
           headerShown: false,
           tabBarShowLabel: false,
+          tabBarStyle: { 
+            backgroundColor: colors.darkblue,
+          },
         }}>
         {tabs.map(({name, screen}, index) => {
           return (
@@ -52,7 +55,7 @@ const BottomNavigation = () => {
                       icon={name}
                       size={28}
                       style={{
-                        tintColor: focused ? colors.primary : colors.gray,
+                        tintColor: focused ? colors.green : colors.white,
                       }}
                     />
                   );
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
     height: 2,
     left: sizes.width / tabs.length / 2 - 12,
     bottom: 40,
-    backgroundColor: colors.black,
+    backgroundColor: colors.green,
     zIndex: 100,
   },
 });
