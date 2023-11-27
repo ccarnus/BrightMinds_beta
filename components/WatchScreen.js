@@ -152,6 +152,7 @@ const WatchScreen = ({ navigation }) => {
               <Image
                 source={{ uri: video.universityLogo }}
                 style={styles.universityIcon}
+                resizeMode="contain"
               />
             </View>
             <View style={styles.buttonBookmarkContainer}>
@@ -231,53 +232,56 @@ const styles = StyleSheet.create({
   icon: {
     width: 32,
     height: 32,
-    tintColor: colors.darkblue,
+    tintColor: colors.lightblue,
     marginHorizontal: 12,
   },
   universityIcon: {
-    width: 32,
-    height: 32,
+    width: "100%",
+    height: "100%",
     marginHorizontal: 12,
   },
   buttonBookmarkContainer: {
     position: 'absolute',
     top: height*0.5,
-    right: 25,
+    right: 15,
     alignItems: 'center',
     paddingVertical: 10,
     borderRadius: 50,
     borderWidth: 2,
     borderColor: colors.darkblue,
+    backgroundColor: 'rgba(0, 64, 122, 0.5)',
   },
   buttonCommentContainer: {
     position: 'absolute',
     top: height*0.6,
-    right: 25,
+    right: 15,
     alignItems: 'center',
     paddingVertical: 10,
     borderRadius: 50,
     borderWidth: 2,
     borderColor: colors.darkblue,
+    backgroundColor: 'rgba(0, 64, 122, 0.5)',
   },
   buttonShareContainer: {
     position: 'absolute',
     top: height*0.7,
-    right: 25,
+    right: 15,
     alignItems: 'center',
     paddingVertical: 10,
     borderRadius: 50,
     borderWidth: 2,
     borderColor: colors.darkblue,
+    backgroundColor: 'rgba(0, 64, 122, 0.5)',
   },
   buttonUniversityContainer: {
+    width: 64,
+    height: 64,
     position: 'absolute',
     top: height*0.4,
-    right: 25,
+    right: 15,
     alignItems: 'center',
     paddingVertical: 10,
     borderRadius: 50,
-    borderWidth: 2,
-    borderColor: colors.darkblue,
   },
   
 });
