@@ -147,7 +147,7 @@ const PostCast = ({navigation}) => {
         <Picker
           selectedValue={university}
           style={styles.input}
-          onValueChange={(itemValue) => setUniversity(itemValue)}
+          onValueChange={(itemValue) => setUniversity(itemValue.replace(/\s+/g, ''))}
         >
           {universities.map((univ, index) => (
             <Picker.Item key={index} label={univ} value={univ} />
@@ -203,13 +203,13 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 50% transparent black background
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 1000, // Ensure the overlay is on top
   },
   loadingContainer: {
     padding: 20,
     borderRadius: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Slightly darker overlay for the loading container
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   content: {
     paddingHorizontal: 20,
@@ -217,7 +217,8 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1c1c1c',
+    color: colors.black,
+    marginTop: 40,
     marginBottom: 20,
   },
   fieldDescription: {
@@ -299,8 +300,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   departmentImage: {
-    width: 30, // Adjust the size as needed
-    height: 30, // Adjust the size as needed
+    width: 30,
+    height: 30,
     marginRight: 10,
   },
   departmentName: {
