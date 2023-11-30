@@ -3,10 +3,13 @@ import { View, Text, Image, StyleSheet, Dimensions, Alert } from 'react-native';
 import axios from 'axios';
 import Slider from '@react-native-community/slider';
 import { colors, shadow, sizes, spacing } from './theme';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
 const ProfileScreen = () => {
+  const navigation = useNavigation();
   const [userData, setUserData] = useState(null);
   const [userPreferences, setUserPreferences] = useState([]);
   const streak = 5;
@@ -39,16 +42,25 @@ const ProfileScreen = () => {
               style={styles.profileImage}
             />
             <Text style={styles.overlayUsername}>{userData.username}</Text>
+            {/*<Text style={styles.score}>{userData.score} xp</Text>*/}
           </View>
           <View style={styles.scoreContainer}>
-          <View style={styles.streakContainer}>
-            <Text style={styles.streakText}>{streak}</Text>
-            <Image
-              source={require('../assets/Profile_icons/streak_02.png')}
-              style={styles.streakImage}
-            />
-          </View>
-            <Text style={styles.score}>{userData.score} xp</Text>
+            <View style={styles.buttonContainer}>
+              <Text style={styles.streakText}>{streak}</Text>
+              <Image
+                source={require('../assets/Profile_icons/streak_02.png')}
+                style={styles.streakImage}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('LeaderBoard')}>
+              <Image
+                source={require('../assets/Profile_icons/podium_icon.png')}
+                style={styles.streakImage}
+              />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       )}
@@ -105,7 +117,6 @@ const styles = StyleSheet.create({
     fontSize: sizes.h3,
     fontWeight: 'bold',
     color: colors.black,
-    marginTop: 10,
   },
   preferenceContainer: {
     flexDirection: 'row',
@@ -135,12 +146,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
   },
-  streakContainer: {
-    backgroundColor: colors.black,
+  buttonContainer: {
+    backgroundColor: colors.lightblue,
     borderRadius: sizes.radius,
     paddingVertical: 10,
-    paddingHorizontal: 15,
+    justifyContent: 'center',
+    width: 100,
     flexDirection: "row",
+    marginTop: 15,
   },
   streakText: {
     fontSize: sizes.title,
@@ -169,7 +182,7 @@ const styles = StyleSheet.create({
   streakImage: {
     width: 42,
     height: 42,
-    marginLeft: 5, 
+    marginLeft: 5,
   },
 });
 
