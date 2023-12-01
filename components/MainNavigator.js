@@ -12,6 +12,7 @@ import SuggestedForYou from './Cast/SuggestedForYouScreen';
 import Trending from './Cast/TrendingScreen';
 import SearchResult from './Cast/SearchResultScreen';
 import SimpleHeader from './Profile/SimpleHeader';
+import LeaderBoard from './LeaderBoardScreen';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,7 @@ const MainNavigator = () => {
         <Stack.Screen name="SuggestedForYou" component={SuggestedForYou} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="Trending" component={Trending} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false, tabBarVisible: false }}/>
+        <Stack.Screen name="LeaderBoard" component={LeaderBoard} options={{ header: () => <SimpleHeader /> }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
