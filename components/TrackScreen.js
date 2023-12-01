@@ -47,13 +47,18 @@ const CastWatchingTimeTab = () => {
   return (
     <View contentContainerStyle={styles.container}>
       <View style={styles.categoryContainer}>
+        <View style={styles.buttonEvaluationContainer}>
+          <TouchableOpacity style={styles.buttonStartWeeklyEvaluation} onPress={handleReadyScreenPress}>
+            <Text style={styles.buttonText}>Start Weekly Evaluation</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.iconContainer}>
           <Svg width={60} height={60}>
             <Circle
               cx={30}
               cy={30}
               r={27}
-              stroke="#cce7c9"
+              stroke={colors.lightGray}
               strokeWidth={6}
               fill="none"
             />
@@ -61,7 +66,7 @@ const CastWatchingTimeTab = () => {
               cx={30}
               cy={30}
               r={27}
-              stroke="#276221"
+              stroke={colors.darkblue}
               strokeWidth={6}
               fill="none"
               strokeDasharray="162"
@@ -80,49 +85,25 @@ const CastWatchingTimeTab = () => {
         </View>
         <Text style={styles.WatchTimeText}>05:56:24 (6hr limit)</Text>
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonStartWeeklyEvaluation} onPress={handleReadyScreenPress}>
-          <Text style={styles.buttonText}>Start Weekly Evaluation</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
 
 const TrackProgressTab = () => {
-  const fields = [
-    { name: 'Robotics', image: require('../assets/Cast_screen_icons/Robotics.png'), color: '#FF8C00', progress: 0.2 },
-    { name: 'AI', image: require('../assets/Cast_screen_icons/AI.png'), color: '#228B22', progress: 0.5 },
-    { name: 'Medicine', image: require('../assets/Cast_screen_icons/Medicine.png'), color: '#4682B4', progress: 0.27 },
-    { name: 'Economics', image: require('../assets/Cast_screen_icons/Economic.png'), color: '#8A2BE2', progress: 0.78 },
-    { name: 'Electronics', image: require('../assets/Cast_screen_icons/Electronics.png'), color: '#DC143C', progress: 0.24 },
-    { name: 'Computer Science', image: require('../assets/Cast_screen_icons/Computer_science.png'), color: '#20B2AA', progress: 0 },
-    { name: 'Aerospace', image: require('../assets/Cast_screen_icons/Aerospace.png'), color: '#556B2F', progress: 0.05 },
-    { name: 'Biology', image: require('../assets/Cast_screen_icons/Biology.png'), color: '#800000', progress: 0.8 },
-    { name: 'Chemistry', image: require('../assets/Cast_screen_icons/Chemistry.png'), color: '#2F4F4F', progress: 0.1 },
-    { name: 'Physics', image: require('../assets/Cast_screen_icons/Physics.png'), color: '#4B0082', progress: 0.5 },
-  ];
+
+  const Gauge = ({ progress }) => {
+    return (
+      <View style={styles.objectiveProgressGaugeContainer}>
+        <ProgressBar progress={progress} color={colors.darkblue} style={styles.objectiveProgressProgressBar} />
+      </View>
+    );
+  };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.categoryContainer}>
-        {fields.map((field, index) => (
-          <View key={index} style={styles.fieldContainer}>
-            <View style={styles.fieldContent}>
-              <Image source={field.image} style={styles.fieldImage} />
-              <ProgressBar
-                progress={field.progress}
-                color={field.color}
-                style={styles.progressBar}
-                borderRadius={15}
-                borderWidth={0}
-                height={15}
-              />
-            </View>
-          </View>
-        ))}
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.objectiveProgressTitle}>Your Overall Progress</Text>
+      <Gauge progress={0.7} />
+    </View>
   );
 };
 
@@ -214,8 +195,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: 'center',
   },
-  buttonContainer: {
-    marginTop: 50,
+  buttonEvaluationContainer: {
+    marginTop: spacing.l*2,
     alignItems: 'center',
   },
   iconContainer: {
@@ -223,9 +204,10 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
+    marginTop:spacing.l,
   },
   valueText: {
+    marginTop:spacing.l,
     fontSize: sizes.h2,
     color: '#1c1c1c',
   },
@@ -278,6 +260,25 @@ const styles = StyleSheet.create({
   bookmarkedCategoryTitle: {
     fontSize: sizes.title,
     color: colors.black,
+  },
+  objectiveProgressTitle: {
+    fontSize: sizes.h2,
+    color: colors.black,
+    marginBottom: spacing.m,
+    marginTop: spacing.m,
+    marginLeft: spacing.s,
+  },
+  objectiveProgressGaugeContainer: {
+    width: '100%',
+    padding: 5,
+    backgroundColor: colors.white,
+    borderRadius: sizes.radius,
+  },
+  objectiveProgressProgressBar: {
+    height: 10,
+    borderRadius: sizes.radius,
+    overlayColor: colors.darkblue,
+    backgroundColor: colors.lightGray,
   },
 });
 

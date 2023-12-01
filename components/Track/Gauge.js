@@ -10,7 +10,7 @@ const Gauge = ({ total, current }) => {
         <View
           style={{
             width: `${((current + 1) / total) * 100}%`,
-            backgroundColor: 'blue',
+            backgroundColor: colors.darkblue,
             height: sizes.gauge,
             borderRadius: 5,
           }}
