@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
-import { Svg, Circle, Image as SvgImage } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { colors, sizes, spacing } from './theme';
 import Carousel from './Cast/Carousel';
+import { VictoryPie, VictoryLabel, Point } from 'victory-native';
+
+const USERID = "6474e4001eec5ee1ecd40180";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -16,80 +18,57 @@ const CastWatchingTimeTab = () => {
     navigation.navigate('Ready');
   };
 
-  const castWatchGoal = 0.7; // Goal for Cast Watching Time
-  const [castWatchProgress, setCastWatchProgress] = useState(0);
-
-  useEffect(() => {
-    let animationFrameId;
-    const startTime = Date.now();
-
-    const animateCastWatch = () => {
-      const currentTime = Date.now();
-      const deltaTime = currentTime - startTime;
-      const divisor = 1000; // Adjust this value for slower/faster animation
-
-      const progress = Math.min(deltaTime / divisor, 1);
-
-      setCastWatchProgress(progress);
-
-      if (progress < 1) {
-        animationFrameId = requestAnimationFrame(animateCastWatch);
-      }
-    };
-
-    animateCastWatch();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
   return (
     <View contentContainerStyle={styles.container}>
       <View style={styles.categoryContainer}>
         <View style={styles.buttonEvaluationContainer}>
           <TouchableOpacity style={styles.buttonStartWeeklyEvaluation} onPress={handleReadyScreenPress}>
-            <Text style={styles.buttonText}>Start Weekly Evaluation</Text>
+            <Text style={styles.buttonText}>Take Test</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.iconContainer}>
-          <Svg width={60} height={60}>
-            <Circle
-              cx={30}
-              cy={30}
-              r={27}
-              stroke={colors.lightGray}
-              strokeWidth={6}
-              fill="none"
-            />
-            <Circle
-              cx={30}
-              cy={30}
-              r={27}
-              stroke={colors.darkblue}
-              strokeWidth={6}
-              fill="none"
-              strokeDasharray="162"
-              strokeDashoffset={162 * (1 - Math.min(castWatchProgress, castWatchGoal))}
-              strokeLinecap="round"
-              transform="rotate(-90 30 30)"
-            />
-            <SvgImage
-              x={12}
-              y={12}
-              width={36}
-              height={36}
-              href={require('../assets/Track_icons/clock.png')}
-            />
-          </Svg>
-        </View>
         <Text style={styles.WatchTimeText}>05:56:24 (6hr limit)</Text>
+      </View>
+      <View style={styles.metricsContainersContainer}>
+        <View style={styles.innerContainer}>
+          <View style={styles.metricsContainer}>
+            <Text style={styles.metricsData}>72%</Text>
+            <Text style={styles.metricsTitle}>Succes Rate</Text>
+          </View>
+        </View>
+        <View style={styles.innerContainer}>
+          <View style={styles.metricsContainer}>
+            <Text style={styles.metricsData}>38</Text>
+            < Text style={styles.metricsTitle}>Tests Taken</Text>
+          </View>
+        </View>
+      </View>
+      <View style={styles.metricsContainersContainer}>
+        <View style={styles.innerContainer}>
+          <View style={styles.metricsContainer}>
+            <Text style={styles.metricsData}>29</Text>
+            <Text style={styles.metricsTitle}>Topics Learnt</Text>
+          </View>
+        </View>
+        <View style={styles.innerContainer}>
+          <View style={styles.metricsContainer}>
+            <View style={styles.streakImageContainer}>
+              <Text style={styles.metricsData}>5</Text>
+              <Image
+                  source={require('../assets/Track_icons/streak_icon.png')}
+                  style={styles.streakImage}
+                />
+            </View>
+            <Text style={styles.metricsTitle}>Weeks in a row</Text>
+          </View>
+        </View>
       </View>
     </View>
   );
 };
 
 const TrackProgressTab = () => {
+  const [trackingData, setTrackingData] = useState({ objective: '', progress: 0 });
+  const [preferences, setPreferences] = useState([]);
 
   const Gauge = ({ progress }) => {
     return (
@@ -99,10 +78,125 @@ const TrackProgressTab = () => {
     );
   };
 
+  const PreferencesPieChart = ({ preferences }) => {
+    const [animatedData, setAnimatedData] = useState([]);
+    const [endAngle, setEndAngle] = useState(0);
+    const animationStarted = useRef(false); // Track if animation has started
+
+    const centerStyle = {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: [{ translateX: -(windowWidth * 0.2 / 2) }, { translateY: -(windowWidth * 0.2 / 2) }],
+      width: windowWidth * 0.2,
+      height: windowWidth * 0.2,
+      textAlign: 'center',
+      fontSize: sizes.title,
+      color: colors.darkblue,
+      fontWeight: 'bold',
+    };
+  
+    useEffect(() => {
+      if (animationStarted.current) {
+        return; // Exit if animation already started
+      }
+  
+      const totalDuration = 1000; // Total duration of the animation in milliseconds
+      const stepTime = totalDuration / 50; // Time per step
+      let currentStep = 0;
+  
+      animationStarted.current = true; // Set flag to indicate animation started
+  
+      const intervalId = setInterval(() => {
+        currentStep += 1;
+        const scaleFactor = currentStep / (totalDuration / stepTime);
+  
+        // Update the data values
+        const updatedData = preferences.map(preference => ({
+          x: preference.category,
+          y: preference.weight * scaleFactor,
+        }));
+  
+        // Update the end angle of the pie chart
+        const updatedEndAngle = scaleFactor * 360;
+  
+        setAnimatedData(updatedData);
+        setEndAngle(updatedEndAngle);
+  
+        if (currentStep >= totalDuration / stepTime) {
+          clearInterval(intervalId);
+        }
+      }, stepTime);
+  
+      return () => {
+        clearInterval(intervalId); // Cleanup interval on component unmount
+      };
+    }, [preferences]);
+  
+    return (
+      <View>
+        <VictoryPie 
+          data={animatedData}
+          colorScale="qualitative"
+          innerRadius={windowWidth * 0.2}
+          labelRadius={({ innerRadius }) => (windowWidth * 0.4 + innerRadius) / 2.5}
+          style={{ labels: { fill: 'white', fontSize: 14, fontWeight: 'bold' } }}
+          labels={({ datum }) => 
+            datum.y >= 5 ? `${datum.x}\n${(datum.y).toFixed(1)}%` : ''
+          }
+          endAngle={endAngle}
+        />
+        <Text style={centerStyle}>11h</Text>
+
+      </View>
+      
+    );
+  };
+  
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://3.17.219.54/user/${USERID}/tracking`);
+        const data = await response.json();
+        if (data.tracking) {
+          setTrackingData({
+            objective: data.tracking.objective,
+            progress: data.tracking.progress / 100
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching tracking data:', error);
+      }
+    };
+
+    const fetchPreferences = async () => {
+      try {
+        const response = await fetch(`http://3.17.219.54/user/${USERID}/preferences`);
+        const data = await response.json();
+        if (data.preferences) {
+          setPreferences(data.preferences);
+        }
+      } catch (error) {
+        console.error('Error fetching preferences:', error);
+      }
+    };
+
+    fetchData();
+    fetchPreferences();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.objectiveProgressTitle}>Your Overall Progress</Text>
-      <Gauge progress={0.7} />
+      <Text style={styles.objectiveProgressTitle}>
+        <Text style={styles.boldBlueText}>{trackingData.objective}</Text> progress
+      </Text>
+      <Gauge progress={trackingData.progress} />
+      <Text style={styles.objectiveProgressTitle}>You Watched..</Text>
+      {preferences.length > 0 && (
+        <PreferencesPieChart preferences={preferences} />
+      )}
     </View>
   );
 };
@@ -164,6 +258,7 @@ const BookmarkedTab = () => {
 const TrackScreen = () => {
   return (
     <Tab.Navigator
+    initialRouteName='TrackProgressTab'
       tabBarOptions={{
         labelStyle: { fontSize: 0},
         tabStyle: { width: 120 },
@@ -213,14 +308,17 @@ const styles = StyleSheet.create({
   },
   buttonStartWeeklyEvaluation: {
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    width: windowWidth*0.7,
     borderColor: colors.black,
     borderRadius: sizes.radius,
     borderWidth: 2,
+    backgroundColor: colors.darkblue,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
-    color: colors.black,
-    fontSize: sizes.h3,
+    color: colors.white,
+    fontSize: sizes.title,
     fontWeight: 'bold',
   },
   fieldContainer: {
@@ -280,6 +378,46 @@ const styles = StyleSheet.create({
     overlayColor: colors.darkblue,
     backgroundColor: colors.lightGray,
   },
+  boldBlueText: {
+    fontWeight: 'bold',
+    color: colors.darkblue,
+  },
+  metricsContainer: {
+    width: windowWidth*0.4,
+    height: windowWidth*0.4,
+    borderColor: colors.black,
+    borderRadius: sizes.radius,
+    borderWidth: 2,
+    backgroundColor: colors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  metricsContainersContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingBottom: spacing.l,
+  },
+  metricsTitle: {
+    color: colors.darkblue,
+    fontSize: sizes.h3,
+  },
+  metricsData: {
+    color: colors.darkblue,
+    fontSize: sizes.title*1.5,
+  },
+  innerContainer: {
+    justifyContent: 'center',
+    width: windowWidth*0.5,
+    alignItems: 'center',
+  },
+  streakImage: {
+    width: 52,
+    height: 52,
+  },
+  streakImageContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  }
 });
 
 export default TrackScreen;

@@ -42,11 +42,12 @@
     "react-native-reanimated": "^3.5.4",
     "react-native-slider": "^0.11.0",
     "react-native-snap-carousel": "^3.9.1",
-    "react-native-svg": "^14.0.0",
+    "react-native-svg": "13.9.0",
     "react-native-thumbnail": "^1.1.3",
     "react-native-thumbnail-video": "^0.1.2",
     "react-native-video": "^5.2.1",
-    "react-native-video-thumbnails": "^0.0.0"
+    "react-native-video-thumbnails": "^0.0.0",
+    "victory-native": "^36.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
