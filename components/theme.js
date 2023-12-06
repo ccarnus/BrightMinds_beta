@@ -40,6 +40,7 @@ export const sizes = {
   title: 32,
   h2: 24,
   h3: 18,
+  h4: 12,
   body: 14,
   radius: 16,
   gauge: 8,
