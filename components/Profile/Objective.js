@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import { colors, shadow, sizes, spacing } from '../theme';
 
 const ObjectiveScreen = () => {
   const buttons = ['Follower', 'Explorer', 'Deep Learner', 'Researcher', 'Career'];
@@ -44,29 +45,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
   },
   title: {
-    fontSize: 22,
+    fontSize: sizes.title,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: spacing.l*2,
   },
   buttonRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: spacing.l,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: colors.darkblue,
     padding: 15,
-    borderRadius: 5,
-    marginRight: 10,
+    borderRadius: sizes.radius,
+    width: width*0.6
   },
   highlightedButton: {
-    backgroundColor: '#28a745', // Different background color for the highlighted button
+    backgroundColor: colors.green,
   },
   buttonText: {
-    color: 'white',
+    color: colors.white,
     fontSize: 18,
   },
   iconContainer: {
