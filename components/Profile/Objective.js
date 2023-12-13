@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkblue,
     padding: 15,
     borderRadius: sizes.radius,
-    width: width*0.6
+    width: width*0.6,
   },
   highlightedButton: {
     backgroundColor: colors.green,
@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   infoIcon: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
   },
 });
 
