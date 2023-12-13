@@ -13,6 +13,7 @@ import Trending from './Cast/TrendingScreen';
 import SearchResult from './Cast/SearchResultScreen';
 import SimpleHeader from './Profile/SimpleHeader';
 import LeaderBoard from './LeaderBoardScreen';
+import Objective from './Profile/Objective'
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,7 @@ const MainNavigator = () => {
         <Stack.Screen name="Trending" component={Trending} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="LeaderBoard" component={LeaderBoard} options={{ header: () => <SimpleHeader /> }}/>
+        <Stack.Screen name="Objective" component={Objective} options={{ header: () => <SimpleHeader /> }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

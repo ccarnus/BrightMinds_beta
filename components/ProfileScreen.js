@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, Alert, ScrollView, Button, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import Slider from '@react-native-community/slider';
 import { colors, shadow, sizes, spacing } from './theme';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
@@ -12,6 +11,7 @@ const ProfileScreen = () => {
   const navigation = useNavigation();
   const [userData, setUserData] = useState(null);
   const [userPreferences, setUserPreferences] = useState([]);
+  const [trackingData, setTrackingData] = useState({ objective: '', progress: 0 });
   const streak = 5;
 
   useEffect(() => {
@@ -26,6 +26,12 @@ const ProfileScreen = () => {
       .get('http://3.17.219.54/user/6474e4001eec5ee1ecd40180/preferences')
       .then(response => setUserPreferences(response.data.preferences))
       .catch(error => console.error('Error fetching user preferences:', error));
+    
+      // Fetch tracking data
+    axios
+    .get('http://3.17.219.54/user/6474e4001eec5ee1ecd40180/tracking')
+    .then(response => setTrackingData(response.data.tracking))
+    .catch(error => console.error('Error fetching tracking data:', error));
   }, []);
 
   const handleSliderComplete = (category, newValue) => {
@@ -84,6 +90,13 @@ const ProfileScreen = () => {
             </View>
           </View>
         ))}
+        <View style={styles.objectiveContainer}>
+          <Text style={styles.preferencesTitle}>My Learning Path</Text>
+          <Button
+            title={trackingData.objective}
+            onPress={() => navigation.navigate('Objective', { objective: trackingData.objective })}
+          />
+        </View>
       </View>
     </View>
   );
@@ -183,6 +196,10 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     marginLeft: 5,
+  },
+  objectiveContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
   },
 });
 
