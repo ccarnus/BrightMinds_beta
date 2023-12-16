@@ -71,38 +71,40 @@ const ProfileScreen = () => {
         </View>
       )}
       <View style={styles.lowerSection}>
-        <View style={styles.lowerSectionContainer}>
-          <Text style={styles.preferencesTitle}>Preferences</Text>
-          {userPreferences.map(pref => (
-            <View key={pref._id} style={styles.preferenceContainer}>
-              <View style={styles.textContainer}>
-                <Text style={styles.preferenceText}>{pref.category}</Text>
+        <ScrollView style={styles.lowerSectionScrollView}>
+          <View style={styles.lowerSectionContainer}>
+            <Text style={styles.preferencesTitle}>Preferences</Text>
+            {userPreferences.map(pref => (
+              <View key={pref._id} style={styles.preferenceContainer}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.preferenceText}>{pref.category}</Text>
+                </View>
+                <View style={styles.sliderContainer}>
+                  <Slider
+                    style={styles.slider}
+                    value={pref.weight / 100}
+                    onSlidingComplete={(newValue) => handleSliderComplete(pref.category, newValue * 100)}
+                    minimumValue={0}
+                    maximumValue={1}
+                    minimumTrackTintColor={colors.lightblue}
+                    maximumTrackTintColor={colors.grey}
+                  />
+                </View>
               </View>
-              <View style={styles.sliderContainer}>
-                <Slider
-                  style={styles.slider}
-                  value={pref.weight / 100}
-                  onSlidingComplete={(newValue) => handleSliderComplete(pref.category, newValue * 100)}
-                  minimumValue={0}
-                  maximumValue={1}
-                  minimumTrackTintColor={colors.lightblue}
-                  maximumTrackTintColor={colors.grey}
-                />
-              </View>
-            </View>
-          ))}
-        </View>
-        <View style={styles.lowerSectionContainer}>
-          <View style={styles.objectiveContainer}>
-            <Text style={styles.preferencesTitle}>My Learning Path</Text>
-            <TouchableOpacity
-              style={styles.buttonObjectiveContainer}
-              onPress={() => navigation.navigate('Objective', { objective: trackingData.objective })}
-            >
-              <Text style={styles.objectiveText}>{trackingData.objective}</Text>
-            </TouchableOpacity>
+            ))}
           </View>
-        </View>
+          <View style={styles.lowerSectionContainer}>
+            <View style={styles.objectiveContainer}>
+              <Text style={styles.preferencesTitle}>My Learning Path</Text>
+              <TouchableOpacity
+                style={styles.buttonObjectiveContainer}
+                onPress={() => navigation.navigate('Objective', { objective: trackingData.objective })}
+              >
+                <Text style={styles.objectiveText}>{trackingData.objective}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -121,12 +123,16 @@ const styles = StyleSheet.create({
   },
   lowerSection: {
     flex: 2,
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.white,
     alignItems: 'center',
   },
   lowerSectionContainer: {
     alignItems: 'center',
-    backgroundColor: colors.lightGray,
+    backgroundColor: colors.darkblue,
+    width: width*0.9,
+    marginTop: spacing.m,
+    borderRadius: sizes.radius,
+
   },
   profileImage: {
     width: width * 0.4,
@@ -162,6 +168,7 @@ const styles = StyleSheet.create({
     width: "25%",
     marginLeft: 5,
     textAlign: "center",
+    marginBottom: spacing.l,
   },
   department: {
     fontSize: sizes.h2,
@@ -200,7 +207,7 @@ const styles = StyleSheet.create({
     fontSize: sizes.title,
     color: colors.white,
     marginBottom: 10,
-    marginTop: 10,
+    marginTop: spacing.s,
   },
   streakImage: {
     width: 42,
@@ -208,7 +215,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   objectiveContainer: {
-    marginVertical: 20,
     alignItems: 'center',
   },
   buttonObjectiveContainer: {
@@ -218,10 +224,14 @@ const styles = StyleSheet.create({
     width: width * 0.5,
     justifyContent: 'center',
     flexDirection: "row",
+    marginBottom: spacing.m,
   },
   objectiveText: {
     fontSize: sizes.h2,
     color: 'white',
+  },
+  lowerSectionScrollView: {
+    marginBottom: spacing.l,
   },
 });
 
