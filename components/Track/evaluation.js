@@ -5,6 +5,7 @@ import Gauge from './Gauge';
 import { colors, sizes, spacing } from '../theme';
 
 const USER_ID = "6474e4001eec5ee1ecd40180";
+let correctAnswerCount = 0;
 
 const TakeTest = ({ route, navigation }) => {
   const { castIds } = route.params;
@@ -16,6 +17,7 @@ const TakeTest = ({ route, navigation }) => {
   const typingIntervalRef = useRef(null);
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const shakeAnim = useRef(new Animated.Value(0)).current;
+  
 
   useEffect(() => {
     fetchQuestions();
@@ -147,6 +149,8 @@ const TakeTest = ({ route, navigation }) => {
     if (isAnswerCorrect) {
       animateCorrectAnswer();
       addPoints(10);
+      correctAnswerCount = correctAnswerCount + 1 ;
+      console.log(`current count ${correctAnswerCount}`)
       removeCastFromEvaluationList(castIds[currentQuestionIndex]);
     } else {
       animateIncorrectAnswer();
@@ -160,7 +164,11 @@ const TakeTest = ({ route, navigation }) => {
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
-        navigation.navigate('Track');
+        console.log(`correct answers count ${correctAnswerCount}`)
+        navigation.navigate('Finish', {
+          totalQuestions: questions.length,
+          correctAnswers: correctAnswerCount,
+        });
       }
     }, 1000);
   };
@@ -224,11 +232,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginBottom: 20,
     backgroundColor: colors.black,
     borderRadius: sizes.radius,
     marginTop:spacing.m,
     marginBottom: spacing.m,
+    marginLeft: spacing.m,
+    marginRight: spacing.m,
   },
   questionText: {
     fontSize: 24,
