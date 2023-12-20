@@ -5,7 +5,7 @@ import {colors, shadow, sizes, spacing} from '../theme';
 const Gauge = ({ total, current }) => {
   return (
     <View style={styles.gaugeContainer}>
-      <Text style={styles.gaugeText}>{` ${current + 1} / ${total}`}</Text>
+      {/*<Text style={styles.gaugeText}>{` ${current + 1} / ${total}`}</Text>*/}
       <View style={styles.gaugeBar}>
         <View
           style={{
