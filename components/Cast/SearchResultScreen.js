@@ -1,37 +1,52 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Image, Dimensions } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { Video } from 'expo-av';
+import { Dimensions } from 'react-native';
 import axios from 'axios';
 import { colors, sizes } from '../theme';
+
+const { width, height } = Dimensions.get('window');
 
 const SearchResultScreen = ({ route, navigation }) => {
   const { selectedCastId } = route.params;
   const [videos, setVideos] = useState([]);
-  const [videoStatus, setVideoStatus] = useState([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
-  const videoRefs = useRef([]);
+  const [videoStatus, setVideoStatus] = useState([]);
   const [bookmarkedCasts, setBookmarkedCasts] = useState([]);
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const videoRefs = useRef([]);
   const userId = "6474e4001eec5ee1ecd40180";
 
   useEffect(() => {
-    fetch(`http://3.17.219.54/cast/${selectedCastId}`)
+    fetch(`http://3.17.219.54/cast/trending/right/now`)
       .then(response => response.json())
-      .then(selectedCast => {
-        fetch('http://3.17.219.54/cast')
-          .then(response => response.json())
-          .then(allCasts => {
-            const otherCasts = allCasts.filter(cast => cast._id !== selectedCastId);
-            setVideos([selectedCast, ...otherCasts]);
-          })
-          .catch(error => console.error(error));
+      .then(data => {
+        const fetchUniversityLogos = data.map(video =>
+          fetch(`http://3.17.219.54/university/by/name/${video.university}`)
+            .then(res => res.json())
+            .then(universityData => ({ ...video, universityLogo: universityData.iconurl }))
+        );
+        return Promise.all(fetchUniversityLogos);
+      })
+      .then(dataWithLogos => {
+        const selectedIndex = dataWithLogos.findIndex(video => video._id === selectedCastId);
+        setFocusedIndex(selectedIndex);
+        setVideos([dataWithLogos[selectedIndex], ...dataWithLogos.slice(0, selectedIndex), ...dataWithLogos.slice(selectedIndex + 1)]);
       })
       .catch(error => console.error(error));
-  }, [selectedCastId]);
+
+    axios
+      .get(`http://3.17.219.54/user/bookmarks/${userId}`)
+      .then(response => {
+        setBookmarkedCasts(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
 
   useEffect(() => {
-    const initialVideoStatus = videos.map((_, index) => index === 0);
-    setVideoStatus(initialVideoStatus);
+    setVideoStatus(videos.map((_, index) => index === 0));
   }, [videos]);
 
   const handleVideoPress = index => {
@@ -137,30 +152,41 @@ const SearchResultScreen = ({ route, navigation }) => {
             />
             </View>
             <Text style={styles.title}>{video.title}</Text>
-            <View style={styles.banner}>
-            <TouchableOpacity style={styles.button} onPress={handleBookmarkPress}>
+            <View style={styles.buttonUniversityContainer}>
+              <Image
+                source={{ uri: video.universityLogo }}
+                style={styles.universityIcon}
+                resizeMode="contain"
+              />
+            </View>
+            <View style={styles.buttonBookmarkContainer}>
+              <TouchableOpacity style={styles.button} onPress={handleBookmarkPress}>
+                  <Image
+                    source={
+                      bookmarkedCasts.some(cast => cast.castId === video._id)
+                        ? require('../../assets/Cast_icons/bookmark_filled_icon.png')
+                        : require('../../assets/Cast_icons/bookmark_icon.png')
+                    }
+                    style={styles.icon}
+                  />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.buttonCommentContainer}>
+              <TouchableOpacity style={styles.button}>
                 <Image
-                  source={
-                    bookmarkedCasts.some(cast => cast.castId === video._id)
-                      ? require('../../assets/Cast_icons/bookmark_filled_icon.png')
-                      : require('../../assets/Cast_icons/bookmark_icon.png')
-                  }
+                  source={require('../../assets/Cast_icons/comment_icon.png')}
                   style={styles.icon}
                 />
-            </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Image
-              source={require('../../assets/Cast_icons/comment_icon.png')}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Image
-              source={require('../../assets/Cast_icons/share_icon.png')}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-        </View>
+              </TouchableOpacity>
+            </View> 
+            <View style={styles.buttonShareContainer}>
+              <TouchableOpacity style={styles.button}>
+                <Image
+                  source={require('../../assets/Cast_icons/share_icon.png')}
+                  style={styles.icon}
+                />
+              </TouchableOpacity>
+            </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -181,18 +207,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   videoContainer: {
-    width: '100%',
-    height: '100%',
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    marginBottom:50,
   },
   videoWrapper: {
     width: '100%',
     height: '100%',
     position: 'absolute',
+    top: 0,
+    left: 0,
   },
   title: {
     fontSize: sizes.title,
@@ -207,25 +232,61 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  banner: {
-    position: 'absolute',
-    bottom: 50,
-    left: 25,
-    right: 25,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'rgba(211, 211, 211, 0.7)',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: sizes.radius,
-  },
   icon: {
     width: 32,
     height: 32,
-    tintColor: colors.black,
+    tintColor: colors.lightblue,
     marginHorizontal: 12,
   },
+  universityIcon: {
+    width: "100%",
+    height: "100%",
+    marginHorizontal: 12,
+  },
+  buttonBookmarkContainer: {
+    position: 'absolute',
+    top: height*0.5,
+    right: 15,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: colors.darkblue,
+    backgroundColor: 'rgba(0, 64, 122, 0.5)',
+  },
+  buttonCommentContainer: {
+    position: 'absolute',
+    top: height*0.6,
+    right: 15,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: colors.darkblue,
+    backgroundColor: 'rgba(0, 64, 122, 0.5)',
+  },
+  buttonShareContainer: {
+    position: 'absolute',
+    top: height*0.7,
+    right: 15,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: colors.darkblue,
+    backgroundColor: 'rgba(0, 64, 122, 0.5)',
+  },
+  buttonUniversityContainer: {
+    width: 64,
+    height: 64,
+    position: 'absolute',
+    top: height*0.4,
+    right: 15,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 50,
+  },
+  
 });
 
 export default SearchResultScreen;
