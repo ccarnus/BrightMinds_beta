@@ -3,14 +3,15 @@ import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Image } from 'rea
 import { Video } from 'expo-av';
 import { Dimensions } from 'react-native';
 import axios from 'axios';
-import {colors, shadow, sizes, spacing} from '../theme';
+import { colors, sizes } from '../theme';
+
+const { width, height } = Dimensions.get('window');
 
 const SuggestedForYouScreen = ({ route, navigation }) => {
   const { selectedVideoId } = route.params;
   const [videos, setVideos] = useState([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [videoStatus, setVideoStatus] = useState([]);
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [bookmarkedCasts, setBookmarkedCasts] = useState([]);
   const videoRefs = useRef([]);
   const userId = "6474e4001eec5ee1ecd40180";
@@ -19,9 +20,17 @@ const SuggestedForYouScreen = ({ route, navigation }) => {
     fetch(`http://3.17.219.54/user/${userId}/suggested/for/you`)
       .then(response => response.json())
       .then(data => {
-        const selectedIndex = data.findIndex(video => video._id === selectedVideoId);
+        const fetchUniversityLogos = data.map(video =>
+          fetch(`http://3.17.219.54/university/by/name/${video.university}`)
+            .then(res => res.json())
+            .then(universityData => ({ ...video, universityLogo: universityData.iconurl }))
+        );
+        return Promise.all(fetchUniversityLogos);
+      })
+      .then(dataWithLogos => {
+        const selectedIndex = dataWithLogos.findIndex(video => video._id === selectedVideoId);
         setFocusedIndex(selectedIndex);
-        setVideos([data[selectedIndex], ...data.slice(0, selectedIndex), ...data.slice(selectedIndex + 1)]);
+        setVideos([dataWithLogos[selectedIndex], ...dataWithLogos.slice(0, selectedIndex), ...dataWithLogos.slice(selectedIndex + 1)]);
       })
       .catch(error => console.error(error));
 
@@ -143,37 +152,47 @@ const SuggestedForYouScreen = ({ route, navigation }) => {
             />
             </View>
             <Text style={styles.title}>{video.title}</Text>
-            <View style={styles.banner}>
-            <TouchableOpacity style={styles.button} onPress={handleBookmarkPress}>
+            <View style={styles.buttonUniversityContainer}>
+              <Image
+                source={{ uri: video.universityLogo }}
+                style={styles.universityIcon}
+                resizeMode="contain"
+              />
+            </View>
+            <View style={styles.buttonBookmarkContainer}>
+              <TouchableOpacity style={styles.button} onPress={handleBookmarkPress}>
+                  <Image
+                    source={
+                      bookmarkedCasts.some(cast => cast.castId === video._id)
+                        ? require('../../assets/Cast_icons/bookmark_filled_icon.png')
+                        : require('../../assets/Cast_icons/bookmark_icon.png')
+                    }
+                    style={styles.icon}
+                  />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.buttonCommentContainer}>
+              <TouchableOpacity style={styles.button}>
                 <Image
-                  source={
-                    bookmarkedCasts.some(cast => cast.castId === video._id)
-                      ? require('../../assets/Cast_icons/bookmark_filled_icon.png')
-                      : require('../../assets/Cast_icons/bookmark_icon.png')
-                  }
+                  source={require('../../assets/Cast_icons/comment_icon.png')}
                   style={styles.icon}
                 />
-            </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Image
-              source={require('../../assets/Cast_icons/comment_icon.png')}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Image
-              source={require('../../assets/Cast_icons/share_icon.png')}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-        </View>
+              </TouchableOpacity>
+            </View> 
+            <View style={styles.buttonShareContainer}>
+              <TouchableOpacity style={styles.button}>
+                <Image
+                  source={require('../../assets/Cast_icons/share_icon.png')}
+                  style={styles.icon}
+                />
+              </TouchableOpacity>
+            </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
     </View>
   );
 };
-
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -188,18 +207,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   videoContainer: {
-    width: '100%',
-    height: '100%',
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    marginBottom:50,
   },
   videoWrapper: {
     width: '100%',
     height: '100%',
     position: 'absolute',
+    top: 0,
+    left: 0,
   },
   title: {
     fontSize: sizes.title,
@@ -214,25 +232,61 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  banner: {
-    position: 'absolute',
-    bottom: 50,
-    left: 25,
-    right: 25,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'rgba(211, 211, 211, 0.7)',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: sizes.radius,
-  },
   icon: {
     width: 32,
     height: 32,
-    tintColor: colors.black,
+    tintColor: colors.lightblue,
     marginHorizontal: 12,
   },
+  universityIcon: {
+    width: "100%",
+    height: "100%",
+    marginHorizontal: 12,
+  },
+  buttonBookmarkContainer: {
+    position: 'absolute',
+    top: height*0.5,
+    right: 15,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: colors.darkblue,
+    backgroundColor: 'rgba(0, 64, 122, 0.5)',
+  },
+  buttonCommentContainer: {
+    position: 'absolute',
+    top: height*0.6,
+    right: 15,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: colors.darkblue,
+    backgroundColor: 'rgba(0, 64, 122, 0.5)',
+  },
+  buttonShareContainer: {
+    position: 'absolute',
+    top: height*0.7,
+    right: 15,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: colors.darkblue,
+    backgroundColor: 'rgba(0, 64, 122, 0.5)',
+  },
+  buttonUniversityContainer: {
+    width: 64,
+    height: 64,
+    position: 'absolute',
+    top: height*0.4,
+    right: 15,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 50,
+  },
+  
 });
 
 export default SuggestedForYouScreen;
