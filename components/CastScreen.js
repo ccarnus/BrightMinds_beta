@@ -15,6 +15,9 @@ const CastScreen = () => {
   const [allCasts, setAllCasts] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const starIcon = require('../assets/Cast_screen_icons/star_icon.png');
+  const trendingIcon = require('../assets/Cast_screen_icons/rocket_icon.png');
+
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -140,13 +143,15 @@ const CastScreen = () => {
             ))
           ) : (
             <>
-              <View style={styles.categoryHeader}>
-                <Text style={styles.categoryTitle}>For you</Text>
-              </View>
-              <Carousel list={SuggestedCastData} carouselType="suggested" />
-              <View style={styles.categoryHeader}>
-                <Text style={styles.categoryTitle}>Trending</Text>
-              </View>
+             <View style={styles.categoryHeader}>
+              <Image source={starIcon} style={styles.categoryIcon} />
+              <Text style={styles.categoryTitle}>For you</Text>
+            </View>
+            <Carousel list={SuggestedCastData} carouselType="suggested" />
+            <View style={styles.categoryHeader}>
+              <Image source={trendingIcon} style={styles.categoryIcon} />
+              <Text style={styles.categoryTitle}>Trending</Text>
+            </View>
               <Carousel list={TrendingCastData} carouselType="trending" />
             </>
           )}
@@ -166,16 +171,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-  },
-  categoryHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.s,
-    marginLeft: spacing.s,
-  },
-  categoryTitle: {
-    fontSize: sizes.title,
-    color: colors.black,
   },
   floatingButton: {
     position: 'absolute',
@@ -224,6 +219,23 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontSize: 20,
   },
+  categoryHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.s,
+    marginLeft: spacing.s,
+  },
+  categoryTitle: {
+    fontSize: sizes.title,
+    color: colors.black,
+  },
+  categoryIcon: {
+    width: 35,
+    height: 35,
+    marginRight: 15,
+  },
+  
+  
 });
 
 export default CastScreen;
