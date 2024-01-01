@@ -37,10 +37,17 @@ const BottomNavigation = () => {
         initialRouteName="Cast"
         screenOptions={{
           headerShown: false,
-          tabBarShowLabel: false,
+          tabBarShowLabel: true,
           tabBarStyle: { 
             backgroundColor: colors.darkblue,
+            height: 55,
           },
+          tabBarLabelStyle: {
+            fontSize: 10,
+            marginBottom:5,
+          },
+          tabBarActiveTintColor: colors.green,
+          tabBarInactiveTintColor: colors.white,
         }}>
         {tabs.map(({name, screen}, index) => {
           return (
@@ -92,10 +99,10 @@ const BottomNavigation = () => {
 const styles = StyleSheet.create({
   indicator: {
     position: 'absolute',
-    width: 24,
+    width: 32,
     height: 2,
-    left: sizes.width / tabs.length / 2 - 12,
-    bottom: 40,
+    left: sizes.width / tabs.length / 2 - 15,
+    bottom: 50,
     backgroundColor: colors.green,
     zIndex: 100,
   },
