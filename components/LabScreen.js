@@ -49,16 +49,37 @@ const LabScreen = () => {
     </View>
   );
 
+  // Divide the labs for Explore Labs into two groups
+  const exploreLabs = labs.filter(lab => !isUserLab(lab._id));
+  const exploreLabsFirstHalf = exploreLabs.slice(0, Math.ceil(exploreLabs.length / 2));
+  const exploreLabsSecondHalf = exploreLabs.slice(Math.ceil(exploreLabs.length / 2));
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>My Labs</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScrollView}>
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false} 
+        contentContainerStyle={styles.horizontalScrollView}
+        style={{ marginBottom: spacing.xs }} // Reduced bottom margin
+      >
         {labs.filter(lab => isUserLab(lab._id)).map(renderLab)}
       </ScrollView>
 
       <Text style={styles.title}>Explore Labs</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScrollView}>
-        {labs.filter(lab => !isUserLab(lab._id)).map(renderLab)}
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false} 
+        contentContainerStyle={styles.horizontalScrollView}
+      >
+        {exploreLabsFirstHalf.map(renderLab)}
+      </ScrollView>
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false} 
+        contentContainerStyle={styles.horizontalScrollView}
+      >
+        {exploreLabsSecondHalf.map(renderLab)}
       </ScrollView>
     </View>
   );
@@ -72,9 +93,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: sizes.h2,
     color: colors.black,
-    marginTop: spacing.m,
+    marginTop: spacing.s,
     textAlign: "left",
-    marginBottom: spacing.m,
+    marginBottom: spacing.xs,
     paddingHorizontal: spacing.s,
   },
   scrollView: {
