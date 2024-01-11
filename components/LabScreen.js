@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { colors, sizes, spacing } from './theme';
 
 const LabScreen = () => {
   const [labs, setLabs] = useState([]);
+  const [userLabs, setUserLabs] = useState({ member: [], follower: [] });
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchLabs();
+    fetchUserLabs();
   }, []);
 
   const fetchLabs = async () => {
@@ -19,28 +23,42 @@ const LabScreen = () => {
     }
   };
 
-  // Function to generate random color
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+  const fetchUserLabs = async () => {
+    try {
+      const response = await fetch('http://3.17.219.54/user/6474e4001eec5ee1ecd40180');
+      const data = await response.json();
+      setUserLabs(data.virtual_labs);
+    } catch (error) {
+      console.error('Error fetching user labs:', error);
     }
-    return color;
   };
+
+  const isUserLab = (labId) => {
+    return userLabs.member.some(lab => lab.labId === labId) || userLabs.follower.some(lab => lab.labId === labId);
+  };
+
+  const renderLab = (lab) => (
+    <View key={lab._id} style={styles.labContainer}>
+      <TouchableOpacity
+        style={[styles.labButton, { backgroundColor: lab.colorcode }]}
+        onPress={() => navigation.navigate('VirtualLab', { labId: lab._id })}
+      >
+        <Image source={{ uri: lab.iconurl }} style={styles.labImage} />
+      </TouchableOpacity>
+      <Text style={styles.labText}>{lab.name}</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>My Labs</Text>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        {labs.map((lab) => (
-          <View key={lab._id} style={styles.labContainer}>
-            <TouchableOpacity style={[styles.labButton, { backgroundColor: getRandomColor() }]}>
-              <Image source={{ uri: lab.iconurl }} style={styles.labImage} />
-            </TouchableOpacity>
-            <Text style={styles.labText}>{lab.name}</Text>
-          </View>
-        ))}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScrollView}>
+        {labs.filter(lab => isUserLab(lab._id)).map(renderLab)}
+      </ScrollView>
+
+      <Text style={styles.title}>Explore Labs</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScrollView}>
+        {labs.filter(lab => !isUserLab(lab._id)).map(renderLab)}
       </ScrollView>
     </View>
   );
@@ -49,14 +67,15 @@ const LabScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: colors.white,
   },
   title: {
-    fontSize: sizes.title,
+    fontSize: sizes.h2,
     color: colors.black,
     marginTop: spacing.m,
+    textAlign: "left",
     marginBottom: spacing.m,
+    paddingHorizontal: spacing.s,
   },
   scrollView: {
     flexDirection: 'row',

@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     marginLeft: spacing.s,
   },
   bookmarkedCategoryTitle: {
-    fontSize: sizes.title,
+    fontSize: sizes.h2,
     color: colors.black,
   },
   objectiveProgressTitle: {

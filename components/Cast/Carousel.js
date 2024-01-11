@@ -31,15 +31,15 @@ const Carousel = ({ list, carouselType}) => {
               { selectedVideoId: item.id }
             )}>
             <View style={[styles.card, shadow.dark]}>
+              <View style={styles.titleBox}>
+                <Text style={styles.title}>{item.title}</Text>
+              </View>
               <View style={styles.imageBox}>
                 <Image
                   source={{ uri: item.image }}
                   style={styles.image}
                   onError={() => console.log(`Error loading image for ${item.title}`)}
                 />
-              </View>
-              <View style={styles.titleBox}>
-                <Text style={styles.title}>{item.title}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: sizes.h3,
-    fontWeight: 'bold',
     color: colors.black,
     paddingRight: 10,
     textAlign: 'justify',

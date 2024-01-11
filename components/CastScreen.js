@@ -226,12 +226,12 @@ const styles = StyleSheet.create({
     marginLeft: spacing.s,
   },
   categoryTitle: {
-    fontSize: sizes.title,
+    fontSize: sizes.h2,
     color: colors.black,
   },
   categoryIcon: {
-    width: 35,
-    height: 35,
+    width: 25,
+    height: 25,
     marginRight: 15,
   },
   

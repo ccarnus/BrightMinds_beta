@@ -15,6 +15,7 @@ import SimpleHeader from './Profile/SimpleHeader';
 import LeaderBoard from './LeaderBoardScreen';
 import Objective from './Profile/Objective';
 import Finish from './Track/finish';
+import VirtualLab from './VirtualLab/VirtualLab';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,7 @@ const MainNavigator = () => {
         <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="LeaderBoard" component={LeaderBoard} options={{ header: () => <SimpleHeader /> }}/>
         <Stack.Screen name="Objective" component={Objective} options={{ header: () => <SimpleHeader /> }}/>
+        <Stack.Screen name="VirtualLab" component={VirtualLab} options={{ header: () => <SimpleHeader /> }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
