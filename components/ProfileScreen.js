@@ -128,7 +128,9 @@ const styles = StyleSheet.create({
   },
   lowerSectionContainer: {
     alignItems: 'center',
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.white,
+    borderWidth: 3,
+    borderColor: colors.darkblue,
     width: width*0.9,
     marginTop: spacing.m,
     borderRadius: sizes.radius,
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
   },
   preferenceText: {
     fontSize: sizes.h3,
-    color: colors.white,
+    color: colors.darkblue,
     textAlign: "center",
   },
   slider: {
@@ -204,8 +206,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   preferencesTitle: {
-    fontSize: sizes.title,
-    color: colors.white,
+    fontSize: sizes.h2,
+    color: colors.darkblue,
     marginBottom: 10,
     marginTop: spacing.s,
   },

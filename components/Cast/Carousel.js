@@ -73,14 +73,13 @@ const styles = StyleSheet.create({
     top: CARD_HEIGHT_TOTAL - 50,
     maxHeight: 50,
     width: '100%',
-    display: 'flex',
-    alignItems: 'center',
   },
   title: {
-    fontSize: sizes.h3,
+    fontSize: sizes.h45,
     color: colors.black,
     paddingRight: 10,
-    textAlign: 'justify',
+    textAlign: 'left',
+    marginLeft: 10,
   },
 });
 
