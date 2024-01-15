@@ -15,19 +15,25 @@ const WatchScreen = ({ navigation }) => {
   const [bookmarkedCasts, setBookmarkedCasts] = useState([]);
   const videoRefs = useRef([]);
   const userId = "6474e4001eec5ee1ecd40180";
+  const [videoVerifications, setVideoVerifications] = useState([]);
 
   useEffect(() => {
     fetch('http://3.17.219.54/cast')
     .then(response => response.json())
     .then(data => {
-      const fetchUniversityLogos = data.map(cast => 
-        fetch(`http://3.17.219.54/university/by/name/${cast.university}`)
-          .then(res => res.json())
-          .then(universityData => ({...cast, universityLogo: universityData.iconurl}))
+      const fetchUniversityLogosAndApprovalStatus = data.map(cast => 
+        Promise.all([
+          fetch(`http://3.17.219.54/university/by/name/${cast.university}`)
+            .then(res => res.json())
+            .then(universityData => ({...cast, universityLogo: universityData.iconurl})),
+          fetch(`http://3.17.219.54/cast/verification/${cast._id}`)
+            .then(res => res.json())
+            .then(verificationData => ({...cast, isApproved: verificationData.approvals >= 5}))
+        ]).then(results => Object.assign({}, ...results))
       );
-      return Promise.all(fetchUniversityLogos);
+      return Promise.all(fetchUniversityLogosAndApprovalStatus);
     })
-    .then(dataWithLogos => setVideos(dataWithLogos))
+    .then(dataWithLogosAndApproval => setVideos(dataWithLogosAndApproval))
     .catch(error => console.error(error));
 
     axios
@@ -155,6 +161,14 @@ const WatchScreen = ({ navigation }) => {
                 resizeMode="contain"
               />
             </View>
+            {video.isApproved && (
+              <View style={styles.buttonApprovedContainer}>
+                <Image
+                  source={require('../assets/Cast_icons/approved_badge.png')}
+                  style={styles.icon_badge}
+                />
+              </View>
+            )}
             <View style={styles.buttonBookmarkContainer}>
               <TouchableOpacity style={styles.button} onPress={handleBookmarkPress}>
                   <Image
@@ -235,6 +249,11 @@ const styles = StyleSheet.create({
     tintColor: colors.lightblue,
     marginHorizontal: 12,
   },
+  icon_badge: {
+    width: 42,
+    height: 42,
+    marginHorizontal: 12,
+  },
   universityIcon: {
     width: "100%",
     height: "100%",
@@ -282,6 +301,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     borderRadius: 50,
+  },
+  buttonApprovedContainer: {
+    position: 'absolute',
+    top: height * 0.3,
+    right: 15,
+    alignItems: 'center',
+    paddingVertical: 10,
   },
   
 });
