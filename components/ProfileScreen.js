@@ -86,7 +86,7 @@ const ProfileScreen = () => {
                     onSlidingComplete={(newValue) => handleSliderComplete(pref.category, newValue * 100)}
                     minimumValue={0}
                     maximumValue={1}
-                    minimumTrackTintColor={colors.lightblue}
+                    minimumTrackTintColor={colors.darkblue}
                     maximumTrackTintColor={colors.grey}
                   />
                 </View>
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonContainer: {
-    backgroundColor: colors.lightblue,
+    backgroundColor: colors.darkblue,
     borderRadius: sizes.radius,
     paddingVertical: 10,
     justifyContent: 'center',
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonObjectiveContainer: {
-    backgroundColor: colors.lightblue,
+    backgroundColor: colors.darkblue,
     borderRadius: sizes.radius,
     paddingVertical: 10,
     width: width * 0.5,
