@@ -244,9 +244,9 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   icon: {
-    width: 32,
-    height: 32,
-    tintColor: colors.lightblue,
+    width: 35,
+    height: 35,
+    tintColor: colors.darkblue,
     marginHorizontal: 12,
   },
   icon_badge: {
@@ -265,10 +265,6 @@ const styles = StyleSheet.create({
     right: 15,
     alignItems: 'center',
     paddingVertical: 10,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: colors.darkblue,
-    backgroundColor: 'rgba(0, 64, 122, 0.5)',
   },
   buttonCommentContainer: {
     position: 'absolute',
@@ -276,10 +272,6 @@ const styles = StyleSheet.create({
     right: 15,
     alignItems: 'center',
     paddingVertical: 10,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: colors.darkblue,
-    backgroundColor: 'rgba(0, 64, 122, 0.5)',
   },
   buttonShareContainer: {
     position: 'absolute',
@@ -287,10 +279,6 @@ const styles = StyleSheet.create({
     right: 15,
     alignItems: 'center',
     paddingVertical: 10,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: colors.darkblue,
-    backgroundColor: 'rgba(0, 64, 122, 0.5)',
   },
   buttonUniversityContainer: {
     width: 64,

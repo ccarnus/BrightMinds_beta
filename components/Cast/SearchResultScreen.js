@@ -3,7 +3,7 @@ import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Image } from 'rea
 import { Video } from 'expo-av';
 import { Dimensions } from 'react-native';
 import axios from 'axios';
-import { colors, sizes } from '../theme';
+import { colors, sizes, spacing} from '../theme';
 
 const { width, height } = Dimensions.get('window');
 
@@ -285,7 +285,21 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 50,
   },
-  
+  infoDisplay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.05)', // Light background for visibility
+    padding: spacing.s,
+    borderRadius: sizes.radius,
+    alignItems: 'center', // Center contents horizontally
+    justifyContent: 'center', // Center contents vertically
+    marginHorizontal: spacing.m,
+    marginBottom: spacing.m,
+  },
+  infoText: {
+    fontSize: sizes.h3,
+    color: colors.text,
+    textAlign: 'center',
+    marginBottom: spacing.xs,
+  },
 });
 
 export default SearchResultScreen;
