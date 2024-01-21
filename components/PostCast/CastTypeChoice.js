@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { spacing } from '../theme';
 
 const CastTypeChoice = () => {
   const navigation = useNavigation();
@@ -54,7 +55,7 @@ const CastTypeChoice = () => {
             <TouchableOpacity onPress={() => handleChoice('Podcast')}>
               <View style={styles.content}>
                 <Image
-                  source={require('../../assets/Post_cast_icons/podcast.png')}
+                  source={require('../../assets/Cast_screen_icons/podcast_logo.png')}
                   style={styles.icon}
                 />
                 <Text style={styles.buttonText}>Podcast</Text>
@@ -72,7 +73,7 @@ const CastTypeChoice = () => {
             <TouchableOpacity onPress={() => handleChoice('Clip')}>
               <View style={styles.content}>
                 <Image
-                  source={require('../../assets/Post_cast_icons/clip.png')}
+                  source={require('../../assets/Cast_screen_icons/cast_logo.png')}
                   style={styles.icon}
                 />
                 <Text style={styles.buttonText}>Clip</Text>
@@ -90,7 +91,7 @@ const CastTypeChoice = () => {
             <TouchableOpacity onPress={() => handleChoice('Article')}>
               <View style={styles.content}>
                 <Image
-                  source={require('../../assets/Post_cast_icons/article.png')}
+                  source={require('../../assets/Cast_screen_icons/article_logo.png')}
                   style={styles.icon}
                 />
                 <Text style={styles.buttonText}>Article</Text>
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '80%',
     marginBottom: 30,
-    alignItems: 'center', // Center the content horizontally
+    marginLeft:spacing.l
   },
   button: {
     opacity: 0,
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   icon: {
-    width: 70,
+    width: 74,
     height: 70,
     marginRight: 20,
   },

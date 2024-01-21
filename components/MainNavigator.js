@@ -16,6 +16,7 @@ import LeaderBoard from './LeaderBoardScreen';
 import Objective from './Profile/Objective';
 import Finish from './Track/finish';
 import VirtualLab from './VirtualLab/VirtualLab';
+import ArticleDetailsScreen from './Cast/ArticleDetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ const MainNavigator = () => {
         <Stack.Screen name="LeaderBoard" component={LeaderBoard} options={{ header: () => <SimpleHeader /> }}/>
         <Stack.Screen name="Objective" component={Objective} options={{ header: () => <SimpleHeader /> }}/>
         <Stack.Screen name="VirtualLab" component={VirtualLab} options={{ header: () => <SimpleHeader /> }}/>
+        <Stack.Screen name="ArticleDetails" component={ArticleDetailsScreen} options={{ headerShown: false, tabBarVisible: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
