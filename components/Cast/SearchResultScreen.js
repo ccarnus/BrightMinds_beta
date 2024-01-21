@@ -17,7 +17,7 @@ const SearchResultScreen = ({ route, navigation }) => {
   const userId = "6474e4001eec5ee1ecd40180";
 
   useEffect(() => {
-    fetch(`http://3.17.219.54/cast/trending/right/now`)
+    fetch(`http://3.17.219.54/cast`)
       .then(response => response.json())
       .then(data => {
         const fetchUniversityLogos = data.map(video =>
@@ -43,7 +43,6 @@ const SearchResultScreen = ({ route, navigation }) => {
         console.error(error);
       });
   }, []);
-
 
   useEffect(() => {
     setVideoStatus(videos.map((_, index) => index === 0));
