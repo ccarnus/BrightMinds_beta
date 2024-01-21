@@ -86,6 +86,7 @@ const CastScreen = () => {
           id: cast._id,
           image: cast.castimageurl,
           title: cast.title,
+          duration: cast.duration,
         }));
         setSuggestedCastData(formattedData);
         setIsLoading(false);
@@ -107,6 +108,7 @@ const CastScreen = () => {
           id: cast._id,
           image: cast.castimageurl,
           title: cast.title,
+          duration: cast.duration,
         }));
         setTrendingCastData(formattedData);
         setIsLoading(false);

@@ -20,6 +20,9 @@ const Carousel = ({ list, carouselType}) => {
       showsHorizontalScrollIndicator={false}
       keyExtractor={i => i.id}
       renderItem={({ item, index }) => {
+        const minutes = Math.floor(item.duration);
+        const seconds = Math.round((item.duration - minutes) * 60);
+        const durationString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         return (
           <TouchableOpacity
             style={{
@@ -31,15 +34,16 @@ const Carousel = ({ list, carouselType}) => {
               { selectedVideoId: item.id }
             )}>
             <View style={[styles.card, shadow.dark]}>
-              <View style={styles.titleBox}>
-                <Text style={styles.title}>{item.title}</Text>
-              </View>
               <View style={styles.imageBox}>
                 <Image
                   source={{ uri: item.image }}
                   style={styles.image}
                   onError={() => console.log(`Error loading image for ${item.title}`)}
                 />
+                <Text style={styles.duration}>{durationString}</Text>
+              </View>
+              <View style={styles.titleBox}>
+                <Text style={styles.title}>{item.title}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -61,6 +65,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     borderRadius: sizes.radius,
     overflow: 'hidden',
+    position: "relative",
   },
   image: {
     width: CARD_WIDTH,
@@ -80,6 +85,17 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     textAlign: 'left',
     marginLeft: 10,
+  },
+  duration: {
+    position: 'absolute',
+    bottom: 5,
+    right: 5,
+    color: 'white',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: 4,
+    fontSize: sizes.h5,
   },
 });
 

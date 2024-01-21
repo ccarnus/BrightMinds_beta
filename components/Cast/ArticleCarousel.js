@@ -36,6 +36,7 @@ const ArticleCarousel = ({ list }) => {
                 style={styles.image}
                 onError={() => console.log(`Error loading image for ${item.title}`)}
               />
+              <Text style={styles.duration}>{item.duration} min</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -75,6 +76,17 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         textAlign: 'left',
         marginLeft: 10,
+      },
+      duration: {
+        position: 'absolute',
+        bottom: 5,
+        right: 5,
+        color: 'white',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+        paddingHorizontal: 4,
+        paddingVertical: 2,
+        borderRadius: 4,
+        fontSize: sizes.h5,
       },
 });
 
