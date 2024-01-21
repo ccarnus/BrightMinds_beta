@@ -18,6 +18,9 @@ const CastScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const starIcon = require('../assets/Cast_screen_icons/star_icon.png');
   const trendingIcon = require('../assets/Cast_screen_icons/rocket_icon.png');
+  const articleIcon = require('../assets/Cast_screen_icons/article_logo.png');
+  const castIcon = require('../assets/Cast_screen_icons/cast_logo.png');
+  const podcastIcon = require('../assets/Cast_screen_icons/podcast_logo.png');
   const [articleData, setArticleData] = useState([]);
 
 
@@ -26,6 +29,7 @@ const CastScreen = () => {
     fetchSuggestedCastData();
     fetchTrendingCastData();
     fetchAllCastData();
+    fetchArticleData();
     setRefreshing(false);
   }, []);
 
@@ -48,6 +52,7 @@ const CastScreen = () => {
 
   const handleSearchResultPress = (id) => {
     navigation.navigate('SearchResult', { selectedCastId: id });
+    console.log(id)
   };
 
   const fetchAllCastData = async () => {
@@ -166,9 +171,8 @@ const CastScreen = () => {
                 <Text style={styles.categoryTitle}>Trending</Text>
               </View>
               <Carousel list={TrendingCastData} carouselType="trending" />
-  
-              {/* Articles Section */}
               <View style={styles.categoryHeader}>
+              <Image source={articleIcon} style={styles.categoryIcon} />
                 <Text style={styles.categoryTitle}>Articles</Text>
               </View>
               <ArticleCarousel list={articleData} />
@@ -249,8 +253,8 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   categoryIcon: {
-    width: 20,
-    height: 20,
+    width: 32,
+    height: 30,
     marginRight: 15,
   },
   

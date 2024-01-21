@@ -45,8 +45,8 @@ const PostCast = ({navigation}) => {
       university,
       category: 'Breakthrough',
       brightmindid: '101',
-      castimageurl: 'https://cloudfront-eu-central-1.images.arcpublishing.com/leparisien/JZ6CMNQY2VEH5OQW3PDX33HLQI.jpg',
       visibility,
+      duration:2,
     };
 
     const formData = new FormData();
