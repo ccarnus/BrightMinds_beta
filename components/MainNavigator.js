@@ -41,7 +41,7 @@ const MainNavigator = () => {
         <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="LeaderBoard" component={LeaderBoard} options={{ header: () => <SimpleHeader /> }}/>
         <Stack.Screen name="Objective" component={Objective} options={{ header: () => <SimpleHeader /> }}/>
-        <Stack.Screen name="VirtualLab" component={VirtualLab} options={{ header: () => <SimpleHeader /> }}/>
+        <Stack.Screen name="VirtualLab" component={VirtualLab} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="ArticleDetails" component={ArticleDetailsScreen} options={{ headerShown: false, tabBarVisible: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
