@@ -7,6 +7,9 @@ const VirtualLab = ({ route }) => {
   const [labData, setLabData] = useState(null);
   const [followers, setFollowers] = useState([]);
   const [members, setMembers] = useState([]);
+  const [institutes, setInstitutes] = useState([]);
+  const [topics, setTopics] = useState([]);
+
 
   useEffect(() => {
     fetchLabData();
@@ -19,10 +22,29 @@ const VirtualLab = ({ route }) => {
       setLabData(data);
       fetchUserData(data.followers, setFollowers);
       fetchUserData(data.members, setMembers);
+      fetchInstituteData(data.institute);
+      setTopics(data.topics || []);
     } catch (error) {
       console.error('Error fetching lab data:', error);
     }
   };
+
+const fetchInstituteData = async (instituteList) => {
+  try {
+    const instituteData = await Promise.all(
+      instituteList.map(async (institute) => {
+        const response = await fetch(`http://3.17.219.54/university/${institute.instituteID}`);
+        return response.json();
+      })
+    );
+
+    const sortedInstitutes = instituteData.sort((a, b) => b.score - a.score);
+
+    setInstitutes(sortedInstitutes);
+  } catch (error) {
+    console.error('Error fetching institute data:', error);
+  }
+};
 
   const fetchUserData = async (userList, setUserList) => {
     try {
@@ -38,8 +60,17 @@ const VirtualLab = ({ route }) => {
     }
   };
 
+  const renderTopic = (topic) => (
+    <View key={topic._id} style={styles.topicContainer}>
+      <Text style={styles.topicTitle}>{topic.name}</Text>
+      <View style={styles.gaugeContainer}>
+        <View style={[styles.gauge, { width: `${topic.gage}%` }]} />
+      </View>
+    </View>
+  );  
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.labTitle}>{labData?.name}</Text>
 
       <View style={styles.sectionContainer}>
@@ -59,7 +90,24 @@ const VirtualLab = ({ route }) => {
           ))}
         </ScrollView>
       </View>
-    </View>
+
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Leaders</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
+          {institutes.map((institute) => (
+            <View key={institute._id} style={styles.instituteImage}>
+              <Image source={{ uri: institute.iconurl }} style={styles.image} />
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Ongoing Research</Text>
+        {topics.map(renderTopic)}
+      </View>
+
+    </ScrollView>
   );
 };
 
@@ -72,7 +120,7 @@ const styles = StyleSheet.create({
     fontSize: sizes.title,
     color: colors.black,
     textAlign: 'center',
-    marginTop: spacing.m,
+    marginTop: spacing.l*2,
     marginBottom: spacing.m,
   },
   sectionContainer: {
@@ -88,10 +136,46 @@ const styles = StyleSheet.create({
     paddingLeft: spacing.s,
   },
   profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: spacing.s,
+    width: 45,
+    height: 45,
+    overflow: 'hidden',
+    marginLeft: spacing.s,
+  },
+  instituteImage: {
+    width: 45,
+    height: 45,
+    overflow: 'hidden',
+    marginLeft: spacing.s
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  topicContainer: {
+    backgroundColor: colors.darkblue,
+    borderRadius: 10,
+    padding: spacing.s,
+    marginVertical: spacing.xs,
+    marginHorizontal: spacing.s,
+    marginBottom: spacing.l,
+  },
+  topicTitle: {
+    fontSize: sizes.h2,
+    color: colors.black,
+    color: colors.white,
+  },
+  gaugeContainer: {
+    height: 10,
+    backgroundColor: colors.white,
+    borderRadius: 5,
+    marginTop: spacing.xs,
+    overflow: 'hidden',
+  },
+  gauge: {
+    height: '100%',
+    backgroundColor: colors.green,
+    borderRadius: 5,
   },
 });
 

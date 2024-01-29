@@ -91,13 +91,13 @@ const styles = StyleSheet.create({
   },
   labContainer: {
     alignItems: 'center',
-    width: Dimensions.get('window').width / 3 - spacing.m,
+    width: (Dimensions.get('window').width / 2) - spacing.m, // Adjusted width
     margin: spacing.s,
   },
   labButton: {
-    width: Dimensions.get('window').width / 3 - spacing.m,
-    height: Dimensions.get('window').width / 3 - spacing.m,
-    borderRadius: (Dimensions.get('window').width / 3 - spacing.m) / 2,
+    width: (Dimensions.get('window').width / 2) - (2 * spacing.m), // Adjusted width
+    height: (Dimensions.get('window').width / 2) - (2 * spacing.m), // Adjusted height to maintain aspect ratio
+    borderRadius: sizes.radius,
     alignItems: 'center',
     justifyContent: 'center',
   },
