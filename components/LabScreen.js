@@ -6,9 +6,16 @@ import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, 
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-// Define base radius and increment
-const baseRadius = 30; // Starting radius for the first circle
-const radiusIncrement = 100; // Radius increment for each subsequent circle
+const hexSize = 80; // Assume each hexagon's side length is 50 units
+const hexHeight = Math.sqrt(3) * hexSize; // Vertical distance between hexagon centers
+const hexWidth = 2 * hexSize; // Horizontal distance between hexagon centers
+
+const MAX_SCALE = 4; // Maximum zoom level
+const MIN_SCALE = 1; // Minimum zoom level (normal size)
+
+const CONTENT_WIDTH = SCREEN_WIDTH * 2; // Adjust based on your content size
+const CONTENT_HEIGHT = SCREEN_HEIGHT * 1.5; // Adjust based on your content size
+
 
 const LabScreen = () => {
   const navigation = useNavigation();
@@ -41,9 +48,15 @@ const LabScreen = () => {
       ctx.startY = translateY.value;
     },
     onActive: (event, ctx) => {
-      translateX.value = ctx.startX + event.translationX;
-      translateY.value = ctx.startY + event.translationY;
+      // Calculate proposed translation
+      const proposedTranslateX = ctx.startX + event.translationX;
+      const proposedTranslateY = ctx.startY + event.translationY;
+    
+      // Apply limits to prevent moving content out of view
+      translateX.value = Math.min(Math.max(proposedTranslateX, -CONTENT_WIDTH + SCREEN_WIDTH), 0);
+      translateY.value = Math.min(Math.max(proposedTranslateY, -CONTENT_HEIGHT + SCREEN_HEIGHT), 0);
     },
+    
   });
 
   // Pinch (zoom) gesture handler
@@ -58,17 +71,14 @@ const LabScreen = () => {
       ctx.focalY = event.focalY - SCREEN_HEIGHT / 2;
     },
     onActive: (event, ctx) => {
-      // Update scale
-      scale.value = event.scale * ctx.startScale;
-
-      // Calculate zoom focus shift
-      const focusX = event.focalX - SCREEN_WIDTH / 2;
-      const focusY = event.focalY - SCREEN_HEIGHT / 2;
-
-      // Adjust translate values based on the scale and focal point
-      translateX.value = ctx.startX + (focusX - ctx.focalX) * (1 - scale.value);
-      translateY.value = ctx.startY + (focusY - ctx.focalY) * (1 - scale.value);
+      const newScale = event.scale * ctx.startScale;
+      scale.value = Math.max(MIN_SCALE, Math.min(newScale, MAX_SCALE));
+    
+      // Adjust translate values to keep the zoom centered on the pinch
+      // This might require recalculating translateX and translateY based on the new scale
+      // to ensure the content remains centered and within bounds
     },
+    
     onEnd: () => {
       // Additional logic to limit zoom or adjust end position can be added here
     },
@@ -86,21 +96,18 @@ const LabScreen = () => {
     };
   });
 
-  // Calculate lab position
-  const calculatePosition = (index, totalLabs) => {
-    // Determine which circle the lab is on based on its index and the desired number of labs per circle
-    const circleIndex = Math.floor(Math.sqrt(index)); // Simplified formula for distributing labs across circles
-    const radius = baseRadius + circleIndex * radiusIncrement;
-    const labsOnThisCircle = circleIndex * 6 + 6; // Approximate formula for number of labs on the current circle, adjust based on your needs
-
-    // Calculate angle and position for the lab on its circle
-    const angle = (index % labsOnThisCircle) * (2 * Math.PI / labsOnThisCircle);
-    const x = radius * Math.cos(angle) + SCREEN_WIDTH / 2;
-    const y = radius * Math.sin(angle) + SCREEN_HEIGHT / 2;
-
-    return { left: x, top: y };
+  const calculatePosition = (index) => {
+    // Calculate row and column for hex grid (0-indexed)
+    const row = Math.floor(index / 3); // Example row calculation, adjust based on your grid
+    const col = index % 3; // Example column calculation, adjust as necessary
+  
+    // For a flat-topped hexagon grid
+    const x = col * hexWidth + (row % 2) * hexWidth / 2;
+    const y = row * hexHeight * 0.75; // 0.75 accounts for the overlap in hexagon height
+  
+    return { left: x + (SCREEN_WIDTH - hexWidth) / 2, top: y + (SCREEN_HEIGHT - hexHeight) / 2 };
   };
-
+  
 
   const renderLab = (lab, index) => {
     const position = calculatePosition(index, labs.length);
