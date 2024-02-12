@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Dimensions } from 'react-native';
 import { colors, sizes, spacing } from '../theme';
 
+const ICON_SIZE = 35;
+
 const VirtualLab = ({ route }) => {
   const { labId } = route.params;
   const [labData, setLabData] = useState(null);
@@ -136,14 +138,14 @@ const styles = StyleSheet.create({
     paddingLeft: spacing.s,
   },
   profileImage: {
-    width: 45,
-    height: 45,
+    width: ICON_SIZE,
+    height: ICON_SIZE,
     overflow: 'hidden',
     marginLeft: spacing.s,
   },
   instituteImage: {
-    width: 45,
-    height: 45,
+    width: ICON_SIZE,
+    height: ICON_SIZE,
     overflow: 'hidden',
     marginLeft: spacing.s
   },
