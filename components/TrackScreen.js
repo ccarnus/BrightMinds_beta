@@ -259,7 +259,7 @@ const TrackScreen = () => {
   return (
     <Tab.Navigator
     initialRouteName='TrackProgressTab'
-      tabBarOptions={{
+    screenOptions={{
         labelStyle: { fontSize: 0},
         tabStyle: { width: 120 },
         style: { backgroundColor: colors.white },
