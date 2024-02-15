@@ -6,7 +6,7 @@ import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, 
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const hexSize = 80; // Assume each hexagon's side length is 50 units
+const hexSize = 110; // Assume each hexagon's side length is 50 units
 const hexHeight = Math.sqrt(3) * hexSize; // Vertical distance between hexagon centers
 const hexWidth = 2 * hexSize; // Horizontal distance between hexagon centers
 
@@ -162,12 +162,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   labImage: {
-    width: '60%',
-    height: '60%',
+    width: '100%',
+    height: '100%',
   },
   labText: {
     fontSize: 12,
     textAlign: 'center',
+    width:100
   },
 });
 export default LabScreen;
