@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image, Text, Dimensions } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import { PanGestureHandler, PinchGestureHandler } from 'react-native-gesture-handler';
 import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { colors, sizes, spacing } from './theme';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -11,7 +12,7 @@ const hexHeight = Math.sqrt(3) * hexSize; // Vertical distance between hexagon c
 const hexWidth = 2 * hexSize; // Horizontal distance between hexagon centers
 
 const MAX_SCALE = 4; // Maximum zoom level
-const MIN_SCALE = 1; // Minimum zoom level (normal size)
+const MIN_SCALE = 0.5; // Minimum zoom level (normal size)
 
 const CONTENT_WIDTH = SCREEN_WIDTH * 2; // Adjust based on your content size
 const CONTENT_HEIGHT = SCREEN_HEIGHT * 1.5; // Adjust based on your content size
@@ -39,7 +40,7 @@ const LabScreen = () => {
   // Shared values for pan and zoom
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
-  const scale = useSharedValue(1);
+  const scale = useSharedValue(MAX_SCALE);
 
   // Pan gesture handler
   const panGestureEvent = useAnimatedGestureHandler({
@@ -117,7 +118,7 @@ const LabScreen = () => {
         style={[styles.labContainer, { position: 'absolute', left: position.left, top: position.top }]}
         onPress={() => navigation.navigate('VirtualLab', { labId: lab._id })}
       >
-        <Image source={{ uri: lab.iconurl }} style={styles.labImage} />
+        <Image source={{ uri: lab.iconurl }} style={styles.labImage} resizeMode="contain" />
         <Text style={styles.labText}>{lab.name}</Text>
       </TouchableOpacity>
     );
@@ -141,6 +142,7 @@ const LabScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.lightblue,
   },
   wrapper: {
     width: SCREEN_WIDTH,
@@ -164,6 +166,7 @@ const styles = StyleSheet.create({
   labImage: {
     width: '100%',
     height: '100%',
+    resizeMode: 'contain', 
   },
   labText: {
     fontSize: 12,
