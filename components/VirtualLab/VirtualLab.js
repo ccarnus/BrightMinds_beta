@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { colors, sizes, spacing } from '../theme';
-
-const ICON_SIZE = 35;
+import PolarStarIcon from '../../assets/Virtual_lab_icons/star_icon.png';
+import IcebergIcon from '../../assets/Virtual_lab_icons/iceberg_icon.png';
+import InfoIcon from '../../assets/Virtual_lab_icons/info_icon.png';
+import CompassIcon from '../../assets/Virtual_lab_icons/compass_icon.png';
+const { width, height } = Dimensions.get('window');
 
 const VirtualLab = ({ route }) => {
   const { labId } = route.params;
   const [labData, setLabData] = useState(null);
-  const [followers, setFollowers] = useState([]);
-  const [members, setMembers] = useState([]);
-  const [institutes, setInstitutes] = useState([]);
   const [topics, setTopics] = useState([]);
-
 
   useEffect(() => {
     fetchLabData();
@@ -22,161 +21,130 @@ const VirtualLab = ({ route }) => {
       const response = await fetch(`http://3.17.219.54/virtual/lab/${labId}`);
       const data = await response.json();
       setLabData(data);
-      fetchUserData(data.followers, setFollowers);
-      fetchUserData(data.members, setMembers);
-      fetchInstituteData(data.institute);
-      setTopics(data.topics || []);
+      // Sort topics by gauge value in descending order
+      const sortedTopics = (data.topics || []).sort((a, b) => b.gage - a.gage);
+      setTopics(sortedTopics);
     } catch (error) {
       console.error('Error fetching lab data:', error);
     }
   };
 
-const fetchInstituteData = async (instituteList) => {
-  try {
-    const instituteData = await Promise.all(
-      instituteList.map(async (institute) => {
-        const response = await fetch(`http://3.17.219.54/university/${institute.instituteID}`);
-        return response.json();
-      })
-    );
-
-    const sortedInstitutes = instituteData.sort((a, b) => b.score - a.score);
-
-    setInstitutes(sortedInstitutes);
-  } catch (error) {
-    console.error('Error fetching institute data:', error);
-  }
-};
-
-  const fetchUserData = async (userList, setUserList) => {
-    try {
-      const profiles = await Promise.all(
-        userList.map(async (user) => {
-          const response = await fetch(`http://3.17.219.54/user/${user.userID || user.brightmindsID}`);
-          return response.json();
-        })
-      );
-      setUserList(profiles);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
-
   const renderTopic = (topic) => (
-    <View key={topic._id} style={styles.topicContainer}>
-      <Text style={styles.topicTitle}>{topic.name}</Text>
-      <View style={styles.gaugeContainer}>
-        <View style={[styles.gauge, { width: `${topic.gage}%` }]} />
+    <TouchableOpacity key={topic._id} style={styles.topicContainer}>
+      <Image source={IcebergIcon} style={styles.iconStyle} />
+      <View style={styles.topicTextContainer}>
+        <Text style={styles.topicTitle}>{topic.name}</Text>
+        <View style={styles.gaugeContainer}>
+          <View style={[styles.gauge, { width: `${topic.gage}%` }]} />
+        </View>
       </View>
-    </View>
-  );  
+    </TouchableOpacity>
+  );
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.labTitle}>{labData?.name}</Text>
-
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Followers</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
-          {followers.map((follower) => (
-            <Image key={follower._id} source={{ uri: follower.profilePictureUrl }} style={styles.profileImage} />
-          ))}
-        </ScrollView>
+    <View style={styles.container}>
+      <View style={styles.topSection}>
+        <View style={styles.titleOverlay}>
+          <Image source={PolarStarIcon} style={styles.polarStarIcon} />
+          <Text style={styles.labTitle}>{labData?.name || 'Exploring the Iceberg'}</Text>
+        </View>
+        <View style={styles.topRightButtons}>
+          <TouchableOpacity>
+            <Image source={InfoIcon} style={styles.topRightIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image source={CompassIcon} style={styles.topRightIcon} />
+          </TouchableOpacity>
+        </View>
       </View>
-
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Members</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
-          {members.map((member) => (
-            <Image key={member._id} source={{ uri: member.profilePictureUrl }} style={styles.profileImage} />
-          ))}
-        </ScrollView>
-      </View>
-
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Leaders</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
-          {institutes.map((institute) => (
-            <View key={institute._id} style={styles.instituteImage}>
-              <Image source={{ uri: institute.iconurl }} style={styles.image} />
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Ongoing Research</Text>
-        {topics.map(renderTopic)}
-      </View>
-
-    </ScrollView>
+      <ScrollView style={styles.bottomSection}>
+        <View style={styles.sectionContainer}>
+          {topics.map(renderTopic)}
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+  },
+  topSection: {
+    backgroundColor: colors.white, // Sky part
+    height: height / 3, // Static top 1/3 of the screen
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  titleOverlay: {
+    position: 'absolute',
+    top: spacing.m,
+    alignItems: 'center',
+  },
+  topRightButtons: {
+    position: 'absolute',
+    right: spacing.m,
+    top: spacing.m,
+    alignItems: 'center',
+  },
+  polarStarIcon: {
+    width: 100,
+    height: 100,
+    position: 'absolute',
+    top: 0,
   },
   labTitle: {
     fontSize: sizes.title,
-    color: colors.black,
+    color: colors.darkblue,
     textAlign: 'center',
-    marginTop: spacing.l*2,
-    marginBottom: spacing.m,
+    marginTop: 50, // Adjust this value based on the star icon's size and desired overlap
+  },
+  bottomSection: {
+    backgroundColor: colors.darkblue, // Water part
+    height: (2 * height) / 3, // Scrollable bottom 2/3 of the screen
+  },
+  topRightIcon: {
+    width: 40,
+    height: 40,
+    marginVertical: spacing.xs,
   },
   sectionContainer: {
-    marginBottom: spacing.m,
-  },
-  sectionTitle: {
-    fontSize: sizes.h3,
-    color: colors.black,
-    marginLeft: spacing.s,
-    marginBottom: spacing.xs,
-  },
-  scrollContainer: {
-    paddingLeft: spacing.s,
-  },
-  profileImage: {
-    width: ICON_SIZE,
-    height: ICON_SIZE,
-    overflow: 'hidden',
-    marginLeft: spacing.s,
-  },
-  instituteImage: {
-    width: ICON_SIZE,
-    height: ICON_SIZE,
-    overflow: 'hidden',
-    marginLeft: spacing.s
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain',
+    alignItems: 'center',
+    paddingBottom: spacing.l,
   },
   topicContainer: {
-    backgroundColor: colors.darkblue,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.white,
     borderRadius: 10,
     padding: spacing.s,
     marginVertical: spacing.xs,
-    marginHorizontal: spacing.s,
-    marginBottom: spacing.l,
+    width: width - 2 * spacing.s,
+    alignSelf: 'center',
+  },
+  iconStyle: {
+    width: 40,
+    height: 40,
+    marginRight: spacing.s,
+    resizeMode: 'contain', 
+  },
+  topicTextContainer: {
+    flex: 1,
   },
   topicTitle: {
     fontSize: sizes.h2,
-    color: colors.black,
-    color: colors.white,
+    color: colors.darkblue,
   },
   gaugeContainer: {
     height: 10,
-    backgroundColor: colors.white,
+    backgroundColor: colors.gray,
     borderRadius: 5,
-    marginTop: spacing.xs,
     overflow: 'hidden',
   },
   gauge: {
     height: '100%',
-    backgroundColor: colors.green,
+    backgroundColor: colors.blue,
     borderRadius: 5,
   },
 });
