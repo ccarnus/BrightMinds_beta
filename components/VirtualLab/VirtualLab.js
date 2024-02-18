@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topSection: {
-    backgroundColor: colors.white, // Sky part
     height: height / 3, // Static top 1/3 of the screen
     justifyContent: 'center',
     alignItems: 'center',
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
   topRightButtons: {
     position: 'absolute',
     right: spacing.m,
-    top: spacing.l*2,
+    bottom: spacing.l,
     alignItems: 'center',
   },
   polarStarIcon: {
@@ -110,7 +109,8 @@ const styles = StyleSheet.create({
     fontSize: sizes.title,
     color: colors.darkblue,
     textAlign: 'center',
-    marginTop: 50, // Adjust this value based on the star icon's size and desired overlap
+    marginTop: 60,
+    fontFamily: "Montserrat",
   },
   bottomSection: {
     backgroundColor: colors.darkblue, // Water part
@@ -150,12 +150,14 @@ const styles = StyleSheet.create({
   },
   gaugeContainer: {
     height: 10,
-    backgroundColor: colors.black,
+    backgroundColor: colors.white,
+    borderColor: colors.white,
     borderRadius: 5,
+    marginTop: 5,
   },
   gauge: {
     height: '100%',
-    backgroundColor: colors.blue,
+    backgroundColor: colors.lightblue,
     borderRadius: 5,
   },
 });
