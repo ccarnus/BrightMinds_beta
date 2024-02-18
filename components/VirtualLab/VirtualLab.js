@@ -5,6 +5,9 @@ import PolarStarIcon from '../../assets/Virtual_lab_icons/star_icon.png';
 import IcebergIcon from '../../assets/Virtual_lab_icons/iceberg_icon.png';
 import InfoIcon from '../../assets/Virtual_lab_icons/info_icon.png';
 import CompassIcon from '../../assets/Virtual_lab_icons/compass_icon.png';
+import MainIcebergIcon from '../../assets/Virtual_lab_icons/main_iceberg_icon.png';
+import { LinearGradient } from 'expo-linear-gradient';
+
 const { width, height } = Dimensions.get('window');
 
 const VirtualLab = ({ route }) => {
@@ -43,7 +46,10 @@ const VirtualLab = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topSection}>
+      <LinearGradient
+        colors={[colors.white, colors.lightblue, colors.darkblue]}
+        style={styles.topSection}>
+        <Image source={MainIcebergIcon} style={styles.mainIcebergIcon} />
         <View style={styles.titleOverlay}>
           <Image source={PolarStarIcon} style={styles.polarStarIcon} />
           <Text style={styles.labTitle}>{labData?.name || 'Exploring the Iceberg'}</Text>
@@ -56,7 +62,7 @@ const VirtualLab = ({ route }) => {
             <Image source={CompassIcon} style={styles.topRightIcon} />
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
       <ScrollView style={styles.bottomSection}>
         <View style={styles.sectionContainer}>
           {topics.map(renderTopic)}
@@ -77,6 +83,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
   },
+  mainIcebergIcon: {
+    position: 'relative',
+    marginBottom: -100,
+    width: '100%', // Ensure it spans the entire width
+    resizeMode: 'contain', // Keep aspect ratio
+  },
   titleOverlay: {
     position: 'absolute',
     top: spacing.m,
@@ -85,7 +97,7 @@ const styles = StyleSheet.create({
   topRightButtons: {
     position: 'absolute',
     right: spacing.m,
-    top: spacing.m,
+    top: spacing.l*2,
     alignItems: 'center',
   },
   polarStarIcon: {
@@ -105,9 +117,9 @@ const styles = StyleSheet.create({
     height: (2 * height) / 3, // Scrollable bottom 2/3 of the screen
   },
   topRightIcon: {
-    width: 40,
-    height: 40,
-    marginVertical: spacing.xs,
+    width: 30,
+    height: 30,
+    marginVertical: spacing.s,
   },
   sectionContainer: {
     alignItems: 'center',
@@ -116,16 +128,16 @@ const styles = StyleSheet.create({
   topicContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkblue,
     borderRadius: 10,
     padding: spacing.s,
-    marginVertical: spacing.xs,
+    marginVertical: spacing.l,
     width: width - 2 * spacing.s,
     alignSelf: 'center',
   },
   iconStyle: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
     marginRight: spacing.s,
     resizeMode: 'contain', 
   },
@@ -134,13 +146,12 @@ const styles = StyleSheet.create({
   },
   topicTitle: {
     fontSize: sizes.h2,
-    color: colors.darkblue,
+    color: colors.white,
   },
   gaugeContainer: {
     height: 10,
-    backgroundColor: colors.gray,
+    backgroundColor: colors.black,
     borderRadius: 5,
-    overflow: 'hidden',
   },
   gauge: {
     height: '100%',

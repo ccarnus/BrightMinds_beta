@@ -11,8 +11,9 @@ const hexSize = 110; // Assume each hexagon's side length is 50 units
 const hexHeight = Math.sqrt(3) * hexSize; // Vertical distance between hexagon centers
 const hexWidth = 2 * hexSize; // Horizontal distance between hexagon centers
 
-const MAX_SCALE = 4; // Maximum zoom level
-const MIN_SCALE = 0.5; // Minimum zoom level (normal size)
+const MAX_SCALE = 1.5;
+const MIN_SCALE = 0.5;
+const START_SCALE = 1;
 
 const CONTENT_WIDTH = SCREEN_WIDTH * 2; // Adjust based on your content size
 const CONTENT_HEIGHT = SCREEN_HEIGHT * 1.5; // Adjust based on your content size
@@ -40,7 +41,7 @@ const LabScreen = () => {
   // Shared values for pan and zoom
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
-  const scale = useSharedValue(MAX_SCALE);
+  const scale = useSharedValue(START_SCALE);
 
   // Pan gesture handler
   const panGestureEvent = useAnimatedGestureHandler({
