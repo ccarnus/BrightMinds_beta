@@ -143,7 +143,7 @@ const LabScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.lightblue,
+    backgroundColor: colors.darkblue,
   },
   wrapper: {
     width: SCREEN_WIDTH,
@@ -172,7 +172,8 @@ const styles = StyleSheet.create({
   labText: {
     fontSize: 12,
     textAlign: 'center',
-    width:100
+    width:100,
+    fontFamily: 'MontserratBold',
   },
 });
 export default LabScreen;

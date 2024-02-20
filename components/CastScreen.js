@@ -16,8 +16,8 @@ const CastScreen = () => {
   const [allCasts, setAllCasts] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const starIcon = require('../assets/Cast_screen_icons/star_icon.png');
-  const trendingIcon = require('../assets/Cast_screen_icons/rocket_icon.png');
+  const forYou = require('../assets/Cast_screen_icons/foryou_icon.png');
+  const trendingIcon = require('../assets/Cast_screen_icons/trending_icon.png');
   const articleIcon = require('../assets/Cast_screen_icons/article_logo.png');
   const castIcon = require('../assets/Cast_screen_icons/cast_logo.png');
   const podcastIcon = require('../assets/Cast_screen_icons/podcast_logo.png');
@@ -164,7 +164,7 @@ const CastScreen = () => {
           ) : (
             <>
               <View style={styles.categoryHeader}>
-                <Image source={starIcon} style={styles.categoryIcon} />
+                <Image source={forYou} style={styles.categoryIcon} />
                 <Text style={styles.categoryTitle}>For you</Text>
               </View>
               <Carousel list={SuggestedCastData} carouselType="suggested" />
@@ -253,11 +253,12 @@ const styles = StyleSheet.create({
   categoryTitle: {
     fontSize: sizes.h2,
     color: colors.black,
+    fontFamily: 'MontserratBold',
   },
   categoryIcon: {
-    width: 32,
-    height: 30,
-    marginRight: 15,
+    width: 28,
+    height: 28,
+    marginRight: spacing.s,
   },
   
   

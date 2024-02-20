@@ -38,11 +38,20 @@ const VirtualLab = ({ route }) => {
       <View style={styles.topicTextContainer}>
         <Text style={styles.topicTitle}>{topic.name}</Text>
         <View style={styles.gaugeContainer}>
-          <View style={[styles.gauge, { width: `${topic.gage}%` }]} />
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            colors={[colors.lightblue, colors.darkblue]}
+            style={[styles.gauge, { width: `${topic.gage}%` }]}
+          />
+          <View style={styles.gaugePercentageContainer}>
+            <Text style={styles.gaugePercentageText}>{`${topic.gage}%`}</Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
   );
+  
 
   return (
     <View style={styles.container}>
@@ -110,7 +119,9 @@ const styles = StyleSheet.create({
     color: colors.darkblue,
     textAlign: 'center',
     marginTop: 60,
-    fontFamily: "Montserrat",
+    marginLeft:10,
+    marginRight:10,
+    fontFamily: "MontserratBold",
   },
   bottomSection: {
     backgroundColor: colors.darkblue, // Water part
@@ -147,18 +158,32 @@ const styles = StyleSheet.create({
   topicTitle: {
     fontSize: sizes.h2,
     color: colors.white,
+    fontFamily: "Montserrat",
   },
   gaugeContainer: {
-    height: 10,
-    backgroundColor: colors.white,
-    borderColor: colors.white,
+    height: 20, // Increased height for better visibility
+    backgroundColor: colors.gray,
     borderRadius: 5,
     marginTop: 5,
+    position: 'relative', // Needed to position the percentage text absolutely within
+    justifyContent: 'center', // Center the text vertically
   },
   gauge: {
     height: '100%',
     backgroundColor: colors.lightblue,
     borderRadius: 5,
+  },
+  gaugePercentageContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gaugePercentageText: {
+    color: colors.white, // Assuming white color for the percentage text
+    fontSize: sizes.body,
+    fontFamily: 'MontserratBold',
   },
 });
 
