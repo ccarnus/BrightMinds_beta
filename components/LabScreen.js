@@ -7,7 +7,7 @@ import { colors, sizes, spacing } from './theme';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const hexSize = 110; // Assume each hexagon's side length is 50 units
+const hexSize = 140; // Assume each hexagon's side length is 50 units
 const hexHeight = Math.sqrt(3) * hexSize; // Vertical distance between hexagon centers
 const hexWidth = 2 * hexSize; // Horizontal distance between hexagon centers
 
@@ -158,22 +158,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   labContainer: {
-    // Adjust size as needed
-    width: 100,
+    width: 150,
     height: 100,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: spacing.s
   },
   labImage: {
-    width: '100%',
-    height: '100%',
+    width: 100,
+    height: 100,
     resizeMode: 'contain', 
   },
   labText: {
-    fontSize: 12,
+    fontSize: sizes.h3,
     textAlign: 'center',
-    width:100,
     fontFamily: 'MontserratBold',
+    color: colors.white,
   },
 });
 export default LabScreen;

@@ -54,7 +54,7 @@ const ProfileScreen = () => {
             <View style={styles.buttonContainer}>
               <Text style={styles.streakText}>{streak}</Text>
               <Image
-                source={require('../assets/Profile_icons/streak_02.png')}
+                source={require('../assets/Profile_icons/streak_icon.png')}
                 style={styles.streakImage}
               />
             </View>
@@ -86,8 +86,8 @@ const ProfileScreen = () => {
                     onSlidingComplete={(newValue) => handleSliderComplete(pref.category, newValue * 100)}
                     minimumValue={0}
                     maximumValue={1}
-                    minimumTrackTintColor={colors.darkblue}
-                    maximumTrackTintColor={colors.grey}
+                    minimumTrackTintColor={colors.black}
+                    maximumTrackTintColor={colors.white}
                   />
                 </View>
               </View>
@@ -120,17 +120,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     height: height / 3,
+    backgroundColor: colors.darkblue,
   },
   lowerSection: {
     flex: 2,
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkblue,
     alignItems: 'center',
   },
   lowerSectionContainer: {
     alignItems: 'center',
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkblue,
     borderWidth: 3,
-    borderColor: colors.darkblue,
+    borderColor: colors.white,
     width: width*0.9,
     marginTop: spacing.m,
     borderRadius: sizes.radius,
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
   score: {
     fontSize: sizes.h3,
     fontWeight: 'bold',
-    color: colors.black,
+    color: colors.white,
   },
   preferenceContainer: {
     flexDirection: 'row',
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
   },
   preferenceText: {
     fontSize: sizes.h3,
-    color: colors.darkblue,
+    color: colors.white,
     textAlign: "center",
   },
   slider: {
@@ -174,12 +175,12 @@ const styles = StyleSheet.create({
   },
   department: {
     fontSize: sizes.h2,
-    color: colors.black,
+    color: colors.white,
     marginBottom: 10,
     textAlign: 'center',
   },
   buttonContainer: {
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.white,
     borderRadius: sizes.radius,
     paddingVertical: 10,
     justifyContent: 'center',
@@ -196,7 +197,6 @@ const styles = StyleSheet.create({
     bottom: -15,
     alignSelf: 'center',
     backgroundColor: colors.white,
-    color: 'white',
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: sizes.radius,
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   },
   preferencesTitle: {
     fontSize: sizes.h2,
-    color: colors.darkblue,
+    color: colors.white,
     marginBottom: 10,
     marginTop: spacing.s,
   },
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonObjectiveContainer: {
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.white,
     borderRadius: sizes.radius,
     paddingVertical: 10,
     width: width * 0.5,
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   objectiveText: {
     fontSize: sizes.h2,
-    color: 'white',
+    color: colors.black,
   },
   lowerSectionScrollView: {
     marginBottom: spacing.l,

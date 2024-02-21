@@ -130,7 +130,7 @@ const CastScreen = () => {
     <View style={styles.container}>
       {isLoading ? (
         <View style={styles.refreshIndicator}>
-          <ActivityIndicator size="large" color={colors.black} />
+          <ActivityIndicator size="large" color={colors.white} />
         </View>
       ) : (
         <ScrollView
@@ -147,6 +147,7 @@ const CastScreen = () => {
               style={styles.searchBar}
               placeholder="Search casts..."
               onChangeText={handleSearch}
+              placeholderTextColor={colors.white}
               value={searchQuery}
             />
             {searchQuery.length > 0 && (
@@ -195,7 +196,7 @@ const CastScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkblue,
   },
   floatingButton: {
     position: 'absolute',
@@ -223,16 +224,20 @@ const styles = StyleSheet.create({
   searchResultItem: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: 'lightgray',
+    borderBottomColor: colors.darkblue,
   },
   searchBarContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
     margin: 10,
-    borderColor: 'gray',
-    borderWidth: 1,
+    borderColor: 'white',
+    borderWidth: 2,
     borderRadius: sizes.radius,
+    colors: colors.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    marginTop: spacing.m,
+    marginBottom: spacing.s,
   },
   searchBar: {
     flex: 1,
@@ -241,18 +246,19 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   clearButtonText: {
-    color: 'gray',
+    color: colors.white,
     fontSize: 20,
   },
   categoryHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: spacing.s,
+    marginBottom: spacing.m,
+    marginTop: spacing.l,
     marginLeft: spacing.s,
   },
   categoryTitle: {
     fontSize: sizes.h2,
-    color: colors.black,
+    color: colors.white,
     fontFamily: 'MontserratBold',
   },
   categoryIcon: {
@@ -260,8 +266,6 @@ const styles = StyleSheet.create({
     height: 28,
     marginRight: spacing.s,
   },
-  
-  
 });
 
 export default CastScreen;

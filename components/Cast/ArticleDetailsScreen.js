@@ -94,7 +94,12 @@
     return (
         <ScrollView style={styles.container}>
             <Image source={{ uri: article.articleimageurl }} style={styles.image} />
-            {universityLogo && <Image source={{ uri: universityLogo }} style={styles.universityLogo} />}
+            {universityLogo && (
+              <View style={styles.universityContainer}>
+                <Image source={{ uri: universityLogo }} style={styles.universityLogo} />
+                <Text style={styles.universityName}>{article.university}</Text>
+              </View>
+            )}
             
             <View style={styles.infoDisplay}>
                 <Text style={styles.infoText}>{getDaysSincePosted(article.dateAdded)} days ago</Text>
@@ -137,15 +142,16 @@
         padding: spacing.m,
     },
     title: {
-        fontSize: sizes.title,
-        fontWeight: 'bold',
-        marginBottom: spacing.s,
-        textAlign:"justify",
+        fontSize: sizes.h1,
+        marginBottom: spacing.m,
+        fontFamily: "MontserratBold",
+        textAlign: "center",
     },
     description: {
         fontSize: sizes.h3,
         color: colors.text,
         textAlign:"justify",
+        fontFamily: "Montserrat",
     },
     detail: {
         fontSize: sizes.h1,
@@ -157,12 +163,25 @@
         justifyContent: 'center',
         alignItems: 'center',
     },
+    universityContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+      marginVertical: spacing.m,
+    },
+    
     universityLogo: {
-        width: 30,
-        height: 30,
-        resizeMode: 'contain',
-        alignSelf: 'center',
-        marginVertical: spacing.m,
+      width: 45,
+      height: 45,
+      resizeMode: 'contain',
+    },
+    
+    universityName: {
+      fontSize: sizes.h3,
+      color: colors.black,
+      marginLeft: spacing.s,
+      fontFamily: 'Montserrat',
     },
     buttonContainer: {
         alignItems: 'center',
@@ -180,14 +199,16 @@
         color: colors.white,
         fontSize: sizes.title,
         textAlign: 'center',
+        fontFamily: "MontserratBold",
       },
       buttonAccessText: {
         color: colors.white,
         fontSize: sizes.h2,
         textAlign: 'center',
+        fontFamily: "MontserratBold",
       },
     infoDisplay: {
-        backgroundColor: 'rgba(11, 11, 11, 0.5)',
+        backgroundColor: colors.darkblue,
         paddingVertical: spacing.xs,
         paddingHorizontal: spacing.m,
         borderRadius: sizes.radius,
@@ -199,14 +220,16 @@
         marginBottom: spacing.m,
       },
       infoText: {
-        fontSize: sizes.h3,
+        fontSize: sizes.h4,
         color: colors.white,
         paddingHorizontal: spacing.xs,
+        fontFamily: "MontserratBold",
       },
       separator: {
         fontSize: sizes.title,
         color: colors.white,
         paddingHorizontal: spacing.xs,
+        fontFamily: "MontserratBold",
       },
     });
 
