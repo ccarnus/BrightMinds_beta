@@ -7,6 +7,7 @@
     const { selectedArticleId } = route.params;
     const [article, setArticle] = useState(null);
     const [universityLogo, setUniversityLogo] = useState(null);
+    const [author, setAuthor] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigation = useNavigation();
     const userId = "6474e4001eec5ee1ecd40180";
@@ -25,9 +26,22 @@
             setIsLoading(false);
         }
         };
-
         fetchArticle();
     }, [selectedArticleId]);
+
+    useEffect(() => {
+      const fetchAuthor = async () => {
+        try {
+          const response = await fetch('http://3.17.219.54/user/6474e4d31eec5ee1ecd40194');
+          const data = await response.json();
+          setAuthor(data);
+        } catch (error) {
+          console.error('Error fetching author data:', error);
+        }
+      };
+  
+      fetchAuthor();
+    }, []);
 
     const fetchUniversityLogo = async (universityName) => {
         try {
@@ -40,7 +54,7 @@
     };
 
     const handleAddToCastList = async () => {
-        const castId = selectedArticleId; // Assuming the article ID corresponds to the cast ID to be added
+        const castId = selectedArticleId;
         const url = `http://3.17.219.54/user/add/cast/${userId}`;
       
         try {
@@ -95,9 +109,16 @@
         <ScrollView style={styles.container}>
             <Image source={{ uri: article.articleimageurl }} style={styles.image} />
             {universityLogo && (
-              <View style={styles.universityContainer}>
-                <Image source={{ uri: universityLogo }} style={styles.universityLogo} />
-                <Text style={styles.universityName}>{article.university}</Text>
+              <View style={styles.iconContainer}>
+                <Image source={{ uri: universityLogo }} style={styles.icon} />
+                <Text style={styles.iconText}>{article.university}</Text>
+              </View>
+            )}
+
+            {author && (
+              <View style={styles.iconContainer}>
+                <Image source={{ uri: author.profilePictureUrl }} style={styles.icon} />
+                <Text style={styles.iconText}>{author.username}</Text>
               </View>
             )}
             
@@ -136,7 +157,7 @@
         width: '100%',
         height: 300,
         resizeMode: 'cover',
-        marginBottom: spacing.m,
+        marginBottom: spacing.s,
     },
     content: {
         padding: spacing.m,
@@ -163,24 +184,24 @@
         justifyContent: 'center',
         alignItems: 'center',
     },
-    universityContainer: {
+    iconContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
-      marginVertical: spacing.m,
+      marginVertical: spacing.s,
     },
     
-    universityLogo: {
-      width: 45,
-      height: 45,
+    icon: {
+      width: 40,
+      height: 40,
       resizeMode: 'contain',
+      marginRight: spacing.s,
     },
     
-    universityName: {
+    iconText: {
       fontSize: sizes.h3,
       color: colors.black,
-      marginLeft: spacing.s,
       fontFamily: 'Montserrat',
     },
     buttonContainer: {

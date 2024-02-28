@@ -153,7 +153,6 @@ const WatchScreen = ({ navigation }) => {
               }}
             />
             </View>
-            <Text style={styles.title}>{video.title}</Text>
             <View style={styles.buttonUniversityContainer}>
               <Image
                 source={{ uri: video.universityLogo }}
@@ -229,15 +228,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-  },
-  title: {
-    fontSize: sizes.title,
-    fontWeight: 'bold',
-    color: colors.white,
-    textAlign: 'center',
-    position: 'absolute',
-    top: 50,
-    width: '100%',
   },
   video: {
     width: '100%',
