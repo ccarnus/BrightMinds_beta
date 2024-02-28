@@ -55,8 +55,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 20,
-    backgroundColor: '#f1f1f1',
-    marginTop: 10,
+    backgroundColor: colors.darkblue,
   },
   logoContainer: {
     flex:1,
@@ -68,8 +67,7 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     padding: 10,
-    backgroundColor: colors.white,
-    borderRadius: 5,
+    backgroundColor: colors.darkblue,
   },
   profileImage: {
     width: 42,

@@ -16,8 +16,8 @@ const CastScreen = () => {
   const [allCasts, setAllCasts] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const starIcon = require('../assets/Cast_screen_icons/star_icon.png');
-  const trendingIcon = require('../assets/Cast_screen_icons/rocket_icon.png');
+  const forYou = require('../assets/Cast_screen_icons/foryou_icon.png');
+  const trendingIcon = require('../assets/Cast_screen_icons/trending_icon.png');
   const articleIcon = require('../assets/Cast_screen_icons/article_logo.png');
   const castIcon = require('../assets/Cast_screen_icons/cast_logo.png');
   const podcastIcon = require('../assets/Cast_screen_icons/podcast_logo.png');
@@ -130,7 +130,7 @@ const CastScreen = () => {
     <View style={styles.container}>
       {isLoading ? (
         <View style={styles.refreshIndicator}>
-          <ActivityIndicator size="large" color={colors.black} />
+          <ActivityIndicator size="large" color={colors.white} />
         </View>
       ) : (
         <ScrollView
@@ -147,6 +147,7 @@ const CastScreen = () => {
               style={styles.searchBar}
               placeholder="Search casts..."
               onChangeText={handleSearch}
+              placeholderTextColor={colors.white}
               value={searchQuery}
             />
             {searchQuery.length > 0 && (
@@ -164,7 +165,7 @@ const CastScreen = () => {
           ) : (
             <>
               <View style={styles.categoryHeader}>
-                <Image source={starIcon} style={styles.categoryIcon} />
+                <Image source={forYou} style={styles.categoryIcon} />
                 <Text style={styles.categoryTitle}>For you</Text>
               </View>
               <Carousel list={SuggestedCastData} carouselType="suggested" />
@@ -195,7 +196,7 @@ const CastScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkblue,
   },
   floatingButton: {
     position: 'absolute',
@@ -223,16 +224,20 @@ const styles = StyleSheet.create({
   searchResultItem: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: 'lightgray',
+    borderBottomColor: colors.darkblue,
   },
   searchBarContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
     margin: 10,
-    borderColor: 'gray',
-    borderWidth: 1,
+    borderColor: 'white',
+    borderWidth: 2,
     borderRadius: sizes.radius,
+    colors: colors.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    marginTop: spacing.m,
+    marginBottom: spacing.s,
   },
   searchBar: {
     flex: 1,
@@ -241,26 +246,26 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   clearButtonText: {
-    color: 'gray',
+    color: colors.white,
     fontSize: 20,
   },
   categoryHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: spacing.s,
+    marginBottom: spacing.m,
+    marginTop: spacing.l,
     marginLeft: spacing.s,
   },
   categoryTitle: {
     fontSize: sizes.h2,
-    color: colors.black,
+    color: colors.white,
+    fontFamily: 'MontserratBold',
   },
   categoryIcon: {
-    width: 32,
-    height: 30,
-    marginRight: 15,
+    width: 28,
+    height: 28,
+    marginRight: spacing.s,
   },
-  
-  
 });
 
 export default CastScreen;

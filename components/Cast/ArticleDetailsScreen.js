@@ -7,6 +7,7 @@
     const { selectedArticleId } = route.params;
     const [article, setArticle] = useState(null);
     const [universityLogo, setUniversityLogo] = useState(null);
+    const [author, setAuthor] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigation = useNavigation();
     const userId = "6474e4001eec5ee1ecd40180";
@@ -25,9 +26,22 @@
             setIsLoading(false);
         }
         };
-
         fetchArticle();
     }, [selectedArticleId]);
+
+    useEffect(() => {
+      const fetchAuthor = async () => {
+        try {
+          const response = await fetch('http://3.17.219.54/user/6474e4d31eec5ee1ecd40194');
+          const data = await response.json();
+          setAuthor(data);
+        } catch (error) {
+          console.error('Error fetching author data:', error);
+        }
+      };
+  
+      fetchAuthor();
+    }, []);
 
     const fetchUniversityLogo = async (universityName) => {
         try {
@@ -40,7 +54,7 @@
     };
 
     const handleAddToCastList = async () => {
-        const castId = selectedArticleId; // Assuming the article ID corresponds to the cast ID to be added
+        const castId = selectedArticleId;
         const url = `http://3.17.219.54/user/add/cast/${userId}`;
       
         try {
@@ -94,7 +108,19 @@
     return (
         <ScrollView style={styles.container}>
             <Image source={{ uri: article.articleimageurl }} style={styles.image} />
-            {universityLogo && <Image source={{ uri: universityLogo }} style={styles.universityLogo} />}
+            {universityLogo && (
+              <View style={styles.iconContainer}>
+                <Image source={{ uri: universityLogo }} style={styles.icon} />
+                <Text style={styles.iconText}>{article.university}</Text>
+              </View>
+            )}
+
+            {author && (
+              <View style={styles.iconContainer}>
+                <Image source={{ uri: author.profilePictureUrl }} style={styles.icon} />
+                <Text style={styles.iconText}>{author.username}</Text>
+              </View>
+            )}
             
             <View style={styles.infoDisplay}>
                 <Text style={styles.infoText}>{getDaysSincePosted(article.dateAdded)} days ago</Text>
@@ -131,21 +157,22 @@
         width: '100%',
         height: 300,
         resizeMode: 'cover',
-        marginBottom: spacing.m,
+        marginBottom: spacing.s,
     },
     content: {
         padding: spacing.m,
     },
     title: {
-        fontSize: sizes.title,
-        fontWeight: 'bold',
-        marginBottom: spacing.s,
-        textAlign:"justify",
+        fontSize: sizes.h1,
+        marginBottom: spacing.m,
+        fontFamily: "MontserratBold",
+        textAlign: "center",
     },
     description: {
         fontSize: sizes.h3,
         color: colors.text,
         textAlign:"justify",
+        fontFamily: "Montserrat",
     },
     detail: {
         fontSize: sizes.h1,
@@ -157,12 +184,25 @@
         justifyContent: 'center',
         alignItems: 'center',
     },
-    universityLogo: {
-        width: 30,
-        height: 30,
-        resizeMode: 'contain',
-        alignSelf: 'center',
-        marginVertical: spacing.m,
+    iconContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+      marginVertical: spacing.s,
+    },
+    
+    icon: {
+      width: 40,
+      height: 40,
+      resizeMode: 'contain',
+      marginRight: spacing.s,
+    },
+    
+    iconText: {
+      fontSize: sizes.h3,
+      color: colors.black,
+      fontFamily: 'Montserrat',
     },
     buttonContainer: {
         alignItems: 'center',
@@ -180,14 +220,16 @@
         color: colors.white,
         fontSize: sizes.title,
         textAlign: 'center',
+        fontFamily: "MontserratBold",
       },
       buttonAccessText: {
         color: colors.white,
         fontSize: sizes.h2,
         textAlign: 'center',
+        fontFamily: "MontserratBold",
       },
     infoDisplay: {
-        backgroundColor: 'rgba(11, 11, 11, 0.5)',
+        backgroundColor: colors.darkblue,
         paddingVertical: spacing.xs,
         paddingHorizontal: spacing.m,
         borderRadius: sizes.radius,
@@ -199,14 +241,16 @@
         marginBottom: spacing.m,
       },
       infoText: {
-        fontSize: sizes.h3,
+        fontSize: sizes.h4,
         color: colors.white,
         paddingHorizontal: spacing.xs,
+        fontFamily: "MontserratBold",
       },
       separator: {
         fontSize: sizes.title,
         color: colors.white,
         paddingHorizontal: spacing.xs,
+        fontFamily: "MontserratBold",
       },
     });
 

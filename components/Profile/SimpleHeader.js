@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { colors, shadow, sizes, spacing } from '../theme';
 
 const SimpleHeader = () => {
   const navigation = useNavigation();
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingLeft: 15,
     paddingTop: 40,
+    backgroundColor: colors.darkblue,
   },
   backIcon: {
     width: 32,

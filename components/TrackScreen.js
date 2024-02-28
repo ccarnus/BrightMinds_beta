@@ -261,9 +261,10 @@ const TrackScreen = () => {
     initialRouteName='TrackProgressTab'
     screenOptions={{
         labelStyle: { fontSize: 0},
+        tabBarShowLabel: false,
         tabStyle: { width: 120 },
-        style: { backgroundColor: colors.white },
-        indicatorStyle: { backgroundColor: colors.black },
+        style: { backgroundColor: colors.darkblue },
+        indicatorStyle: { backgroundColor: colors.white },
       }}
     >
       <Tab.Screen name="CastWatchingTimeTab" component={CastWatchingTimeTab} options={{ tabBarIcon: () => (
