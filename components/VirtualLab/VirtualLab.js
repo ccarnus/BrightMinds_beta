@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { colors, sizes, spacing } from '../theme';
 import PolarStarIcon from '../../assets/Virtual_lab_icons/star_icon.png';
-import IcebergIcon from '../../assets/Virtual_lab_icons/iceberg_icon.png';
 import InfoIcon from '../../assets/Virtual_lab_icons/info_icon.png';
 import CompassIcon from '../../assets/Virtual_lab_icons/compass_icon.png';
 import MainIcebergIcon from '../../assets/Virtual_lab_icons/main_iceberg_icon.png';
@@ -23,20 +22,30 @@ const VirtualLab = ({ route }) => {
     try {
       const response = await fetch(`http://3.17.219.54/virtual/lab/${labId}`);
       const data = await response.json();
+      const topicsWithInstitutes = await Promise.all(data.topics.map(async (topic) => {
+        const institutes = await Promise.all(topic.institutes.map(async (institute) => {
+          const res = await fetch(`http://3.17.219.54/university/${institute.instituteId}`);
+          return await res.json();
+        }));
+        return { ...topic, institutes };
+      }));
       setLabData(data);
-      // Sort topics by gauge value in descending order
-      const sortedTopics = (data.topics || []).sort((a, b) => b.gage - a.gage);
-      setTopics(sortedTopics);
+      setTopics(topicsWithInstitutes);
     } catch (error) {
       console.error('Error fetching lab data:', error);
     }
   };
+  
 
   const renderTopic = (topic) => (
     <TouchableOpacity key={topic._id} style={styles.topicContainer}>
-      <Image source={IcebergIcon} style={styles.iconStyle} />
       <View style={styles.topicTextContainer}>
         <Text style={styles.topicTitle}>{topic.name}</Text>
+        <View style={styles.instituteLogosContainer}>
+        {topic.institutes.map((institute) => (
+          <Image key={institute._id} source={{ uri: institute.iconurl }} style={styles.instituteLogo} />
+        ))}
+      </View>
         <View style={styles.gaugeContainer}>
           <LinearGradient
             start={{ x: 0, y: 0 }}
@@ -51,7 +60,6 @@ const VirtualLab = ({ route }) => {
       </View>
     </TouchableOpacity>
   );
-  
 
   return (
     <View style={styles.container}>
@@ -184,6 +192,16 @@ const styles = StyleSheet.create({
     color: colors.white, // Assuming white color for the percentage text
     fontSize: sizes.body,
     fontFamily: 'MontserratBold',
+  },
+  instituteLogosContainer: {
+    flexDirection: 'row',
+    marginVertical: spacing.xs,
+  },
+  instituteLogo: {
+    width: 32,
+    height: 32,
+    resizeMode: 'contain',
+    marginRight: spacing.s,
   },
 });
 
