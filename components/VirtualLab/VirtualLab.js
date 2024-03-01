@@ -42,10 +42,11 @@ const VirtualLab = ({ route }) => {
       <View style={styles.topicTextContainer}>
         <Text style={styles.topicTitle}>{topic.name}</Text>
         <View style={styles.instituteLogosContainer}>
-        {topic.institutes.map((institute) => (
-          <Image key={institute._id} source={{ uri: institute.iconurl }} style={styles.instituteLogo} />
-        ))}
-      </View>
+          {topic.institutes.map((institute) => (
+            <Image key={institute._id} source={{ uri: institute.iconurl }} style={styles.instituteLogo} />
+          ))}
+        </View>
+        <Text style={styles.topicDescription}>{topic.description}</Text>
         <View style={styles.gaugeContainer}>
           <LinearGradient
             start={{ x: 0, y: 0 }}
@@ -60,6 +61,7 @@ const VirtualLab = ({ route }) => {
       </View>
     </TouchableOpacity>
   );
+  
 
   return (
     <View style={styles.container}>
@@ -132,8 +134,8 @@ const styles = StyleSheet.create({
     fontFamily: "MontserratBold",
   },
   bottomSection: {
-    backgroundColor: colors.darkblue, // Water part
-    height: (2 * height) / 3, // Scrollable bottom 2/3 of the screen
+    backgroundColor: colors.darkblue,
+    height: (2 * height) / 3,
   },
   topRightIcon: {
     width: 30,
@@ -203,6 +205,14 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginRight: spacing.s,
   },
+  topicDescription: {
+    color: colors.white,
+    fontSize: sizes.body,
+    marginVertical: spacing.xs,
+    fontFamily: 'Montserrat',
+    textAlign: "justify", 
+  },
+  
 });
 
 export default VirtualLab;

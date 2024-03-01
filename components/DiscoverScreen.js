@@ -7,7 +7,7 @@ import {colors, shadow, sizes, spacing} from './theme';
 
 const { width, height } = Dimensions.get('window');
 
-const WatchScreen = ({ navigation }) => {
+const DiscoverScreen = ({ navigation }) => {
   const [videos, setVideos] = useState([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [videoStatus, setVideoStatus] = useState([]);
@@ -290,4 +290,4 @@ const styles = StyleSheet.create({
   
 });
 
-export default WatchScreen;
+export default DiscoverScreen;
