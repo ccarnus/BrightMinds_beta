@@ -19,7 +19,7 @@ const CastScreen = () => {
   const forYou = require('../assets/Cast_screen_icons/foryou_icon.png');
   const trendingIcon = require('../assets/Cast_screen_icons/trending_icon.png');
   const articleIcon = require('../assets/Cast_screen_icons/article_logo.png');
-  const castIcon = require('../assets/Cast_screen_icons/cast_logo.png');
+  const Discover = require('../assets/Bottom_icons/discover.png');
   const podcastIcon = require('../assets/Cast_screen_icons/podcast_logo.png');
   const [articleData, setArticleData] = useState([]);
 
@@ -43,6 +43,10 @@ const CastScreen = () => {
       cast.title.toLowerCase().includes(text.toLowerCase())
     );
     setSearchResults(filteredCasts);
+  };
+
+  const navigateToDiscoverScreen = () => {
+    navigation.navigate('DiscoverScreen');
   };
 
   const clearSearch = () => {
@@ -142,19 +146,24 @@ const CastScreen = () => {
             />
           }
         >
-          <View style={styles.searchBarContainer}>
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Search casts..."
-              onChangeText={handleSearch}
-              placeholderTextColor={colors.white}
-              value={searchQuery}
-            />
-            {searchQuery.length > 0 && (
-              <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
-                <Text style={styles.clearButtonText}>✕</Text>
-              </TouchableOpacity>
-            )}
+          <View style={styles.searchAndDiscoverContainer}></View>
+            <View style={styles.searchBarContainer}>
+              <TextInput
+                style={styles.searchBar}
+                placeholder="Search casts..."
+                onChangeText={handleSearch}
+                placeholderTextColor={colors.white}
+                value={searchQuery}
+              />
+              {searchQuery.length > 0 && (
+                <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
+                  <Text style={styles.clearButtonText}>✕</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <TouchableOpacity onPress={navigateToDiscoverScreen} style={styles.discoverButton}>
+              <Image source={discoverIcon} style={styles.discoverIcon} />
+            </TouchableOpacity>
           </View>
           {searchResults.length > 0 ? (
             searchResults.map((cast) => (
@@ -227,17 +236,33 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.darkblue,
   },
   searchBarContainer: {
+    flex: 1, // Take up all available space
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    margin: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderColor: 'white',
     borderWidth: 2,
     borderRadius: sizes.radius,
-    colors: colors.white,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    marginTop: spacing.m,
-    marginBottom: spacing.s,
+    marginRight: spacing.s, // Add some space between the search bar and the discover button
+  },
+  discoverButton: {
+    width: 50, // Adjust the size as needed
+    height: 50, // Adjust the size as needed
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.darkblue, // Or any other color
+    borderRadius: 25, // Half of the width and height to make it round
+  },
+  discoverIcon: {
+    width: 30, // Adjust as per your icon size
+    height: 30, // Adjust as per your icon size
+  },
+  searchAndDiscoverContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    margin: 10,
   },
   searchBar: {
     flex: 1,

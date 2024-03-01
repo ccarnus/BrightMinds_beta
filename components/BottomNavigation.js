@@ -2,7 +2,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import CastScreen from './CastScreen';
 import TrackScreen from './TrackScreen';
-import WatchScreen from './WatchScreen';
+import DiscoverScreen from './DiscoverScreen';
 import LabScreen from './LabScreen';
 import {colors, sizes} from './theme';
 import {StyleSheet, Animated} from 'react-native';
@@ -18,8 +18,8 @@ const tabs = [
     screen: TrackScreen,
   },
   {
-    name: 'Watch',
-    screen: WatchScreen,
+    name: 'Discover',
+    screen: DiscoverScreen,
   },
   {
     name: 'Lab',
