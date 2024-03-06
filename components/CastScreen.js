@@ -146,7 +146,7 @@ const CastScreen = () => {
             />
           }
         >
-          <View style={styles.searchAndDiscoverContainer}></View>
+          <View style={styles.searchAndDiscoverContainer}>
             <View style={styles.searchBarContainer}>
               <TextInput
                 style={styles.searchBar}
