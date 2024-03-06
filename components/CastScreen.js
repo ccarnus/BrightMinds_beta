@@ -19,7 +19,7 @@ const CastScreen = () => {
   const forYou = require('../assets/Cast_screen_icons/foryou_icon.png');
   const trendingIcon = require('../assets/Cast_screen_icons/trending_icon.png');
   const articleIcon = require('../assets/Cast_screen_icons/article_logo.png');
-  const Discover = require('../assets/Bottom_icons/discover.png');
+  const discoverIcon = require('../assets/Bottom_icons/discover.png');
   const podcastIcon = require('../assets/Cast_screen_icons/podcast_logo.png');
   const [articleData, setArticleData] = useState([]);
 
@@ -236,26 +236,28 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.darkblue,
   },
   searchBarContainer: {
-    flex: 1, // Take up all available space
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderColor: 'white',
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: sizes.radius,
-    marginRight: spacing.s, // Add some space between the search bar and the discover button
+    marginRight: spacing.s,
+    marginLeft: margin.m,
+    height: 50,
   },
   discoverButton: {
-    width: 50, // Adjust the size as needed
-    height: 50, // Adjust the size as needed
+    width: 50,
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.darkblue, // Or any other color
-    borderRadius: 25, // Half of the width and height to make it round
+    backgroundColor: colors.white,
+    borderRadius: 25,
   },
   discoverIcon: {
-    width: 30, // Adjust as per your icon size
-    height: 30, // Adjust as per your icon size
+    width: 35,
+    height: 35,
   },
   searchAndDiscoverContainer: {
     flexDirection: 'row',
