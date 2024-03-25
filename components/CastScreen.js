@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: sizes.radius,
     marginRight: spacing.s,
-    marginLeft: margin.m,
+    marginLeft: spacing.xs,
     height: 50,
   },
   discoverButton: {
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   searchBar: {
-    flex: 1,
+    marginLeft: spacing.s,
   },
   clearButton: {
     marginLeft: 10,
