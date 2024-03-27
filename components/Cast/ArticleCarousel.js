@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         textAlign: 'left',
         marginLeft: 10,
-        fontFamily: 'MontserratBold',
+        fontFamily: 'Montserrat',
       },
       duration: {
         position: 'absolute',

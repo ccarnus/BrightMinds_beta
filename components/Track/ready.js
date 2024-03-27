@@ -6,12 +6,12 @@ import { colors, sizes } from '../theme';
 import { Shape } from 'react-native-svg';
 
 const USER_ID = "6474e4001eec5ee1ecd40180";
-let castIds;
 
 const ReadyScreen = ({ navigation }) => {
   const [showButton, setShowButton] = useState(false);
   const [numQuestions, setNumQuestions] = useState(0);
   const opacityValue = new Animated.Value(0);
+  let castIds;
 
   const getCastList = async () => {
     try {
@@ -36,7 +36,11 @@ const ReadyScreen = ({ navigation }) => {
   });
 
   const handleReadyButtonPress = () => {
-    navigation.navigate('Evaluation', { castIds });
+    if (numQuestions > 0) {
+      navigation.navigate('Evaluation', { castIds });
+    } else {
+      navigation.goBack();
+    }
   };
 
   return (
@@ -47,7 +51,9 @@ const ReadyScreen = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <Animated.View style={[styles.readyButton, { opacity: opacityValue }]}>
           <TouchableOpacity onPress={handleReadyButtonPress}>
-            <Text style={styles.readyButtonText}>Let's GO!</Text>
+          <Text style={styles.readyButtonText}>
+              {numQuestions > 0 ? "Let's GO!" : "Come Back Later"} 
+            </Text>
           </TouchableOpacity>
         </Animated.View>
       </View>

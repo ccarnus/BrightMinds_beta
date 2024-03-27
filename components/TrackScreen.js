@@ -202,55 +202,9 @@ const TrackProgressTab = () => {
 };
 
 const BookmarkedTab = () => {
-  const [castData, setCastData] = useState({});
-  const userId = '6474e4001eec5ee1ecd40180';
-
-  useEffect(() => {
-    const userEndpoint = `http://3.17.219.54/user/bookmarks/${userId}`;
-
-    fetch(userEndpoint)
-      .then((response) => response.json())
-      .then((userData) => {
-        const castIds = userData.map((bookmarks) => bookmarks.castId);
-
-        // Fetch cast data for each cast ID
-        const castDataPromises = castIds.map((castId) => {
-          const castEndpoint = `http://3.17.219.54/cast/${castId}`;
-          return fetch(castEndpoint).then((response) => response.json());
-        });
-
-        // Wait for all cast data to be fetched
-        Promise.all(castDataPromises)
-          .then((castDataList) => {
-            // Now, castDataList contains data for all the casts
-            const castList = castDataList.map((cast) => ({
-              id: cast._id,
-              image: cast.castimageurl,
-              title: cast.title,
-              // You can add more fields from the cast JSON as needed
-            }));
-            setCastData(castList);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [userId]);
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <ScrollView>
-        <View style={styles.bookmarkedCategory}>
-          <Text style={styles.bookmarkedCategoryTitle}>Bookmarked</Text>
-        </View>
-        <Carousel list={castData || []} />
-        <View style={styles.bookmarkedCategory}>
-          <Text style={styles.bookmarkedCategoryTitle}>Shared with me</Text>
-        </View>
-      </ScrollView>
     </View>
   );
 };
@@ -350,15 +304,6 @@ const styles = StyleSheet.create({
   tabIcon: {
     width: 24,
     height: 24,
-  },
-  bookmarkedCategory: {
-    marginBottom: spacing.m,
-    marginTop: spacing.m,
-    marginLeft: spacing.s,
-  },
-  bookmarkedCategoryTitle: {
-    fontSize: sizes.h2,
-    color: colors.black,
   },
   objectiveProgressTitle: {
     fontSize: sizes.h2,

@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     width: width * 0.4,
     height: width * 0.4,
     borderRadius: width * 0.2,
+    backgroundColor:colors.darkblue,
   },
   scoreContainer: {
     alignItems: 'center',
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.darkblue,
     borderRadius: sizes.radius,
     paddingVertical: 10,
     justifyContent: 'center',
@@ -212,8 +213,8 @@ const styles = StyleSheet.create({
     marginTop: spacing.s,
   },
   streakImage: {
-    width: 42,
-    height: 42,
+    width: 54,
+    height: 54,
     marginLeft: 5,
   },
   objectiveContainer: {
