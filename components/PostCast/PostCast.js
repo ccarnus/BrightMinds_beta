@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image, ActivityIndicator} from 'react-native';
-import { Button, TextInput, Modal, Portal, Provider } from 'react-native-paper';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image, ActivityIndicator, Modal} from 'react-native';
+import { Button, TextInput, Portal, Provider } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import {Picker} from '@react-native-picker/picker';
 import universities from '../../lists/universities';
@@ -20,6 +20,7 @@ const PostCast = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [thumbnailUri, setThumbnailUri] = useState(null);
   const [visibility, setVisibility] = useState(1);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const takeNewVideo = async () => {
     try {
@@ -33,6 +34,27 @@ const PostCast = ({navigation}) => {
     } catch (error) {
       console.error('Error taking new video:', error);
     }
+  };
+
+  // Function to toggle modal visibility
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  // Function to pick a video from the gallery
+  const pickVideoFromGallery = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+    });
+
+    if (!result.cancelled && result.assets && result.assets.length > 0) {
+      setVideo(result.assets[0]);
+      setThumbnailUri(result.assets[0].uri);
+    }
+  };
+
+  const handlePlayVideo = () => {
+    navigation.navigate('VideoPlayer', { videoUri: video.uri });
   };
 
   const sendCast = async () => {
@@ -82,13 +104,6 @@ const PostCast = ({navigation}) => {
       setLoading(false);
     }
   };
-
-  const totos = [
-    'Type 1',
-    'Type 2',
-    'Type 3',
-    // Add more types as needed
-  ];
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
@@ -167,7 +182,12 @@ const PostCast = ({navigation}) => {
           maximumTrackTintColor={colors.lightblue}
         />
         {thumbnailUri ? (
-          <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
+        <TouchableOpacity onPress={handlePlayVideo} style={styles.thumbnailContainer}>
+            <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
+            <View style={styles.playButton}>
+              <Text style={styles.playButtonText}>▶</Text>
+            </View>
+          </TouchableOpacity>
         ) : (
           <ActivityIndicator size="large" color="#3498db" style={styles.loadingThumbnail} />
         )}
@@ -181,10 +201,36 @@ const PostCast = ({navigation}) => {
             <Text style={styles.sendButtonText}>POST</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.thumbnailContainer}>
-          <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
-        </View>
       </View>
+
+
+      <TouchableOpacity onPress={toggleModal} style={styles.videoButton}>
+        <Text style={styles.videoButtonText}>Select Video</Text>
+      </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Choose Video Source</Text>
+            <Button style={styles.modalText} title="Record Video" onPress={() => {
+              takeNewVideo();
+              toggleModal();
+            }} />
+            <Button title="Choose from Gallery" onPress={() => {
+              pickVideoFromGallery();
+              toggleModal();
+            }} />
+            <Button title="Cancel" onPress={toggleModal} />
+          </View>
+        </View>
+      </Modal>
+
+
     </ScrollView>
   );
 };
@@ -270,15 +316,34 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'MontserratBold',
   },
-  thumbnail: {
-    width:"70%",
-    marginLeft: "15%",
+  thumbnailContainer: {
+    width: '70%',
     height: 200,
-    resizeMode: 'cover',
+    marginLeft: '15%',
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 10,
-    borderRadius: sizes.radius,
-    marginTop: spacing.m,
-    marginBottom: spacing.m,
+    borderRadius: 10,
+    overflow: 'hidden', // Ensure the child components do not overflow
+  },
+  thumbnail: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  playButton: {
+    position: 'absolute',
+    backgroundColor: 'rgba(0,0,0,0.6)', // Semi-transparent overlay
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  playButtonText: {
+    color: '#FFF',
+    fontSize: 24,
   },
   loadingThumbnail: {
     height: 100,
@@ -295,7 +360,6 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 15,
     backgroundColor: 'transparent',
-    
   },
   picker: {
     marginBottom: 15,
@@ -315,6 +379,31 @@ const styles = StyleSheet.create({
     fontSize: sizes.h2,
     fontFamily: 'Montserrat',
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
 });
 
 export default PostCast;
