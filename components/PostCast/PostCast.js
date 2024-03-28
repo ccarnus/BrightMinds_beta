@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image, ActivityIndicator} from 'react-native';
+import { Button, TextInput, Modal, Portal, Provider } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import {Picker} from '@react-native-picker/picker';
 import universities from '../../lists/universities';
@@ -8,7 +9,6 @@ import departments from '../../lists/departments';
 import {colors, shadow, sizes, spacing} from '../theme';
 import Slider from '@react-native-community/slider';
 import visibilityCategories from '../../lists/visibilityCategories';
-import { TextInput, Dropdown } from 'react-native-paper';
 
 const PostCast = ({navigation}) => {
   const [title, setTitle] = useState('');
@@ -176,10 +176,8 @@ const PostCast = ({navigation}) => {
             <Text style={styles.videoButtonText}>FILM</Text>
           </TouchableOpacity>
         </View >
-        <View style={styles.videoPicker}>
-          <TouchableOpacity style={styles.sendButton} onPress={sendCast} disabled={loading}>
-            <Text style={styles.sendButtonText}>POST</Text>
-          </TouchableOpacity>
+        <View style={styles.thumbnailContainer}>
+          <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
         </View>
       </View>
     </ScrollView>
@@ -225,6 +223,7 @@ const styles = StyleSheet.create({
     fontSize: sizes.h2,
     color: '#1c1c1c',
     marginBottom: 5,
+    fontFamily: 'Montserrat',
   },
   multilineInput: {
     height: 100,
@@ -249,6 +248,7 @@ const styles = StyleSheet.create({
     fontSize: sizes.h2,
     color: colors.black,
     textAlign: 'center',
+    fontFamily: 'MontserratBold',
   },
   sendButton: {
     padding: 15,
@@ -263,6 +263,7 @@ const styles = StyleSheet.create({
     fontSize: sizes.h2,
     color: colors.white,
     fontWeight: 'bold',
+    fontFamily: 'MontserratBold',
   },
   thumbnail: {
     width:"70%",
@@ -284,6 +285,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 10,
     color: colors.darkblue,
+    fontFamily: 'Montserrat',
   },
   input: {
     marginBottom: 15,
@@ -306,6 +308,7 @@ const styles = StyleSheet.create({
   },
   departmentName: {
     fontSize: sizes.h2,
+    fontFamily: 'Montserrat',
   },
 });
 
