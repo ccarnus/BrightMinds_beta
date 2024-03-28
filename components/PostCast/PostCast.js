@@ -176,6 +176,11 @@ const PostCast = ({navigation}) => {
             <Text style={styles.videoButtonText}>FILM</Text>
           </TouchableOpacity>
         </View >
+        <View style={styles.videoPicker}>
+          <TouchableOpacity style={styles.sendButton} onPress={sendCast} disabled={loading}>
+            <Text style={styles.sendButtonText}>POST</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.thumbnailContainer}>
           <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
         </View>
@@ -214,10 +219,10 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 24,
-    fontWeight: 'bold',
     color: colors.black,
     marginTop: 40,
     marginBottom: 20,
+    fontFamily: 'MontserratBold',
   },
   fieldDescription: {
     fontSize: sizes.h2,
