@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 42,
     height: 42,
-    backgroundColor: colors.darkblue,
+    backgroundColor: 'transparent', // Change made here
   },
 });
 
