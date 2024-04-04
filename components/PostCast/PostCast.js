@@ -17,6 +17,13 @@ const PostCast = ({navigation}) => {
   const [visibility, setVisibility] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isTypeModalVisible, setTypeModalVisible] = useState(false);
+  const [customAlertVisible, setCustomAlertVisible] = useState(false);
+  const [customAlertMessage, setCustomAlertMessage] = useState("");
+
+  const showCustomAlert = (message) => {
+    setCustomAlertMessage(message);
+    setCustomAlertVisible(true);
+  };  
 
   const takeNewVideo = async () => {
     try {
@@ -61,27 +68,21 @@ const PostCast = ({navigation}) => {
   };
 
   const sendCast = async () => {
-    // Initialize an empty array to hold missing fields
     let missingFields = [];
   
-    // Check each required field, adding to the array if it's missing
     if (!title.trim()) missingFields.push("Title");
     if (!description.trim()) missingFields.push("Description");
     if (!type.trim()) missingFields.push("Type");
     if (!video) missingFields.push("Video");
   
-    // If there are any missing fields, show an error message and exit the function
     if (missingFields.length > 0) {
-      // Join the missing fields into a single string separated by newlines
-      let errorMessage = 'Please fill in all the required fields:\n- ' + missingFields.join('\n- ');
+      let errorMessage = 'Please fill in all the required fields:\n\n ' + missingFields.join('\n\n ');
   
-      // Show an alert with the error message
-      Alert.alert('Missing Information', errorMessage);
-      return; // Exit the function early
+      showCustomAlert(errorMessage);('Missing Information', errorMessage);
+      return;
     }
   
     setLoading(true);
-    // Construct the cast data object
     const castData = {
       title,
       description,
@@ -91,7 +92,7 @@ const PostCast = ({navigation}) => {
       category: 'Breakthrough',
       brightmindid: '101',
       visibility,
-      duration: 2,
+      duration: 1,
     };
   
     const formData = new FormData();
@@ -153,7 +154,6 @@ const PostCast = ({navigation}) => {
           mode="outlined"
           multiline
         />
-
         <Button 
           icon="menu-down" 
           mode="outlined" 
@@ -241,6 +241,19 @@ const PostCast = ({navigation}) => {
               style={styles.cancelButton}
               textStyle={styles.cancelButtonText}
             />
+          </View>
+        </View>
+      </ModalReact>
+      <ModalReact
+        visible={customAlertVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setCustomAlertVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.customAlertModalView}>
+            <Text style={styles.customAlertText}>{customAlertMessage}</Text>
+            <Button onPress={() => setCustomAlertVisible(false)}>OK</Button>
           </View>
         </View>
       </ModalReact>
@@ -474,6 +487,34 @@ const styles = StyleSheet.create({
   modalItemLabel: {
     color: colors.black,
     fontFamily: 'Montserrat',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // semi-transparent background
+  },
+  customAlertModalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  customAlertText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontFamily: 'Montserrat', // Make sure Montserrat is correctly linked
+    fontSize: 16,
   },
 });
 
