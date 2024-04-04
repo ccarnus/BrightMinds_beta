@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image, ActivityIndicator, Modal} from 'react-native';
-import { Button, TextInput, Portal, Provider } from 'react-native-paper';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image, ActivityIndicator, Dimensions, Modal as ModalReact} from 'react-native';
+import { Button, TextInput, Portal, Provider, Modal } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
-import {Picker} from '@react-native-picker/picker';
-import universities from '../../lists/universities';
 import types from '../../lists/types';
-import departments from '../../lists/departments';
 import {colors, shadow, sizes, spacing} from '../theme';
 import Slider from '@react-native-community/slider';
 import visibilityCategories from '../../lists/visibilityCategories';
@@ -13,21 +10,20 @@ import visibilityCategories from '../../lists/visibilityCategories';
 const PostCast = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [department, setDepartment] = useState('');
   const [type, setType] = useState('');
-  const [university, setUniversity] = useState('');
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [thumbnailUri, setThumbnailUri] = useState(null);
   const [visibility, setVisibility] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isTypeModalVisible, setTypeModalVisible] = useState(false);
 
   const takeNewVideo = async () => {
     try {
       const result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       });
-      if (!result.cancelled && result.assets && result.assets.length > 0) {
+      if (!result.canceled && result.assets && result.assets.length > 0) {
         setVideo(result.assets[0]);
         setThumbnailUri(result.assets[0].uri);
       }
@@ -35,6 +31,13 @@ const PostCast = ({navigation}) => {
       console.error('Error taking new video:', error);
     }
   };
+
+  //Modal button styles
+  const CustomButton = ({ title, onPress, style, textStyle }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+      <Text style={[styles.buttonText, textStyle]}>{title}</Text>
+    </TouchableOpacity>
+  );
 
   // Function to toggle modal visibility
   const toggleModal = () => {
@@ -47,7 +50,7 @@ const PostCast = ({navigation}) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
     });
 
-    if (!result.cancelled && result.assets && result.assets.length > 0) {
+    if (!result.canceled && result.assets && result.assets.length > 0) {
       setVideo(result.assets[0]);
       setThumbnailUri(result.assets[0].uri);
     }
@@ -58,29 +61,47 @@ const PostCast = ({navigation}) => {
   };
 
   const sendCast = async () => {
+    // Initialize an empty array to hold missing fields
+    let missingFields = [];
+  
+    // Check each required field, adding to the array if it's missing
+    if (!title.trim()) missingFields.push("Title");
+    if (!description.trim()) missingFields.push("Description");
+    if (!type.trim()) missingFields.push("Type");
+    if (!video) missingFields.push("Video");
+  
+    // If there are any missing fields, show an error message and exit the function
+    if (missingFields.length > 0) {
+      // Join the missing fields into a single string separated by newlines
+      let errorMessage = 'Please fill in all the required fields:\n- ' + missingFields.join('\n- ');
+  
+      // Show an alert with the error message
+      Alert.alert('Missing Information', errorMessage);
+      return; // Exit the function early
+    }
+  
     setLoading(true);
+    // Construct the cast data object
     const castData = {
       title,
       description,
-      department,
+      department: 'Robotics',
       type,
-      university,
+      university: 'Georgia Tech',
       category: 'Breakthrough',
       brightmindid: '101',
       visibility,
-      duration:2,
+      duration: 2,
     };
-
+  
     const formData = new FormData();
     formData.append('cast', JSON.stringify(castData));
-    if (video) {
-      formData.append('video', {
-        uri: video.uri,
-        type: 'video/mp4',
-        name: 'video.mp4',
-      });
-    }
-
+    formData.append('video', {
+      uri: video.uri,
+      type: 'video/mp4',
+      name: 'video.mp4',
+    });
+  
     try {
       const response = await fetch('http://3.17.219.54/cast', {
         method: 'POST',
@@ -89,13 +110,13 @@ const PostCast = ({navigation}) => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(formData);
-
+  
       if (response.ok) {
         Alert.alert('Success', 'Cast posted successfully!');
         navigation.navigate('Cast');
       } else {
-        Alert.alert('Error', 'Failed to post cast.');
+        const errorData = await response.text();
+        Alert.alert('Error', `Failed to post cast. Error: ${errorData}`);
       }
     } catch (error) {
       console.error('Error sending cast:', error);
@@ -104,6 +125,7 @@ const PostCast = ({navigation}) => {
       setLoading(false);
     }
   };
+  
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
@@ -131,44 +153,32 @@ const PostCast = ({navigation}) => {
           mode="outlined"
           multiline
         />
-        <Text style={styles.fieldDescription}>Department</Text>
-        <Picker
-          selectedValue={department}
-          style={styles.picker}
-          onValueChange={(itemValue) => setDepartment(itemValue)}
-        >
-          {departments.map((dep, index) => (
-            <Picker.Item key={index} label={dep.name} value={dep.name}>
-              <View style={styles.departmentItem}>
-                <Image source={dep.image} style={styles.departmentImage} />
-                <Text style={styles.departmentName}>{dep.name}</Text>
-              </View>
-            </Picker.Item>
-          ))}
-        </Picker>
-        <Text style={styles.fieldDescription}>Type</Text>
-        
-        <Picker
-          selectedValue={type}
-          style={styles.input}
-          onValueChange={(itemValue) => setType(itemValue)}
-        >
-          {types.map((type, index) => (
-            <Picker.Item key={index} label={type} value={type} />
-          ))}
-        </Picker>
 
-        <Text style={styles.fieldDescription}>University</Text>
-        <Picker
-          selectedValue={university}
-          style={styles.input}
-          onValueChange={(itemValue) => setUniversity(itemValue.replace(/\s+/g, ''))}
+        <Button 
+          icon="menu-down" 
+          mode="outlined" 
+          onPress={() => setTypeModalVisible(true)} 
+          style={styles.dropdownButton}
+          contentStyle={styles.dropdownContent}
+          labelStyle={styles.dropdownLabel}
         >
-          {universities.map((univ, index) => (
-            <Picker.Item key={index} label={univ} value={univ} />
-          ))}
-        </Picker>
-        <Text style={styles.fieldDescription}>Visibility</Text>
+          {type || "Select Type"}
+        </Button>
+        <Portal>
+          <Modal visible={isTypeModalVisible} onDismiss={() => setTypeModalVisible(false)} contentContainerStyle={styles.modalContainer}>
+            {types.map((item, index) => (
+              <Button 
+                key={index} 
+                onPress={() => { setType(item); setTypeModalVisible(false); }}
+                style={styles.modalItem}
+                labelStyle={styles.modalItemLabel}
+              >
+                {item}
+              </Button>
+            ))}
+          </Modal>
+        </Portal>
+
         <Text style={styles.visibilityLabel}>{visibilityCategories[visibility - 1].label}</Text>
         <Slider
           style={{ width: '100%', height: 20 }}
@@ -181,34 +191,24 @@ const PostCast = ({navigation}) => {
           minimumTrackTintColor={colors.darkblue}
           maximumTrackTintColor={colors.lightblue}
         />
-        {thumbnailUri ? (
-        <TouchableOpacity onPress={handlePlayVideo} style={styles.thumbnailContainer}>
+        {video && (
+          <TouchableOpacity onPress={handlePlayVideo} style={styles.thumbnailContainer}>
             <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
             <View style={styles.playButton}>
               <Text style={styles.playButtonText}>▶</Text>
             </View>
           </TouchableOpacity>
-        ) : (
-          <ActivityIndicator size="large" color="#3498db" style={styles.loadingThumbnail} />
         )}
         <View style={styles.videoPicker}>
-          <TouchableOpacity style={styles.videoButton} onPress={takeNewVideo}>
-            <Text style={styles.videoButtonText}>FILM</Text>
+          <TouchableOpacity onPress={toggleModal} style={styles.videoButton}>
+            <Text style={styles.videoButtonText}>Select Video</Text>
           </TouchableOpacity>
-        </View >
-        <View style={styles.videoPicker}>
           <TouchableOpacity style={styles.sendButton} onPress={sendCast} disabled={loading}>
             <Text style={styles.sendButtonText}>POST</Text>
           </TouchableOpacity>
         </View>
       </View>
-
-
-      <TouchableOpacity onPress={toggleModal} style={styles.videoButton}>
-        <Text style={styles.videoButtonText}>Select Video</Text>
-      </TouchableOpacity>
-
-      <Modal
+      <ModalReact
         animationType="slide"
         transparent={true}
         visible={isModalVisible}
@@ -217,20 +217,33 @@ const PostCast = ({navigation}) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Choose Video Source</Text>
-            <Button style={styles.modalText} title="Record Video" onPress={() => {
-              takeNewVideo();
-              toggleModal();
-            }} />
-            <Button title="Choose from Gallery" onPress={() => {
-              pickVideoFromGallery();
-              toggleModal();
-            }} />
-            <Button title="Cancel" onPress={toggleModal} />
+            <CustomButton
+              title="Record Video"
+              onPress={() => {
+                takeNewVideo();
+                toggleModal();
+              }}
+              style={styles.recordButton}
+              textStyle={styles.recordButtonText}
+            />
+            <CustomButton
+              title="Choose from Gallery"
+              onPress={() => {
+                pickVideoFromGallery();
+                toggleModal();
+              }}
+              style={styles.galleryButton}
+              textStyle={styles.galleryButtonText}
+            />
+            <CustomButton
+              title="Cancel"
+              onPress={toggleModal}
+              style={styles.cancelButton}
+              textStyle={styles.cancelButtonText}
+            />
           </View>
         </View>
-      </Modal>
-
-
+      </ModalReact>
     </ScrollView>
   );
 };
@@ -264,7 +277,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   heading: {
-    fontSize: 24,
+    fontSize: sizes.title,
     color: colors.black,
     marginTop: 40,
     marginBottom: 20,
@@ -281,12 +294,14 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   videoPicker: {
-    marginBottom: 15,
+    marginBottom: spacing.m,
+    marginTop: spacing.l,
     width: "100%",
 
   },
   videoButton: {
-    marginBottom: 5,
+    marginBottom: spacing.s,
+    marginTop: spacing.s,
     padding: 10,
     backgroundColor: colors.white,
     borderRadius: sizes.radius,
@@ -304,11 +319,11 @@ const styles = StyleSheet.create({
   sendButton: {
     padding: 15,
     backgroundColor: colors.black,
-    borderRadius: 5,
     alignItems: 'center',
     borderRadius: sizes.radius,
     width:"80%",
     marginLeft: "10%",
+    marginTop: spacing.m,
   },
   sendButtonText: {
     fontSize: sizes.h2,
@@ -323,7 +338,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: spacing.m,
+    marginTop: spacing.l,
     borderRadius: 10,
     overflow: 'hidden', // Ensure the child components do not overflow
   },
@@ -353,7 +369,7 @@ const styles = StyleSheet.create({
   visibilityLabel: {
     fontSize: sizes.h3,
     textAlign: 'center',
-    marginVertical: 10,
+    marginTop: spacing.l,
     color: colors.darkblue,
     fontFamily: 'Montserrat',
   },
@@ -402,8 +418,63 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
+    textAlign: "center",
+    color: colors.black,
+    fontFamily: 'Montserrat',
+  },
+  button: {
+    borderRadius: sizes.radius,
+    padding: 10,
+    elevation: 2,
+    width: '80%',
+    marginTop: 10,
+  },
+  buttonText: {
+    color: colors.white,
+    fontFamily: 'MontserratBold',
+    textAlign: "center",
+  },
+  recordButton: {
+    backgroundColor: colors.green,
+  },
+  recordButtonText: {},
+  galleryButton: {
+    backgroundColor: colors.lightblue,
+  },
+  galleryButtonText: {},
+  cancelButton: {
+    backgroundColor: colors.black,
+  },
+  cancelButtonText: {},
+  dropdownButton: {
+    marginTop: spacing.m,
+    backgroundColor: colors.darkblue,
+    borderColor: colors.black,
+    justifyContent: 'center',
+  },
+  dropdownContent: {
+    height: 60,
+  },
+  dropdownLabel: {
+    color: colors.white,
+    fontSize: sizes.h3,
+    fontFamily: 'Montserrat',
+  },
+  modalContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    margin: 20,
+    borderRadius: sizes.radius,
+    marginBottom: spacing.s,
+  },
+  modalItem: {
+    marginBottom: spacing.xs,
+    borderColor: colors.black,
+  },
+  modalItemLabel: {
+    color: colors.black,
+    fontFamily: 'Montserrat',
+  },
 });
 
 export default PostCast;
