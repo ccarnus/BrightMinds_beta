@@ -92,7 +92,6 @@ const PostCast = ({navigation}) => {
       category: 'Breakthrough',
       brightmindid: '101',
       visibility,
-      duration: 1,
     };
   
     const formData = new FormData();

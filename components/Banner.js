@@ -38,7 +38,7 @@ const Banner = () => {
           style={styles.logoImage}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleProfilePress} style={styles.profileContainer}>
+      <TouchableOpacity onPress={handleProfilePress} >
         <Image
           source={profileImageSource.source}
           style={styles.profileImage}
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 30,
     backgroundColor: colors.darkblue,
   },
   logoContainer: {
@@ -67,12 +67,10 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     padding: 10,
-    backgroundColor: colors.darkblue,
   },
   profileImage: {
     width: 42,
     height: 42,
-    backgroundColor: 'transparent', // Change made here
   },
 });
 
