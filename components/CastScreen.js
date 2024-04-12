@@ -44,6 +44,7 @@ const CastScreen = () => {
     );
     setSearchResults(filteredCasts);
   };
+  
 
   const navigateToDiscoverScreen = () => {
     navigation.navigate('DiscoverScreen');
@@ -140,10 +141,7 @@ const CastScreen = () => {
         <ScrollView
           style={styles.container}
           refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-            />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
           <View style={styles.searchAndDiscoverContainer}>
@@ -151,9 +149,10 @@ const CastScreen = () => {
               <TextInput
                 style={styles.searchBar}
                 placeholder="Search casts..."
-                onChangeText={handleSearch}
                 placeholderTextColor={colors.white}
+                onChangeText={handleSearch}
                 value={searchQuery}
+                clearButtonMode="while-editing" // iOS-specific for a built-in clear button
               />
               {searchQuery.length > 0 && (
                 <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
@@ -171,7 +170,10 @@ const CastScreen = () => {
                 <Text style={styles.searchResultItem}>{cast.title}</Text>
               </TouchableOpacity>
             ))
-          ) : (
+          ) : searchQuery.trim().length > 0 ? (
+            <Text style={styles.noResultsText}>No results.</Text>
+          ) : null}
+          {searchQuery.trim().length === 0 && (
             <>
               <View style={styles.categoryHeader}>
                 <Image source={forYou} style={styles.categoryIcon} />
@@ -184,7 +186,7 @@ const CastScreen = () => {
               </View>
               <Carousel list={TrendingCastData} carouselType="trending" />
               <View style={styles.categoryHeader}>
-              <Image source={articleIcon} style={styles.categoryIcon} />
+                <Image source={articleIcon} style={styles.categoryIcon} />
                 <Text style={styles.categoryTitle}>Articles</Text>
               </View>
               <ArticleCarousel list={articleData} />
@@ -200,6 +202,7 @@ const CastScreen = () => {
       </TouchableOpacity>
     </View>
   );
+  
 };
 
 const styles = StyleSheet.create({
@@ -264,13 +267,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
-    marginLeft: 10,
   },
   searchBar: {
-    marginLeft: spacing.s,
+    flex: 1,
+    fontFamily: 'Montserrat',
+    color: colors.white,
+    fontSize: sizes.h3,
   },
   clearButton: {
     marginLeft: 10,
+    marginRight: 10,
   },
   clearButtonText: {
     color: colors.white,
@@ -293,6 +299,28 @@ const styles = StyleSheet.create({
     height: 28,
     marginRight: spacing.s,
   },
+  noResultsText: {
+    color: colors.white,
+    fontSize: sizes.h3,
+    fontFamily: 'Montserrat',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  searchResultItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.white,
+    color: colors.white,
+    fontSize: sizes.h3,
+    fontFamily: 'Montserrat',
+  },
+  noResultsText: {
+    color: colors.white,
+    fontSize: sizes.h3,
+    fontFamily: 'Montserrat',
+    textAlign: 'center',
+    marginTop: 20,
+  },  
 });
 
 export default CastScreen;
