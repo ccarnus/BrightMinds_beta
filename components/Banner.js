@@ -69,8 +69,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   profileImage: {
-    width: 42,
-    height: 42,
+    width: 46,
+    height: 46,
+    borderRadius: 46 / 2,
+    backgroundColor:colors.darkblue,
   },
 });
 

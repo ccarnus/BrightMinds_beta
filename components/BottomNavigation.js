@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import {StyleSheet, Animated, Keyboard } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import CastScreen from './CastScreen';
 import TrackScreen from './TrackScreen';
 import DiscoverScreen from './DiscoverScreen';
 import LabScreen from './LabScreen';
 import {colors, sizes} from './theme';
-import {StyleSheet, Animated} from 'react-native';
 import Icon from '../assets/Bottom_icons/Icon';
 
 const tabs = [
@@ -29,8 +29,26 @@ const tabs = [
 
 const Tab = createBottomTabNavigator();
 
+const useKeyboardVisibility = () => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => setVisible(true));
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => setVisible(false));
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
+  return visible;
+};
+
 const BottomNavigation = () => {
   const offsetAnimation = React.useRef(new Animated.Value(0)).current;
+  const isKeyboardVisible = useKeyboardVisibility();
+  
   return (
     <>
       <Tab.Navigator
@@ -38,6 +56,7 @@ const BottomNavigation = () => {
         screenOptions={{
           headerShown: false,
           tabBarShowLabel: true,
+          tabBarHideOnKeyboard: true,
           tabBarStyle: { 
             backgroundColor: colors.darkblue,
             height: 55,
@@ -55,7 +74,8 @@ const BottomNavigation = () => {
               key={name}
               name={name}
               component={screen}
-              options={{
+              options={{ 
+                tabBarHideOnKeyboard: true,
                 tabBarIcon: ({focused}) => {
                   return (
                     <Icon
@@ -80,18 +100,20 @@ const BottomNavigation = () => {
           );
         })}
       </Tab.Navigator>
-      <Animated.View
-        style={[
-          styles.indicator,
-          {
-            transform: [
-              {
-                translateX: offsetAnimation,
-              },
-            ],
-          },
-        ]}
-      />
+      {!isKeyboardVisible && ( // Only render the indicator if the keyboard is not visible
+        <Animated.View
+          style={[
+            styles.indicator,
+            {
+              transform: [
+                {
+                  translateX: offsetAnimation,
+                },
+              ],
+            },
+          ]}
+        />
+      )}
     </>
   );
 };
