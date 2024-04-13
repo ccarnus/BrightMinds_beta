@@ -152,7 +152,7 @@ const CastScreen = () => {
                 placeholderTextColor={colors.white}
                 onChangeText={handleSearch}
                 value={searchQuery}
-                clearButtonMode="while-editing" // iOS-specific for a built-in clear button
+                clearButtonMode="while-editing"
               />
               {searchQuery.length > 0 && (
                 <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
@@ -202,7 +202,6 @@ const CastScreen = () => {
       </TouchableOpacity>
     </View>
   );
-  
 };
 
 const styles = StyleSheet.create({
@@ -273,6 +272,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     color: colors.white,
     fontSize: sizes.h3,
+    paddingLeft: spacing.l,
   },
   clearButton: {
     marginLeft: 10,
