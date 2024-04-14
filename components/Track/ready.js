@@ -11,14 +11,18 @@ const ReadyScreen = ({ navigation }) => {
   const [showButton, setShowButton] = useState(false);
   const [numQuestions, setNumQuestions] = useState(0);
   const opacityValue = new Animated.Value(0);
-  let castIds;
+  let evaluations;
 
   const getCastList = async () => {
     try {
       const response = await axios.get('http://3.17.219.54/user/' + USER_ID);
       const evaluationList = response.data.evaluation_list.filter(item => item.watched && !item.answered);
-      castIds = evaluationList.map(item => item.castid);
-      setNumQuestions(castIds.length);
+      evaluations = evaluationList.map(item => ({
+        contentid: item.contentid,
+        type: item.type
+      }));
+      console.log(evaluations);
+      setNumQuestions(evaluations.length);
     } catch (error) {
       console.error('Error fetching evaluation list:', error);
     }
@@ -37,7 +41,7 @@ const ReadyScreen = ({ navigation }) => {
 
   const handleReadyButtonPress = () => {
     if (numQuestions > 0) {
-      navigation.navigate('Evaluation', { castIds });
+      navigation.navigate('Evaluation', { evaluations });
     } else {
       navigation.goBack();
     }

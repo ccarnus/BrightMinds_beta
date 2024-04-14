@@ -8,7 +8,6 @@ const Finish = ({ route, navigation }) => {
   const shakeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Start the shake animation when the screen is loaded
     Animated.loop(
       Animated.sequence([
         Animated.timing(shakeAnim, {
@@ -44,7 +43,6 @@ const Finish = ({ route, navigation }) => {
         />
       </Animated.View>
 
-      <Text style={styles.resultText}>You got {correctAnswers} correct answers!</Text>
       <Text style={styles.resultRate}>{successRate}%</Text>
       <Text style={styles.infoText}>The next test available in 11 hours</Text>
 
@@ -67,30 +65,28 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: sizes.title,
-    fontWeight: 'bold',
+    fontFamily: 'MontserratBold',
     color: colors.black,
     marginBottom: spacing.l*2,
+    marginLeft: spacing.m,
+    marginRight: spacing.m,
   },
   icon: {
     width: 150,
     height: 150,
     marginBottom: spacing.l,
   },
-  resultText: {
-    fontSize: sizes.h3,
-    color: colors.black,
-    marginBottom: spacing.s,
-  },
   resultRate: {
     fontSize: sizes.title,
     color: colors.green,
-    fontWeight: 'bold',
+    fontFamily: 'Montserrat',
     marginBottom: spacing.s,
   },
   infoText: {
     fontSize: sizes.h3,
     color: colors.gray,
     marginBottom: spacing.m,
+    fontFamily: 'Montserrat',
   },
   button: {
     marginTop: spacing.l,
