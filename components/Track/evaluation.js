@@ -8,7 +8,7 @@ const USER_ID = "6474e4001eec5ee1ecd40180";
 let correctAnswerCount = 0;
 
 const TakeTest = ({ route, navigation }) => {
-  const { castIds } = route.params;
+  const { evaluations } = route.params;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -18,7 +18,6 @@ const TakeTest = ({ route, navigation }) => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const shakeAnim = useRef(new Animated.Value(0)).current;
   
-
   useEffect(() => {
     fetchQuestions();
   }, []);
@@ -42,7 +41,7 @@ const TakeTest = ({ route, navigation }) => {
       setDisplayedQuestion((prev) => prev + questionText.charAt(i));
       i++;
       if (i > questionText.length) clearInterval(typingIntervalRef.current);
-    }, 50); // Adjust the speed by changing the interval time
+    }, 50);
   };
 
   const addPoints = async (points) => {
@@ -59,30 +58,34 @@ const TakeTest = ({ route, navigation }) => {
     }
   };
 
-  const removeCastFromEvaluationList = async (castId) => {
+  const removeContentFromEvaluationList = async (evaluation) => {
     try {
-      await axios.post(`http://3.17.219.54/user/mark/cast/as/answered/${USER_ID}`, {
-        castId: castId,
+      await axios.post(`http://3.17.219.54/user/mark/content/as/answered/${USER_ID}`, {
+        contentId: evaluation.contentid,
       });
-      console.log(`Cast ${castId} marked as answered`);
+      console.log(`Content ${evaluation.contentid} marked as answered`);
     } catch (error) {
-      console.error(`Error marking cast ${castId} as answered:`, error);
+      console.error(`Error marking content ${evaluation.contentid} as answered:`, error);
     }
   };
-
+  
   const fetchQuestions = async () => {
     try {
-      const questionsPromises = castIds.map(castId =>
-        axios.get(`http://3.17.219.54/cast/${castId}`)
-      );
+      const questionsPromises = evaluations.map(item => {
+        const url = item.type === 'article'
+          ? `http://3.17.219.54/article/${item.contentid}`
+          : `http://3.17.219.54/cast/${item.contentid}`;
+        return axios.get(url);
+      });
       const questionsResponses = await Promise.all(questionsPromises);
       const questionsData = questionsResponses.map(response => response.data.evaluation);
-
+  
       setQuestions(questionsData);
     } catch (error) {
       console.error('Error fetching questions:', error);
     }
   };
+  
 
   const animateCorrectAnswer = () => {
     Animated.sequence([
@@ -151,7 +154,7 @@ const TakeTest = ({ route, navigation }) => {
       addPoints(10);
       correctAnswerCount = correctAnswerCount + 1 ;
       console.log(`current count ${correctAnswerCount}`)
-      removeCastFromEvaluationList(castIds[currentQuestionIndex]);
+      removeContentFromEvaluationList(evaluations[currentQuestionIndex]);
     } else {
       animateIncorrectAnswer();
     }

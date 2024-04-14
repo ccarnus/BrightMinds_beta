@@ -54,8 +54,8 @@
     };
 
     const handleAddToCastList = async () => {
-        const castId = selectedArticleId;
-        const url = `http://3.17.219.54/user/add/cast/${userId}`;
+        const contentId = selectedArticleId;
+        const url = `http://3.17.219.54/user/add/content/${userId}`;
       
         try {
           const response = await fetch(url, {
@@ -63,7 +63,7 @@
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ cast_id: castId }),
+            body: JSON.stringify({ contentId: contentId, type: "article" }),
           });
       
           const result = await response.json();

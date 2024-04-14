@@ -88,7 +88,7 @@ const TrendingScreen = ({ route, navigation }) => {
     const castId = videos[focusedIndex]._id;
 
     axios
-      .post(`http://3.17.219.54/user/add/cast/${userId}`, { cast_id: castId })
+      .post(`http://3.17.219.54/user/add/content/${userId}`, { contentId: castId, type: "cast" })
       .then(response => {
         setBookmarkedCasts([...bookmarkedCasts, { castId }]);
       })
