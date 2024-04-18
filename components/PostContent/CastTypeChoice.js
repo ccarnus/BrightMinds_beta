@@ -39,6 +39,7 @@ const CastTypeChoice = () => {
         navigation.navigate('PostCast');
         break;
       case 'Article':
+        navigation.navigate('PostArticle');
         break;
       default:
         break;

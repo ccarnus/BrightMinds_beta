@@ -126,7 +126,6 @@ const PostCast = ({navigation}) => {
     }
   };
   
-
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       {loading && (
@@ -263,11 +262,6 @@ const PostCast = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: 20,
-    paddingBottom: 40,
   },
   loadingOverlay: {
     position: 'absolute',

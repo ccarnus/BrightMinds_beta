@@ -2,8 +2,9 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import BottomNavigation from './BottomNavigation';
-import PostCast from './PostCast/PostCast';
-import CastTypeChoice from './PostCast/CastTypeChoice';
+import PostCast from './PostContent/PostCast';
+import PostArticle from './PostContent/PostArticle';
+import CastTypeChoice from './PostContent/CastTypeChoice';
 import Ready from './Track/ready';
 import Evaluation from './Track/evaluation';
 import Banner from './Banner';
@@ -35,6 +36,7 @@ const MainNavigator = () => {
         <Stack.Screen name="Finish" component={Finish} options={{ headerShown: false, tabBarVisible: true }} />
         <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: false, tabBarVisible: false }} />
         <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: false, tabBarVisible: false }}/>
+        <Stack.Screen name="PostArticle" component={PostArticle} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ header: () => <SimpleHeader /> }}/>
         <Stack.Screen name="SuggestedForYou" component={SuggestedForYou} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="Trending" component={Trending} options={{ headerShown: false, tabBarVisible: false }}/>
