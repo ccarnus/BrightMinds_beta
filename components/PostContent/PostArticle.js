@@ -19,6 +19,13 @@ const PostArticle = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [articleImageUrl, setArticleImageUrl] = useState('');
 
+  const calculateReadingTime = (text) => {
+    const wordsPerMinute = 200;
+    const words = text.trim().split(/\s+/).length;
+    const time = Math.ceil(words / wordsPerMinute);
+    console.log(time);
+    return time;
+  };
 
   const handlePostArticle = async () => {
     setLoading(true);
@@ -43,11 +50,11 @@ const PostArticle = ({ navigation }) => {
         category: 'Breakthrough',
         brightmindid: 101,
         visibility,
-        duration: 5,
+        duration: calculateReadingTime(description),
     };
 
     try {
-        const response = await fetch('http://yourbackendurl/articles', {
+        const response = await fetch('http://3.17.219.54/article', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,7 +65,7 @@ const PostArticle = ({ navigation }) => {
         if (!response.ok) throw new Error('Failed to post article');
 
         Alert.alert('Success', 'Article posted successfully!');
-        navigation.navigate('Home');
+        navigation.navigate('Cast');
     } catch (error) {
         Alert.alert('Error', error.message);
     } finally {
@@ -67,11 +74,13 @@ const PostArticle = ({ navigation }) => {
 };
 
 return (
-  <ScrollView style={styles.container}>
+  <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       {loading && (
           <View style={styles.loadingOverlay}>
-              <ActivityIndicator size="large" color="#fff" />
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#fff" />
           </View>
+        </View>
       )}
       <View style={styles.content}>
           <Text style={styles.heading}>Post an Article</Text>
@@ -135,9 +144,11 @@ return (
 };
 
 const styles = StyleSheet.create({
-  // Add your existing styles here, or adapt as needed for the article screen
   container: {
     flex: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
   },
   content: {
     paddingHorizontal: 20,
@@ -153,7 +164,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   multilineInput: {
-    height: 100,
+    height: 150,
     textAlignVertical: 'top',
   },
   sendButton: {
@@ -186,6 +197,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1000, 
+  },
+  loadingContainer: {
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   visibilityLabel: {
     fontSize: sizes.h3,

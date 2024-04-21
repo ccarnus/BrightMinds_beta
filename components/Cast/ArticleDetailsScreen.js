@@ -82,12 +82,22 @@
       
       
 
-    const getDaysSincePosted = (dateString) => {
+      const getDaysSincePosted = (dateString) => {
         const datePosted = new Date(dateString);
         const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        datePosted.setHours(0, 0, 0, 0);
+    
         const differenceInTime = currentDate.getTime() - datePosted.getTime();
-        return Math.floor(differenceInTime / (1000 * 3600 * 24));
+        const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+    
+        if (differenceInDays === 0) {
+            return "today";  // Return 'today' if the difference is zero
+        } else {
+            return `${differenceInDays} days ago`;  // Otherwise return the number of days ago
+        }
     };
+    
 
     if (isLoading) {
         return (
@@ -123,12 +133,13 @@
             )}
             
             <View style={styles.infoDisplay}>
-                <Text style={styles.infoText}>{getDaysSincePosted(article.dateAdded)} days ago</Text>
+                <Text style={styles.infoText}>{getDaysSincePosted(article.dateAdded)}</Text>
                 <Text style={styles.separator}>  ·  </Text>
                 <Text style={styles.infoText}>{article.department}</Text>
                 <Text style={styles.separator}>  ·  </Text>
                 <Text style={styles.infoText}>{article.duration} min</Text>
             </View>
+
         
             <View style={styles.content}>
                 <Text style={styles.title}>{article.title}</Text>
