@@ -5,9 +5,9 @@ import { Dimensions } from 'react-native';
 import axios from 'axios';
 import {colors, shadow, sizes, spacing} from './theme';
 
-const { width, height } = Dimensions.get('window');
 
 const DiscoverScreen = ({ navigation }) => {
+  const { width, height } = Dimensions.get('window');
   const [videos, setVideos] = useState([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [videoStatus, setVideoStatus] = useState([]);
@@ -16,6 +16,8 @@ const DiscoverScreen = ({ navigation }) => {
   const videoRefs = useRef([]);
   const userId = "6474e4001eec5ee1ecd40180";
   const [videoVerifications, setVideoVerifications] = useState([]);
+  const [videoDimensions, setVideoDimensions] = useState({ width: width, height: height / 2 });
+
 
   useEffect(() => {
     fetch('http://3.17.219.54/cast')
@@ -33,7 +35,10 @@ const DiscoverScreen = ({ navigation }) => {
       );
       return Promise.all(fetchUniversityLogosAndApprovalStatus);
     })
-    .then(dataWithLogosAndApproval => setVideos(dataWithLogosAndApproval))
+    .then(dataWithLogosAndApproval => {
+      setVideos(dataWithLogosAndApproval);
+      setVideoStatus(dataWithLogosAndApproval.map(() => false));
+    })
     .catch(error => console.error(error));
 
     axios
@@ -48,12 +53,18 @@ const DiscoverScreen = ({ navigation }) => {
 
 
   useEffect(() => {
-    setVideoStatus(videos.map((_, index) => index === 0));
-  }, [videos]);
+    setVideoStatus(videos.map((_, index) => index === focusedIndex));
+  }, [videos, focusedIndex]);
 
-  const handleVideoPress = index => {
-    setFocusedIndex(index);
-    setVideoStatus(prevStatus => prevStatus.map((status, idx) => (idx === index ? !status : false)));
+  const handleVideoPress = () => {
+    const currentStatus = !videoStatus[focusedIndex];
+    setVideoStatus(videoStatus.map((status, idx) => idx === focusedIndex ? !status : status));
+  };
+
+  const handleNextVideoPress = () => {
+    const nextIndex = (focusedIndex + 1) % videos.length;
+    setFocusedIndex(nextIndex);
+    setVideoStatus(videoStatus.map((_, idx) => idx === nextIndex));
   };
 
   const handleBookmarkPress = () => {
@@ -98,107 +109,69 @@ const DiscoverScreen = ({ navigation }) => {
         console.error(error);
       });
   };
-  
 
+  const handleVideoLoad = (metaData) => {
+    if (metaData && metaData.naturalSize && metaData.naturalSize.width && metaData.naturalSize.height) {
+      const { width: videoWidth, height: videoHeight } = metaData.naturalSize;
+      const ratio = videoWidth / videoHeight;
+      const maxHeight = height / 2;
+      const maxWidth = width;
+      let adjustedHeight = maxHeight;
+      let adjustedWidth = adjustedHeight * ratio;
+  
+      if (adjustedWidth > maxWidth) {
+        adjustedWidth = maxWidth;
+        adjustedHeight = adjustedWidth / ratio;
+      }
+  
+      setVideoDimensions({ width: adjustedWidth, height: adjustedHeight });
+    } else {
+      setVideoDimensions({ width: height * (9 / 32), height: height / 2 });
+    }
+  };
+  
+  
   useEffect(() => {
-    // Pause the video when the screen loses focus
     const pauseVideo = () => {
       setVideoStatus(prevStatus => prevStatus.map(() => false));
     };
     const unsubscribe = navigation.addListener('blur', pauseVideo);
     return unsubscribe;
   }, [navigation]);
-
+  
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={event => {
-          const offsetX = event.nativeEvent.contentOffset.x;
-          const index = Math.round(offsetX / windowWidth);
-          setFocusedIndex(index);
-          setVideoStatus(prevStatus =>
-            prevStatus.map((status, idx) => (idx === index ? !status : false))
-          );
-        }}
-      >
-        {videos.map((video, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.videoContainer,
-              {
-                width: windowWidth,
-                height: windowHeight,
-                opacity: focusedIndex === index ? 1 : 0.7,
-              },
-            ]}
-            onPress={() => handleVideoPress(index)}
-          >
-            <View style={styles.videoWrapper}>
-            <Video
-              ref={ref => (videoRefs.current[index] = ref)}
-              source={{ uri: video.casturl }}
-              shouldPlay={videoStatus[index]}
-              resizeMode="cover"
-              style={styles.video}
-              onPlaybackStatusUpdate={(status) => {
-                if (status.didJustFinish) {
-                  videoRefs.current[index].setPositionAsync(0);
-                  handleCastDonePlaying();
-                }
-              }}
-            />
-            </View>
-            <View style={styles.buttonUniversityContainer}>
-              <Image
-                source={{ uri: video.universityLogo }}
-                style={styles.universityIcon}
-                resizeMode="contain"
+      {videos.length > 0 && (
+        <TouchableOpacity
+          style={[styles.videoContainer, { height: videoDimensions.height }]}
+          onPress={handleVideoPress}
+          activeOpacity={0.9}
+        >
+          <Video
+            ref={ref => (videoRefs.current[focusedIndex] = ref)}
+            source={{ uri: videos[focusedIndex].casturl }}
+            shouldPlay={videoStatus[focusedIndex]}
+            resizeMode="cover"
+            style={{ width: videoDimensions.width, height: videoDimensions.height }}
+            onLoad={handleVideoLoad}
+            onPlaybackStatusUpdate={status => {
+              if (status.didJustFinish) {
+                videoRefs.current[focusedIndex].setPositionAsync(0);
+              }
+            }}
+          />
+        </TouchableOpacity>
+      )}
+      <View style={styles.bottomSection}>
+        <TouchableOpacity style={styles.button} onPress={handleNextVideoPress}>
+          <Text style={styles.buttonText}>Find Next</Text>
+        </TouchableOpacity>
+        <Image
+              source={{ uri: videos[focusedIndex].universityLogo }}
+              style={styles.universityIcon}
+              resizeMode="contain"
               />
-            </View>
-            {video.isApproved && (
-              <View style={styles.buttonApprovedContainer}>
-                <Image
-                  source={require('../assets/Cast_icons/approved_badge.png')}
-                  style={styles.icon_badge}
-                />
-              </View>
-            )}
-            <View style={styles.buttonBookmarkContainer}>
-              <TouchableOpacity style={styles.button} onPress={handleBookmarkPress}>
-                  <Image
-                    source={
-                      bookmarkedCasts.some(cast => cast.castId === video._id)
-                        ? require('../assets/Cast_icons/bookmark_filled_icon.png')
-                        : require('../assets/Cast_icons/bookmark_icon.png')
-                    }
-                    style={styles.icon}
-                  />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonCommentContainer}>
-              <TouchableOpacity style={styles.button}>
-                <Image
-                  source={require('../assets/Cast_icons/comment_icon.png')}
-                  style={styles.icon}
-                />
-              </TouchableOpacity>
-            </View> 
-            <View style={styles.buttonShareContainer}>
-              <TouchableOpacity style={styles.button}>
-                <Image
-                  source={require('../assets/Cast_icons/share_icon.png')}
-                  style={styles.icon}
-                />
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -210,84 +183,42 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
-    overflow: 'hidden',
-  },
-  scrollView: {
-    flex: 1,
+    backgroundColor: colors.darkblue,
   },
   videoContainer: {
-    position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-  },
-  videoWrapper: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
   },
   video: {
     width: '100%',
     height: '100%',
   },
-  icon: {
-    width: 35,
-    height: 35,
-    tintColor: colors.darkblue,
-    marginHorizontal: 12,
+  bottomSection: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  icon_badge: {
-    width: 42,
-    height: 42,
-    marginHorizontal: 12,
+  button: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    padding: 15,
+    backgroundColor: colors.black,
+    alignItems: 'center',
+    borderRadius: sizes.radius,
+    width:"80%",
+    marginLeft: "10%",
+    marginTop: spacing.m,
   },
   universityIcon: {
     width: "100%",
     height: "100%",
     marginHorizontal: 12,
   },
-  buttonBookmarkContainer: {
-    position: 'absolute',
-    top: height*0.5,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  buttonCommentContainer: {
-    position: 'absolute',
-    top: height*0.6,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  buttonShareContainer: {
-    position: 'absolute',
-    top: height*0.7,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  buttonUniversityContainer: {
-    width: 64,
-    height: 64,
-    position: 'absolute',
-    top: height*0.4,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-    borderRadius: 50,
-  },
-  buttonApprovedContainer: {
-    position: 'absolute',
-    top: height * 0.3,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  
 });
 
 export default DiscoverScreen;
