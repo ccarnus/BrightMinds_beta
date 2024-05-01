@@ -141,7 +141,7 @@ const DiscoverScreen = ({ navigation }) => {
             <View style={styles.videoWrapper}>
             <Video
               ref={ref => (videoRefs.current[index] = ref)}
-              source={{ uri: video.casturl }}
+              source={{ uri: "http://3.17.219.54/backend/media/cast_videos/FIrst_Principle_Thinking.mp41700931207323.mp4" }}
               shouldPlay={videoStatus[index]}
               resizeMode="cover"
               style={styles.video}
