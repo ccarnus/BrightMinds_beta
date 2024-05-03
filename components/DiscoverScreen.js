@@ -44,14 +44,35 @@ const DiscoverScreen = ({ navigation }) => {
       });
   }, []);
 
+  const handleCastDonePlaying = () => {
+    const castId = videos[focusedIndex]._id;
+
+    axios
+      .post(`http://3.17.219.54/user/add/content/${userId}`, { contentId: castId, type: "cast" })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
   const togglePlay = () => {
     setShowVideo(true);
     setVideoStatus(videoStatus.map((status, idx) => idx === focusedIndex ? !status : status));
   };
 
+  const togglePlayVideoFocused = async () => {
+    if (videoRefs.current[focusedIndex]) {
+      const status = await videoRefs.current[focusedIndex].getStatusAsync();
+      if (status.isPlaying) {
+        await videoRefs.current[focusedIndex].pauseAsync();
+      } else {
+        await videoRefs.current[focusedIndex].playAsync();
+      }
+    }
+  };
+
   const formatDuration = (duration) => {
-    const minutes = Math.floor(duration); // Get the whole number of minutes
-    const seconds = Math.round((duration - minutes) * 60); // Convert the decimal part to seconds
+    const minutes = Math.floor(duration);
+    const seconds = Math.round((duration - minutes) * 60);
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };  
 
@@ -68,7 +89,7 @@ const DiscoverScreen = ({ navigation }) => {
           <TouchableOpacity
             style={[styles.imageContainer, { height: width / 1.5 }]}
             onPress={togglePlay}
-            activeOpacity={0.9}
+            activeOpacity={1}
           >
             <Image
               source={{ uri: videos[focusedIndex].castimageurl }}
@@ -100,13 +121,24 @@ const DiscoverScreen = ({ navigation }) => {
               setVideoStatus(videoStatus.map((status, idx) => idx === focusedIndex ? false : status));
             }}
           >
-            <Video
-              ref={ref => (videoRefs.current[focusedIndex] = ref)}
-              source={{ uri: videos[focusedIndex].casturl }}
-              shouldPlay={videoStatus[focusedIndex]}
-              resizeMode="cover"
-              style={{ width: '100%', height: '100%' }}
-            />
+            <TouchableOpacity
+              activeOpacity={1}
+              style={{ flex: 1 }}
+              onPress={togglePlayVideoFocused}
+            >
+              <Video
+                ref={ref => (videoRefs.current[focusedIndex] = ref)}
+                source={{ uri: videos[focusedIndex].casturl }}
+                shouldPlay={videoStatus[focusedIndex]}
+                resizeMode="cover"
+                style={{ width: '100%', height: '100%' }}
+                onPlaybackStatusUpdate={(status) => {
+                  if (status.didJustFinish) {
+                    handleCastDonePlaying();
+                  }
+                }}
+              />
+            </TouchableOpacity>
           </Modal>
         </>
       )}
