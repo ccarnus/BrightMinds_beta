@@ -88,7 +88,7 @@ const PostCast = ({navigation}) => {
       description,
       department: 'Robotics',
       type,
-      university: 'Georgia Tech',
+      university: 'GeorgiaTech',
       category: 'Breakthrough',
       brightmindid: '101',
       visibility,

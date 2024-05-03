@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { View, TouchableOpacity, Text, Image, StyleSheet, Modal } from 'react-native';
 import { Video } from 'expo-av';
 import { Dimensions } from 'react-native';
 import axios from 'axios';
-import {colors, shadow, sizes, spacing} from './theme';
+import { colors, sizes, spacing } from './theme';
 
 const { width, height } = Dimensions.get('window');
 
@@ -11,283 +11,252 @@ const DiscoverScreen = ({ navigation }) => {
   const [videos, setVideos] = useState([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [videoStatus, setVideoStatus] = useState([]);
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [bookmarkedCasts, setBookmarkedCasts] = useState([]);
+  const [showVideo, setShowVideo] = useState(false);
   const videoRefs = useRef([]);
   const userId = "6474e4001eec5ee1ecd40180";
-  const [videoVerifications, setVideoVerifications] = useState([]);
 
   useEffect(() => {
     fetch('http://3.17.219.54/cast')
-    .then(response => response.json())
-    .then(data => {
-      const fetchUniversityLogosAndApprovalStatus = data.map(cast => 
-        Promise.all([
-          fetch(`http://3.17.219.54/university/by/name/${cast.university}`)
-            .then(res => res.json())
-            .then(universityData => ({...cast, universityLogo: universityData.iconurl})),
-          fetch(`http://3.17.219.54/cast/verification/${cast._id}`)
-            .then(res => res.json())
-            .then(verificationData => ({...cast, isApproved: verificationData.approvals >= 5}))
-        ]).then(results => Object.assign({}, ...results))
-      );
-      return Promise.all(fetchUniversityLogosAndApprovalStatus);
-    })
-    .then(dataWithLogosAndApproval => setVideos(dataWithLogosAndApproval))
-    .catch(error => console.error(error));
-
-    axios
-      .get(`http://3.17.219.54/user/bookmarks/${userId}`)
-      .then(response => {
-        setBookmarkedCasts(response.data);
+      .then(response => response.json())
+      .then(data => {
+        console.log('Data fetched:', data); // Log fetched data
+        if (data && data.length > 0) {
+          const fetchUniversityLogosAndApprovalStatus = data.map(cast =>
+            Promise.all([
+              fetch(`http://3.17.219.54/university/by/name/${cast.university}`)
+                .then(res => res.json())
+                .then(universityData => ({ ...cast, universityLogo: universityData.iconurl })),
+              fetch(`http://3.17.219.54/cast/verification/${cast._id}`)
+                .then(res => res.json())
+                .then(verificationData => ({ ...cast, isApproved: verificationData.approvals >= 5 }))
+            ]).then(results => Object.assign({}, ...results))
+          );
+          return Promise.all(fetchUniversityLogosAndApprovalStatus);
+        }
+        return [];
+      })
+      .then(dataWithLogosAndApproval => {
+        setVideos(dataWithLogosAndApproval);
+        setVideoStatus(dataWithLogosAndApproval.map(() => false));
       })
       .catch(error => {
-        console.error(error);
+        console.error('Fetching error:', error);
       });
   }, []);
-
-
-  useEffect(() => {
-    setVideoStatus(videos.map((_, index) => index === 0));
-  }, [videos]);
-
-  const handleVideoPress = index => {
-    setFocusedIndex(index);
-    setVideoStatus(prevStatus => prevStatus.map((status, idx) => (idx === index ? !status : false)));
-  };
-
-  const handleBookmarkPress = () => {
-    const castId = videos[focusedIndex]._id;
-
-    if (bookmarkedCasts.some(cast => cast.castId === castId)) {
-      axios
-        .delete(`http://3.17.219.54/user/remove/bookmarks/${userId}/${castId}`)
-        .then(response => {
-          setBookmarkedCasts(bookmarkedCasts.filter(cast => cast.castId !== castId));
-          videos[focusedIndex].bookmarkIcon = require('../assets/Cast_icons/bookmark_icon.png');
-        })
-        .catch(error => {
-          console.error(error);
-        });
-      return;
-    }
-
-    setIsBookmarked(true);
-
-    videos[focusedIndex].bookmarkIcon = require('../assets/Cast_icons/bookmark_filled_icon.png');
-
-    axios
-      .post(`http://3.17.219.54/user/add/bookmarks/${userId}`, { castId: castId })
-      .then(response => {
-        setBookmarkedCasts([...bookmarkedCasts, { castId }]);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
 
   const handleCastDonePlaying = () => {
     const castId = videos[focusedIndex]._id;
 
     axios
       .post(`http://3.17.219.54/user/add/content/${userId}`, { contentId: castId, type: "cast" })
-      .then(response => {
-        setBookmarkedCasts([...bookmarkedCasts, { castId }]);
-      })
       .catch(error => {
         console.error(error);
       });
   };
-  
 
-  useEffect(() => {
-    // Pause the video when the screen loses focus
-    const pauseVideo = () => {
-      setVideoStatus(prevStatus => prevStatus.map(() => false));
-    };
-    const unsubscribe = navigation.addListener('blur', pauseVideo);
-    return unsubscribe;
-  }, [navigation]);
+  const togglePlay = () => {
+    setShowVideo(true);
+    setVideoStatus(videoStatus.map((status, idx) => idx === focusedIndex ? !status : status));
+  };
+
+  const togglePlayVideoFocused = async () => {
+    if (videoRefs.current[focusedIndex]) {
+      const status = await videoRefs.current[focusedIndex].getStatusAsync();
+      if (status.isPlaying) {
+        await videoRefs.current[focusedIndex].pauseAsync();
+      } else {
+        await videoRefs.current[focusedIndex].playAsync();
+      }
+    }
+  };
+
+  const formatDuration = (duration) => {
+    const minutes = Math.floor(duration);
+    const seconds = Math.round((duration - minutes) * 60);
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };  
+
+  const handleNextVideoPress = () => {
+    const nextIndex = (focusedIndex + 1) % videos.length;
+    setFocusedIndex(nextIndex);
+    setVideoStatus(videoStatus.map((_, idx) => idx === nextIndex ? false : false));
+  };
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={event => {
-          const offsetX = event.nativeEvent.contentOffset.x;
-          const index = Math.round(offsetX / windowWidth);
-          setFocusedIndex(index);
-          setVideoStatus(prevStatus =>
-            prevStatus.map((status, idx) => (idx === index ? !status : false))
-          );
-        }}
-      >
-        {videos.map((video, index) => (
+      {videos.length > 0 && videos[focusedIndex] && (
+        <>
           <TouchableOpacity
-            key={index}
-            style={[
-              styles.videoContainer,
-              {
-                width: windowWidth,
-                height: windowHeight,
-                opacity: focusedIndex === index ? 1 : 0.7,
-              },
-            ]}
-            onPress={() => handleVideoPress(index)}
+            style={[styles.imageContainer, { height: width / 1.5 }]}
+            onPress={togglePlay}
+            activeOpacity={1}
           >
-            <View style={styles.videoWrapper}>
-            <Video
-              ref={ref => (videoRefs.current[index] = ref)}
-              source={{ uri: video.casturl }}
-              shouldPlay={videoStatus[index]}
+            <Image
+              source={{ uri: videos[focusedIndex].castimageurl }}
+              style={{ width: width, height: width /1.5 }}
               resizeMode="cover"
-              style={styles.video}
-              onPlaybackStatusUpdate={(status) => {
-                if (status.didJustFinish) {
-                  videoRefs.current[index].setPositionAsync(0);
-                  handleCastDonePlaying();
-                }
-              }}
             />
-            </View>
-            <View style={styles.buttonUniversityContainer}>
-              <Image
-                source={{ uri: video.universityLogo }}
-                style={styles.universityIcon}
-                resizeMode="contain"
-              />
-            </View>
-            {video.isApproved && (
-              <View style={styles.buttonApprovedContainer}>
+            {!videoStatus[focusedIndex] && (
+              <View style={styles.playIconContainer}>
                 <Image
-                  source={require('../assets/Cast_icons/approved_badge.png')}
-                  style={styles.icon_badge}
+                  source={require('../assets/Cast_icons/play_icon.png')}
+                  style={styles.playIcon}
                 />
               </View>
             )}
-            <View style={styles.buttonBookmarkContainer}>
-              <TouchableOpacity style={styles.button} onPress={handleBookmarkPress}>
-                  <Image
-                    source={
-                      bookmarkedCasts.some(cast => cast.castId === video._id)
-                        ? require('../assets/Cast_icons/bookmark_filled_icon.png')
-                        : require('../assets/Cast_icons/bookmark_icon.png')
-                    }
-                    style={styles.icon}
-                  />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonCommentContainer}>
-              <TouchableOpacity style={styles.button}>
+            {videos[focusedIndex].isApproved && (
                 <Image
-                  source={require('../assets/Cast_icons/comment_icon.png')}
-                  style={styles.icon}
+                  source={require('../assets/Cast_icons/approved_badge.png')}
+                  style={styles.approvedIcon}
+                  resizeMode="contain"
                 />
-              </TouchableOpacity>
-            </View> 
-            <View style={styles.buttonShareContainer}>
-              <TouchableOpacity style={styles.button}>
-                <Image
-                  source={require('../assets/Cast_icons/share_icon.png')}
-                  style={styles.icon}
-                />
-              </TouchableOpacity>
-            </View>
+              )}
           </TouchableOpacity>
-        ))}
-      </ScrollView>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={showVideo}
+            onRequestClose={() => {
+              setShowVideo(false);
+              setVideoStatus(videoStatus.map((status, idx) => idx === focusedIndex ? false : status));
+            }}
+          >
+            <TouchableOpacity
+              activeOpacity={1}
+              style={{ flex: 1 }}
+              onPress={togglePlayVideoFocused}
+            >
+              <Video
+                ref={ref => (videoRefs.current[focusedIndex] = ref)}
+                source={{ uri: videos[focusedIndex].casturl }}
+                shouldPlay={videoStatus[focusedIndex]}
+                resizeMode="cover"
+                style={{ width: '100%', height: '100%' }}
+                onPlaybackStatusUpdate={(status) => {
+                  if (status.didJustFinish) {
+                    handleCastDonePlaying();
+                  }
+                }}
+              />
+            </TouchableOpacity>
+          </Modal>
+        </>
+      )}
+      <View style={styles.bottomSection}>
+        <View style={styles.band}>
+          <Text style={styles.videoTitle}>{videos[focusedIndex] ? videos[focusedIndex].title : ''}</Text>
+        </View>
+        <View style={styles.middleband}>
+          <View style={styles.leftColumn}>
+            {videos[focusedIndex] && videos[focusedIndex].universityLogo && (
+              <Image
+                source={{ uri: videos[focusedIndex].universityLogo }}
+                style={styles.universityIcon}
+                resizeMode="contain"
+              />
+            )}
+          </View>
+          <View style={styles.rightColumn}>
+            <Text style={styles.durationText}>
+              {videos[focusedIndex] ? formatDuration(videos[focusedIndex].duration) : '00:00'}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.band}>
+          <TouchableOpacity style={styles.button} onPress={handleNextVideoPress}>
+            <Text style={styles.buttonText}>Find Next</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
 
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
-    overflow: 'hidden',
+    backgroundColor: colors.darkblue,
   },
-  scrollView: {
+  bottomSection: {
     flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
-  videoContainer: {
-    position: 'relative',
+  band: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  middleband: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+  },
+  leftColumn: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rightColumn: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  universityIcon: {
+    width: 54,
+    height: 54,
+  },
+  durationText: {
+    fontSize: sizes.h3,
+    color: colors.white,
+    fontFamily: 'Montserrat',
+  },
+  button: {
+    padding: 15,
+    backgroundColor: colors.black,
+    alignItems: 'center',
+    borderRadius: sizes.radius,
+    width: "80%",
+  },
+  buttonText: {
+    fontSize: sizes.h3,
+    color: colors.white,
+    fontFamily: 'Montserrat',
+  },
+  imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    position: 'relative',
+    width: width,          // Ensure the container matches the width of the image
+    height: width / 1.5,   // Ensure the container matches the height of the image
   },
-  videoWrapper: {
+  approvedIcon: {
+    position: 'absolute',
+    bottom: 10,            // Distance from the bottom of the container
+    right: 10,             // Distance from the right of the container
+    width: 50,
+    height: 50,
+  },
+  playIconContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
     height: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
   },
-  video: {
-    width: '100%',
-    height: '100%',
+  playIcon: {
+    width: 54,
+    height: 54,
   },
-  icon: {
-    width: 35,
-    height: 35,
-    tintColor: colors.darkblue,
-    marginHorizontal: 12,
+  videoTitle: {
+    fontSize: sizes.h2,
+    color: colors.white,
+    fontFamily: 'Montserrat',
+    textAlign: 'center',
   },
-  icon_badge: {
-    width: 42,
-    height: 42,
-    marginHorizontal: 12,
-  },
-  universityIcon: {
-    width: "100%",
-    height: "100%",
-    marginHorizontal: 12,
-  },
-  buttonBookmarkContainer: {
-    position: 'absolute',
-    top: height*0.5,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  buttonCommentContainer: {
-    position: 'absolute',
-    top: height*0.6,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  buttonShareContainer: {
-    position: 'absolute',
-    top: height*0.7,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  buttonUniversityContainer: {
-    width: 64,
-    height: 64,
-    position: 'absolute',
-    top: height*0.4,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-    borderRadius: 50,
-  },
-  buttonApprovedContainer: {
-    position: 'absolute',
-    top: height * 0.3,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  
 });
 
 export default DiscoverScreen;
