@@ -93,7 +93,7 @@ const ProfileScreen = () => {
               </View>
             ))}
           </View>
-          <View style={styles.lowerSectionContainer}>
+          <View style={[styles.lowerSectionContainer, styles.shadow]}>
             <View style={styles.objectiveContainer}>
               <Text style={styles.preferencesTitle}>My Learning Path</Text>
               <TouchableOpacity
@@ -113,6 +113,7 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    overflow: 'visible',
   },
   upperSection: {
     flex: 1,
@@ -120,28 +121,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     height: height / 3,
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primaryBis,
   },
   lowerSection: {
     flex: 2,
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primaryBis,
     alignItems: 'center',
+    overflow: 'visible',
+    width: '100%',
   },
   lowerSectionContainer: {
     alignItems: 'center',
-    backgroundColor: colors.darkblue,
-    borderWidth: 3,
-    borderColor: colors.white,
-    width: width*0.9,
+    backgroundColor: colors.primary,
+    marginLeft: spacing.s,
+    marginRight: spacing.s,
+    marginBottom: spacing.m,
     marginTop: spacing.m,
     borderRadius: sizes.radius,
-
+    overflow: 'visible',
+    elevation: 5,
+  },
+  lowerSectionScrollView: {
+    width: '100%',
+    marginBottom: spacing.l,
+    paddingHorizontal: spacing.m,
+    overflow: 'visible',
   },
   profileImage: {
     width: width * 0.4,
     height: width * 0.4,
     borderRadius: width * 0.2,
-    backgroundColor:colors.darkblue,
   },
   scoreContainer: {
     alignItems: 'center',
@@ -149,7 +158,7 @@ const styles = StyleSheet.create({
   score: {
     fontSize: sizes.h3,
     fontWeight: 'bold',
-    color: colors.white,
+    color: colors.secondary,
   },
   preferenceContainer: {
     flexDirection: 'row',
@@ -157,9 +166,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   preferenceText: {
-    fontSize: sizes.h3,
-    color: colors.white,
+    fontSize: sizes.h4,
+    color: colors.secondary,
     textAlign: "center",
+    fontFamily: 'Montserrat',
   },
   slider: {
     width: "100%",
@@ -181,17 +191,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonContainer: {
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primary,
     borderRadius: sizes.radius,
     paddingVertical: 10,
     justifyContent: 'center',
     width: 100,
     flexDirection: "row",
     marginTop: 15,
+    elevation: 5,
   },
   streakText: {
     fontSize: sizes.title,
     color: 'white',
+    fontFamily: 'Montserrat',
   },
   overlayUsername: {
     position: 'absolute',
@@ -211,6 +223,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     marginBottom: 10,
     marginTop: spacing.s,
+    fontFamily: 'MontserratBold',
   },
   streakImage: {
     width: 54,
@@ -221,7 +234,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonObjectiveContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.secondary,
     borderRadius: sizes.radius,
     paddingVertical: 10,
     width: width * 0.5,
@@ -231,10 +244,8 @@ const styles = StyleSheet.create({
   },
   objectiveText: {
     fontSize: sizes.h2,
-    color: colors.black,
-  },
-  lowerSectionScrollView: {
-    marginBottom: spacing.l,
+    color: colors.primary,
+    fontFamily: 'Montserrat',
   },
 });
 

@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
         height: CARD_HEIGHT,
         borderRadius: sizes.radius,
         overflow: 'hidden',
+        elevation: 5,
       },
       image: {
         width: CARD_WIDTH,

@@ -58,7 +58,7 @@ const TrackScreen = () => {
         <Text style={styles.sectionTitle}>
           <Text style={styles.boldBlueText}>{trackingData.objective}</Text> progress
         </Text>
-        <ProgressBar progress={trackingData.progress} color={colors.black} style={styles.progressBar} />
+        <ProgressBar progress={trackingData.progress} color={colors.darkblue} style={styles.progressBar} />
             <View>
             {preferences.length > 0 && (
                 <VictoryPie 
@@ -88,47 +88,47 @@ const TrackScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primaryBis,
   },
   contentContainer: {
     justifyContent: 'center',
-    alignItems: 'center', // Center horizontally and vertically within the ScrollView
+    alignItems: 'center',
   },
   sectionContainer: {
     padding: spacing.l,
   },
   sectionTitle: {
     fontSize: sizes.h2,
-    color: colors.black,
+    color: colors.secondary,
     marginBottom: spacing.m,
     fontFamily: 'MontserratBold',
   },
   boldBlueText: {
     fontFamily: 'MontserratBold',
-    color: colors.white,
+    color: colors.secondary,
   },
   buttonStartWeeklyEvaluation: {
     paddingVertical: 10,
-    backgroundColor: colors.black,
+    backgroundColor: colors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: sizes.radius,
     marginBottom: spacing.m,
   },
   buttonText: {
-    color: colors.white,
+    color: colors.primary,
     fontSize: sizes.title,
     fontFamily: 'MontserratBold',
   },
   progressBar: {
     height: 10,
-    backgroundColor: colors.white,
+    backgroundColor: colors.lightGray,
     borderRadius: sizes.radius,
   },
   WatchTimeText: {
     fontSize: 16,
     fontFamily: 'MontserratBold',
-    color: colors.black,
+    color: colors.secondary,
   },
 });
 

@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 30,
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primary,
   },
   logoContainer: {
     flex:1,

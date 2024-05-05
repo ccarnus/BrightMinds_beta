@@ -37,12 +37,12 @@ const MainNavigator = () => {
         <Stack.Screen name="CastTypeChoice" component={CastTypeChoice} options={{ headerShown: false, tabBarVisible: false }} />
         <Stack.Screen name="PostCast" component={PostCast} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="PostArticle" component={PostArticle} options={{ headerShown: false, tabBarVisible: false }}/>
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ header: () => <SimpleHeader /> }}/>
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="SuggestedForYou" component={SuggestedForYou} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="Trending" component={Trending} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="SearchResult" component={SearchResult} options={{ headerShown: false, tabBarVisible: false }}/>
-        <Stack.Screen name="LeaderBoard" component={LeaderBoard} options={{ header: () => <SimpleHeader /> }}/>
-        <Stack.Screen name="Objective" component={Objective} options={{ header: () => <SimpleHeader /> }}/>
+        <Stack.Screen name="LeaderBoard" component={LeaderBoard} options={{ headerShown: false, tabBarVisible: false }}/>
+        <Stack.Screen name="Objective" component={Objective} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="VirtualLab" component={VirtualLab} options={{ headerShown: false, tabBarVisible: false }}/>
         <Stack.Screen name="ArticleDetails" component={ArticleDetailsScreen} options={{ headerShown: false, tabBarVisible: false }}/>
       </Stack.Navigator>
