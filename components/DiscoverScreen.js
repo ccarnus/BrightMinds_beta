@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: sizes.radius,
     width: "80%",
+    elevation: 5,
   },
   buttonText: {
     fontSize: sizes.h3,

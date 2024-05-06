@@ -25,7 +25,7 @@ const LabScreen = () => {
     return (
       <TouchableOpacity
       key={lab._id}
-      style={[styles.labContainer, styles.shadow]}
+      style={styles.labContainer}
       onPress={() => navigation.navigate('VirtualLab', { labId: lab._id })}
       >
         <Image source={{ uri: lab.iconurl }} style={styles.labImage} resizeMode="contain" />
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: spacing.l,
     paddingHorizontal: spacing.m,
-    verflow: 'visible',
+    overflow: 'visible',
   },
   labContainer: {
     width: '90%',
@@ -64,17 +64,13 @@ const styles = StyleSheet.create({
     padding: spacing.s,
     marginVertical: spacing.m,
     backgroundColor: colors.darkblue,
+    marginLeft: spacing.s,
+    marginRight: spacing.s,
+    marginBottom: spacing.m,
+    marginTop: spacing.m,
     borderRadius: sizes.radius,
-},
-shadow: {
-  // iOS shadow properties
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.8,
-    // shadowRadius: 4,
-    // Android shadow property
+    overflow: 'visible',
     elevation: 5,
-    shadowColor: colors.secondary,
   },
   labImage: {
     width: 100,
