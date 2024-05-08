@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.s,
     marginVertical: spacing.m,
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primary,
     marginLeft: spacing.s,
     marginRight: spacing.s,
     marginBottom: spacing.m,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     fontSize: sizes.h3,
     textAlign: 'center',
     fontFamily: 'Montserrat',
-    color: colors.primaryBis,
+    color: colors.secondary,
     marginTop: spacing.xs,
   },
 });

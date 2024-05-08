@@ -114,11 +114,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: sizes.radius,
     marginBottom: spacing.m,
+    elevation: 5,
   },
   buttonText: {
-    color: colors.primary,
+    color: colors.primaryBis,
     fontSize: sizes.title,
-    fontFamily: 'MontserratBold',
+    fontFamily: 'Montserrat',
   },
   progressBar: {
     height: 10,

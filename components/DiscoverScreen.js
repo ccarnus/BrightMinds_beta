@@ -231,13 +231,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
     position: 'relative',
-    width: width,          // Ensure the container matches the width of the image
-    height: width / 1.5,   // Ensure the container matches the height of the image
+    width: width,
+    height: width / 1.5,
+    marginBottom: spacing.m,
   },
   approvedIcon: {
     position: 'absolute',
-    bottom: 10,            // Distance from the bottom of the container
-    right: 10,             // Distance from the right of the container
+    bottom: 10,
+    right: 10,
     width: 50,
     height: 50,
   },
