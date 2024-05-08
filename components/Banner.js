@@ -56,10 +56,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 30,
     backgroundColor: colors.primary,
+    elevation: 5,
   },
   logoContainer: {
     flex:1,
     paddingLeft:5,
+    marginBottom: spacing.s,
   },
   logoImage: {
     width:48,
@@ -73,6 +75,7 @@ const styles = StyleSheet.create({
     height: 46,
     borderRadius: 46 / 2,
     backgroundColor:colors.darkblue,
+    marginBottom: spacing.s,
   },
 });
 

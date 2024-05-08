@@ -67,6 +67,7 @@ const BottomNavigation = () => {
           },
           tabBarActiveTintColor: colors.darkblue,
           tabBarInactiveTintColor: colors.secondary,
+          elevation: 5,
         }}>
         {tabs.map(({name, screen}, index) => {
           return (

@@ -61,12 +61,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.white,
+    backgroundColor: colors.primaryBis,
   },
   title: {
     fontSize: sizes.title,
-    fontFamily: 'MontserratBold',
-    color: colors.black,
+    fontFamily: 'Montserrat',
+    color: colors.secondary,
     marginBottom: spacing.l*2,
     marginLeft: spacing.m,
     marginRight: spacing.m,
@@ -78,26 +78,26 @@ const styles = StyleSheet.create({
   },
   resultRate: {
     fontSize: sizes.title,
-    color: colors.green,
-    fontFamily: 'Montserrat',
+    color: colors.darkblue,
+    fontFamily: 'MontserratBold',
     marginBottom: spacing.s,
   },
   infoText: {
     fontSize: sizes.h3,
-    color: colors.gray,
+    color: colors.secondary,
     marginBottom: spacing.m,
     fontFamily: 'Montserrat',
   },
   button: {
     marginTop: spacing.l,
     padding: spacing.m,
-    backgroundColor: colors.black,
+    backgroundColor: colors.secondary,
     borderRadius: sizes.radius,
   },
   buttonText: {
     fontSize: sizes.h2,
-    color: colors.white,
-    fontWeight: 'bold',
+    color: colors.primaryBis,
+    fontFamily: 'Montserrat',
   },
 });
 

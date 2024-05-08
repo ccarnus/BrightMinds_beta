@@ -233,7 +233,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: width,
     height: width / 1.5,
-    marginBottom: spacing.m,
   },
   approvedIcon: {
     position: 'absolute',

@@ -61,7 +61,7 @@ const ObjectiveScreen = () => {
           style={[styles.button, selectedObjective === buttonName.replace(' ', '') && styles.highlightedButton]}
           onPress={() => handleButtonPress(buttonName)}
         >
-          <Text style={styles.buttonText}>{buttonName}</Text>
+          <Text style={[styles.buttonText, selectedObjective === buttonName.replace(' ', '') && styles.highlightedButtonText]}>{buttonName}</Text>
           <TouchableOpacity 
             style={styles.iconContainer}
             onPress={(event) => handleIconPress(buttonName, event)}
@@ -88,9 +88,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: sizes.title,
     width: width * 0.8,
-    fontWeight: 'bold',
     marginBottom: spacing.l * 2,
     textAlign: 'center',
+    fontFamily: 'MontserratBold',
   },
   buttonRow: {
     flexDirection: 'row',
@@ -101,19 +101,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primary,
     padding: 15,
     borderRadius: sizes.radius,
     width: width * 0.8,
     marginBottom: spacing.l,
+    elevation: 5,
   },
   highlightedButton: {
-    backgroundColor: colors.green,
+    backgroundColor: colors.darkblue,
+    color: colors.primary,
+    elevation: 5,
+  },
+  highlightedButtonText: {
+    color: colors.primary,
   },
   buttonText: {
-    color: colors.white,
+    color: colors.secondary,
     fontSize: 18,
     flex: 1,
+    fontFamily: 'MontserratBold',
   },
   iconContainer: {
     padding: 10,

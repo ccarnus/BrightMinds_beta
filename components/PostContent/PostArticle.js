@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: sizes.title,
-    color: colors.black,
+    color: colors.secondary,
     marginTop: 40,
     marginBottom: 20,
   },
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     padding: 15,
-    backgroundColor: colors.black,
+    backgroundColor: colors.secondary,
     alignItems: 'center',
     borderRadius: sizes.radius,
     width:"80%",
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   },
   sendButtonText: {
     fontSize: sizes.h2,
-    color: colors.white,
+    color: colors.primaryBis,
     fontWeight: 'bold',
     fontFamily: 'MontserratBold',
   },
@@ -208,30 +208,37 @@ const styles = StyleSheet.create({
     fontSize: sizes.h3,
     textAlign: 'center',
     marginTop: spacing.l,
-    color: colors.darkblue,
+    color: colors.secondary,
     fontFamily: 'Montserrat',
   },
   modalContainer: {
     backgroundColor: 'white',
     padding: 20,
     margin: 20,
-    borderRadius: sizes.radius,
+    borderRadius: sizes.primary,
     marginBottom: spacing.s,
+    borderRadius: sizes.radius,
   },
   dropdownButton: {
     marginTop: spacing.m,
-    backgroundColor: colors.darkblue,
-    borderColor: colors.black,
+    backgroundColor: colors.secondary,
+    borderColor: colors.secondary,
     justifyContent: 'center',
   },
   dropdownContent: {
     height: 60,
   },
   dropdownLabel: {
-    color: colors.white,
+    color: colors.primary,
     fontSize: sizes.h3,
     fontFamily: 'Montserrat',
   },
+  modalItem: {
+    color: colors.secondary,
+  },
+  modalItemLabel: {
+    color: colors.secondary,
+  }
 });
 
 export default PostArticle;
