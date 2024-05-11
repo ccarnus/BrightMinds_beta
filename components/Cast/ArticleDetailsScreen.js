@@ -162,7 +162,7 @@
     const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.primaryBis,
     },
     image: {
         width: '100%',
@@ -228,13 +228,13 @@
       marginVertical: spacing.s,
     },
     buttonAddText: {
-      color: colors.white,
+      color: colors.primaryBis,
       fontSize: sizes.title,
       textAlign: 'center',
       fontFamily: "MontserratBold",
     },
     buttonAccessText: {
-      color: colors.white,
+      color: colors.primaryBis,
       fontSize: sizes.h3,
       textAlign: 'center',
       fontFamily: "MontserratBold",
@@ -253,13 +253,13 @@
       },
       infoText: {
         fontSize: sizes.h4,
-        color: colors.white,
+        color: colors.primaryBis,
         paddingHorizontal: spacing.xs,
         fontFamily: "MontserratBold",
       },
       separator: {
         fontSize: sizes.title,
-        color: colors.white,
+        color: colors.primaryBis,
         paddingHorizontal: spacing.xs,
         fontFamily: "MontserratBold",
       },
