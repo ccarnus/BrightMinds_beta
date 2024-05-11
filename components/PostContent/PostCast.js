@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: sizes.title,
-    color: colors.black,
+    color: colors.secondary,
     marginTop: 40,
     marginBottom: 20,
     fontFamily: 'MontserratBold',
@@ -309,22 +309,22 @@ const styles = StyleSheet.create({
     marginBottom: spacing.s,
     marginTop: spacing.s,
     padding: 10,
-    backgroundColor: colors.white,
+    backgroundColor: colors.secondary,
     borderRadius: sizes.radius,
-    borderColor: colors.black,
+    borderColor: colors.secondary,
     borderWidth: 1,
     width:"80%",
     marginLeft: "10%",
   },
   videoButtonText: {
     fontSize: sizes.h2,
-    color: colors.black,
+    color: colors.primaryBis,
     textAlign: 'center',
-    fontFamily: 'MontserratBold',
+    fontFamily: 'Montserrat',
   },
   sendButton: {
     padding: 15,
-    backgroundColor: colors.black,
+    backgroundColor: colors.secondary,
     alignItems: 'center',
     borderRadius: sizes.radius,
     width:"80%",
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
   },
   sendButtonText: {
     fontSize: sizes.h2,
-    color: colors.white,
+    color: colors.primaryBis,
     fontWeight: 'bold',
     fontFamily: 'MontserratBold',
   },
@@ -425,44 +425,48 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
-    color: colors.black,
-    fontFamily: 'Montserrat',
+    color: colors.secondary,
+    fontFamily: 'MontserratBold',
+    fontSize: sizes.h2,
   },
   button: {
     borderRadius: sizes.radius,
     padding: 10,
     elevation: 2,
-    width: '80%',
+    width: '90%',
     marginTop: 10,
   },
   buttonText: {
-    color: colors.white,
-    fontFamily: 'MontserratBold',
+    color: colors.primaryBis,
+    fontFamily: 'Montserrat',
     textAlign: "center",
+    fontSize: sizes.h3,
   },
   recordButton: {
-    backgroundColor: colors.green,
+    backgroundColor: colors.darkblue,
   },
   recordButtonText: {},
   galleryButton: {
-    backgroundColor: colors.lightblue,
+    backgroundColor: colors.darkblue,
   },
   galleryButtonText: {},
   cancelButton: {
-    backgroundColor: colors.black,
+    backgroundColor: colors.secondary,
   },
-  cancelButtonText: {},
+  cancelButtonText: {
+    color: colors.primaryBis,
+  },
   dropdownButton: {
     marginTop: spacing.m,
-    backgroundColor: colors.darkblue,
-    borderColor: colors.black,
+    backgroundColor: colors.secondary,
+    borderColor: colors.secondary,
     justifyContent: 'center',
   },
   dropdownContent: {
     height: 60,
   },
   dropdownLabel: {
-    color: colors.white,
+    color: colors.primaryBis,
     fontSize: sizes.h3,
     fontFamily: 'Montserrat',
   },
@@ -472,14 +476,6 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: sizes.radius,
     marginBottom: spacing.s,
-  },
-  modalItem: {
-    marginBottom: spacing.xs,
-    borderColor: colors.black,
-  },
-  modalItemLabel: {
-    color: colors.black,
-    fontFamily: 'Montserrat',
   },
   centeredView: {
     flex: 1,
@@ -506,9 +502,15 @@ const styles = StyleSheet.create({
   customAlertText: {
     marginBottom: 15,
     textAlign: 'center',
-    fontFamily: 'Montserrat', // Make sure Montserrat is correctly linked
+    fontFamily: 'Montserrat',
     fontSize: 16,
   },
+  modalItem: {
+    color: colors.secondary,
+  },
+  modalItemLabel: {
+    color: colors.secondary,
+  }
 });
 
 export default PostCast;

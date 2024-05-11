@@ -19,7 +19,6 @@ const CastScreen = () => {
   const forYou = require('../assets/Cast_screen_icons/foryou_icon.png');
   const trendingIcon = require('../assets/Cast_screen_icons/trending_icon.png');
   const articleIcon = require('../assets/Cast_screen_icons/article_logo.png');
-  const discoverIcon = require('../assets/Bottom_icons/discover.png');
   const podcastIcon = require('../assets/Cast_screen_icons/podcast_logo.png');
   const [articleData, setArticleData] = useState([]);
 
@@ -43,11 +42,6 @@ const CastScreen = () => {
       cast.title.toLowerCase().includes(text.toLowerCase())
     );
     setSearchResults(filteredCasts);
-  };
-  
-
-  const navigateToDiscoverScreen = () => {
-    navigation.navigate('DiscoverScreen');
   };
 
   const clearSearch = () => {
@@ -144,12 +138,12 @@ const CastScreen = () => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          <View style={styles.searchAndDiscoverContainer}>
+          <View style={styles.searchContainer1}>
             <View style={styles.searchBarContainer}>
               <TextInput
                 style={styles.searchBar}
                 placeholder="Search casts..."
-                placeholderTextColor={colors.white}
+                placeholderTextColor={colors.secondary}
                 onChangeText={handleSearch}
                 value={searchQuery}
                 clearButtonMode="while-editing"
@@ -160,9 +154,6 @@ const CastScreen = () => {
                 </TouchableOpacity>
               )}
             </View>
-            <TouchableOpacity onPress={navigateToDiscoverScreen} style={styles.discoverButton}>
-              <Image source={discoverIcon} style={styles.discoverIcon} />
-            </TouchableOpacity>
           </View>
           {searchResults.length > 0 ? (
             searchResults.map((cast) => (
@@ -207,7 +198,7 @@ const CastScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primaryBis,
   },
   floatingButton: {
     position: 'absolute',
@@ -235,33 +226,22 @@ const styles = StyleSheet.create({
   searchResultItem: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: colors.darkblue,
+    borderBottomColor: colors.primaryBis,
   },
   searchBarContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: colors.primary,
     borderColor: 'white',
     borderWidth: 1,
     borderRadius: sizes.radius,
     marginRight: spacing.s,
     marginLeft: spacing.xs,
     height: 50,
+    elevation: 5,
   },
-  discoverButton: {
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    borderRadius: 25,
-  },
-  discoverIcon: {
-    width: 35,
-    height: 35,
-  },
-  searchAndDiscoverContainer: {
+  searchContainer1: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -279,7 +259,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   clearButtonText: {
-    color: colors.white,
+    color: colors.secondary,
     fontSize: 20,
   },
   categoryHeader: {
@@ -291,7 +271,7 @@ const styles = StyleSheet.create({
   },
   categoryTitle: {
     fontSize: sizes.h2,
-    color: colors.white,
+    color: colors.secondary,
     fontFamily: 'MontserratBold',
   },
   categoryIcon: {
@@ -300,7 +280,7 @@ const styles = StyleSheet.create({
     marginRight: spacing.s,
   },
   noResultsText: {
-    color: colors.white,
+    color: colors.secondary,
     fontSize: sizes.h3,
     fontFamily: 'Montserrat',
     textAlign: 'center',
@@ -309,18 +289,18 @@ const styles = StyleSheet.create({
   searchResultItem: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: colors.white,
-    color: colors.white,
+    borderBottomColor: colors.secondary,
+    color: colors.secondary,
     fontSize: sizes.h3,
     fontFamily: 'Montserrat',
   },
   noResultsText: {
-    color: colors.white,
+    color: colors.secondary,
     fontSize: sizes.h3,
     fontFamily: 'Montserrat',
     textAlign: 'center',
     marginTop: 20,
-  },  
+  },
 });
 
 export default CastScreen;

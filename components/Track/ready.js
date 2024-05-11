@@ -68,28 +68,29 @@ const ReadyScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primaryBis,
     paddingTop: 200,
     alignItems: 'center',
   },
   title: {
     fontSize: sizes.title,
-    color: colors.white,
-    fontWeight: 'bold',
+    color: colors.secondary,
     marginBottom: 10,
     textAlign: 'center',
+    fontFamily: 'Montserrat',
   },
   numQuestions: {
     fontSize: 48,
-    color: colors.white,
-    fontWeight: 'bold',
+    color: colors.secondary,
+    fontFamily: 'MontserratBold',
     marginBottom: 5,
     textAlign: 'center',
   },
   questionsText: {
     fontSize: 20,
-    color: colors.white,
+    color: colors.secondary,
     textAlign: 'center',
+    fontFamily: 'Montserrat',
   },
   buttonContainer: {
     position: 'absolute',
@@ -101,14 +102,15 @@ const styles = StyleSheet.create({
   readyButton: {
     paddingVertical: 15,
     paddingHorizontal: 30,
-    borderColor: colors.white,
+    borderColor: colors.secondary,
+    backgroundColor: colors.secondary,
     borderRadius: sizes.radius,
     borderWidth: 2,
   },
   readyButtonText: {
     fontSize: 22,
-    fontWeight: 'bold',
-    color: colors.white,
+    color: colors.primaryBis,
+    fontFamily: 'Montserrat',
   },
 });
 

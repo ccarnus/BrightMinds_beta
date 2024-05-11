@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { spacing } from '../theme';
+import { spacing, colors, sizes} from '../theme';
 
 const CastTypeChoice = () => {
   const navigation = useNavigation();
@@ -112,11 +112,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f1f1f1',
   },
-  buttonContainer: {
-    width: '80%',
-    marginBottom: 30,
-    marginLeft:spacing.l
-  },
+  //buttonContainer: {
+  //  width: '80%',
+  //  marginBottom: 30,
+  //  marginLeft:spacing.l
+  //},
   button: {
     opacity: 0,
   },
@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 20,
-    backgroundColor: '#f1f1f1',
     borderRadius: 10,
   },
   icon: {
@@ -135,8 +134,23 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 32,
-    color: '#1c1c1c',
-    fontWeight: 'bold',
+    color: colors.secondary,
+    fontFamily: 'Montserrat',
+  },
+  buttonContainer: {
+    width: '80%',
+    minHeight: 100, 
+    justifyContent: 'center',
+    padding: spacing.s,
+    marginVertical: spacing.m,
+    backgroundColor: colors.primary,
+    marginLeft: spacing.s,
+    marginRight: spacing.s,
+    marginBottom: spacing.m,
+    marginTop: spacing.m,
+    borderRadius: sizes.radius,
+    overflow: 'visible',
+    elevation: 5,
   },
 });
 

@@ -58,15 +58,16 @@ const BottomNavigation = () => {
           tabBarShowLabel: true,
           tabBarHideOnKeyboard: true,
           tabBarStyle: { 
-            backgroundColor: colors.darkblue,
+            backgroundColor: colors.primary,
             height: 55,
           },
           tabBarLabelStyle: {
             fontSize: 10,
             marginBottom:5,
           },
-          tabBarActiveTintColor: colors.green,
-          tabBarInactiveTintColor: colors.white,
+          tabBarActiveTintColor: colors.darkblue,
+          tabBarInactiveTintColor: colors.secondary,
+          elevation: 5,
         }}>
         {tabs.map(({name, screen}, index) => {
           return (
@@ -82,7 +83,7 @@ const BottomNavigation = () => {
                       icon={name}
                       size={28}
                       style={{
-                        tintColor: focused ? colors.green : colors.white,
+                        tintColor: focused ? colors.darkblue : colors.secondary,
                       }}
                     />
                   );
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     height: 2,
     left: sizes.width / tabs.length / 2 - 15,
     bottom: 50,
-    backgroundColor: colors.green,
+    backgroundColor: colors.darkblue,
     zIndex: 100,
   },
 });

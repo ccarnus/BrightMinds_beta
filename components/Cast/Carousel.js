@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: sizes.radius,
     overflow: 'hidden',
     position: "relative",
+    elevation: 5,
   },
   image: {
     width: CARD_WIDTH,
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     textAlign: 'left',
     marginLeft: 10,
-    fontFamily: "MontserratBold",
+    fontFamily: "Montserrat",
   },
   duration: {
     position: 'absolute',

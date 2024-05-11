@@ -7,7 +7,6 @@ const LabScreen = () => {
   const navigation = useNavigation();
   const [labs, setLabs] = useState([]);
 
-  // Fetch labs data
   useEffect(() => {
     const fetchLabs = async () => {
       try {
@@ -25,9 +24,9 @@ const LabScreen = () => {
   const renderLab = (lab) => {
     return (
       <TouchableOpacity
-        key={lab._id}
-        style={styles.labContainer}
-        onPress={() => navigation.navigate('VirtualLab', { labId: lab._id })}
+      key={lab._id}
+      style={styles.labContainer}
+      onPress={() => navigation.navigate('VirtualLab', { labId: lab._id })}
       >
         <Image source={{ uri: lab.iconurl }} style={styles.labImage} resizeMode="contain" />
         <Text style={styles.labText}>{lab.name}</Text>
@@ -47,12 +46,15 @@ const LabScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primaryBis,
+    overflow: 'visible',
   },
   scrollView: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: spacing.l,
+    paddingHorizontal: spacing.m,
+    overflow: 'visible',
   },
   labContainer: {
     width: '90%',
@@ -61,8 +63,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.s,
     marginVertical: spacing.m,
-    backgroundColor: colors.lightblue,
-    borderRadius: spacing.s
+    backgroundColor: colors.primary,
+    marginLeft: spacing.s,
+    marginRight: spacing.s,
+    marginBottom: spacing.m,
+    marginTop: spacing.m,
+    borderRadius: sizes.radius,
+    overflow: 'visible',
+    elevation: 5,
   },
   labImage: {
     width: 100,
@@ -73,7 +81,7 @@ const styles = StyleSheet.create({
     fontSize: sizes.h3,
     textAlign: 'center',
     fontFamily: 'Montserrat',
-    color: colors.white,
+    color: colors.secondary,
     marginTop: spacing.xs,
   },
 });

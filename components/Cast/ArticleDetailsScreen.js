@@ -162,7 +162,7 @@
     const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.primaryBis,
     },
     image: {
         width: '100%',
@@ -218,27 +218,27 @@
     buttonContainer: {
         alignItems: 'center',
         marginBottom: spacing.l*2,
-      },
-      button: {
-        backgroundColor: colors.darkblue,
-        borderRadius: sizes.radius*2,
-        paddingVertical: spacing.s,
-        paddingHorizontal: spacing.m,
-        width: '80%',
-        marginVertical: spacing.s,
-      },
-      buttonAddText: {
-        color: colors.white,
-        fontSize: sizes.title,
-        textAlign: 'center',
-        fontFamily: "MontserratBold",
-      },
-      buttonAccessText: {
-        color: colors.white,
-        fontSize: sizes.h2,
-        textAlign: 'center',
-        fontFamily: "MontserratBold",
-      },
+    },
+    button: {
+      backgroundColor: colors.darkblue,
+      borderRadius: sizes.radius,
+      paddingVertical: spacing.s,
+      paddingHorizontal: spacing.m,
+      width: '80%',
+      marginVertical: spacing.s,
+    },
+    buttonAddText: {
+      color: colors.primaryBis,
+      fontSize: sizes.title,
+      textAlign: 'center',
+      fontFamily: "MontserratBold",
+    },
+    buttonAccessText: {
+      color: colors.primaryBis,
+      fontSize: sizes.h3,
+      textAlign: 'center',
+      fontFamily: "MontserratBold",
+    },
     infoDisplay: {
         backgroundColor: colors.darkblue,
         paddingVertical: spacing.xs,
@@ -253,13 +253,13 @@
       },
       infoText: {
         fontSize: sizes.h4,
-        color: colors.white,
+        color: colors.primaryBis,
         paddingHorizontal: spacing.xs,
         fontFamily: "MontserratBold",
       },
       separator: {
         fontSize: sizes.title,
-        color: colors.white,
+        color: colors.primaryBis,
         paddingHorizontal: spacing.xs,
         fontFamily: "MontserratBold",
       },

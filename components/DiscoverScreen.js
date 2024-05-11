@@ -175,7 +175,7 @@ const DiscoverScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.primaryBis,
   },
   bottomSection: {
     flex: 1,
@@ -210,19 +210,20 @@ const styles = StyleSheet.create({
   },
   durationText: {
     fontSize: sizes.h3,
-    color: colors.white,
+    color: colors.secondary,
     fontFamily: 'Montserrat',
   },
   button: {
     padding: 15,
-    backgroundColor: colors.black,
+    backgroundColor: colors.secondary,
     alignItems: 'center',
     borderRadius: sizes.radius,
     width: "80%",
+    elevation: 5,
   },
   buttonText: {
     fontSize: sizes.h3,
-    color: colors.white,
+    color: colors.primaryBis,
     fontFamily: 'Montserrat',
   },
   imageContainer: {
@@ -230,13 +231,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
     position: 'relative',
-    width: width,          // Ensure the container matches the width of the image
-    height: width / 1.5,   // Ensure the container matches the height of the image
+    width: width,
+    height: width / 1.5,
   },
   approvedIcon: {
     position: 'absolute',
-    bottom: 10,            // Distance from the bottom of the container
-    right: 10,             // Distance from the right of the container
+    bottom: 10,
+    right: 10,
     width: 50,
     height: 50,
   },
@@ -253,7 +254,7 @@ const styles = StyleSheet.create({
   },
   videoTitle: {
     fontSize: sizes.h2,
-    color: colors.white,
+    color: colors.secondary,
     fontFamily: 'Montserrat',
     textAlign: 'center',
   },

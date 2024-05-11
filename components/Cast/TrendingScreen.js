@@ -3,7 +3,7 @@ import { View, ScrollView, StyleSheet, TouchableOpacity, Text, Image } from 'rea
 import { Video } from 'expo-av';
 import { Dimensions } from 'react-native';
 import axios from 'axios';
-import { colors, sizes } from '../theme';
+import { colors, sizes, spacing} from '../theme';
 
 const { width, height } = Dimensions.get('window');
 
@@ -69,8 +69,6 @@ const TrendingScreen = ({ route, navigation }) => {
         });
       return;
     }
-
-    setIsBookmarked(true);
 
     videos[focusedIndex].bookmarkIcon = require('../../assets/Cast_icons/bookmark_filled_icon.png');
 
@@ -170,22 +168,6 @@ const TrendingScreen = ({ route, navigation }) => {
                   />
               </TouchableOpacity>
             </View>
-            <View style={styles.buttonCommentContainer}>
-              <TouchableOpacity style={styles.button}>
-                <Image
-                  source={require('../../assets/Cast_icons/comment_icon.png')}
-                  style={styles.icon}
-                />
-              </TouchableOpacity>
-            </View> 
-            <View style={styles.buttonShareContainer}>
-              <TouchableOpacity style={styles.button}>
-                <Image
-                  source={require('../../assets/Cast_icons/share_icon.png')}
-                  style={styles.icon}
-                />
-              </TouchableOpacity>
-            </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -235,43 +217,19 @@ const styles = StyleSheet.create({
   },
   buttonBookmarkContainer: {
     position: 'absolute',
-    top: height*0.5,
-    right: 15,
+    bottom: spacing.m,
+    right: spacing.m,
     alignItems: 'center',
     paddingVertical: 10,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: colors.darkblue,
-    backgroundColor: 'rgba(0, 64, 122, 0.5)',
-  },
-  buttonCommentContainer: {
-    position: 'absolute',
-    top: height*0.6,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: colors.darkblue,
-    backgroundColor: 'rgba(0, 64, 122, 0.5)',
-  },
-  buttonShareContainer: {
-    position: 'absolute',
-    top: height*0.7,
-    right: 15,
-    alignItems: 'center',
-    paddingVertical: 10,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: colors.darkblue,
-    backgroundColor: 'rgba(0, 64, 122, 0.5)',
+    borderRadius: 64,
+    backgroundColor: colors.primaryBis,
   },
   buttonUniversityContainer: {
-    width: 64,
-    height: 64,
+    width: 54,
+    height: 54,
     position: 'absolute',
-    top: height*0.4,
-    right: 15,
+    bottom: spacing.m + 64,
+    right: spacing.m,
     alignItems: 'center',
     paddingVertical: 10,
     borderRadius: 50,

@@ -186,7 +186,6 @@ const TakeTest = ({ route, navigation }) => {
       </View>
       <ScrollView
         style={styles.answersContainer}
-        contentContainerStyle={styles.answersContent}
       >
         {currentQuestion?.responses.map((response, index) => (
           <Animated.View
@@ -228,49 +227,41 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: colors.primaryBis,
   },
   questionContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    backgroundColor: colors.black,
-    borderRadius: sizes.radius,
-    marginTop:spacing.m,
-    marginBottom: spacing.m,
-    marginLeft: spacing.m,
-    marginRight: spacing.m,
+    marginTop:spacing.s,
+    marginBottom: spacing.s,
+    marginLeft: spacing.s,
+    marginRight: spacing.s,
   },
   questionText: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: sizes.h2,
+    fontFamily: 'Montserrat',
     textAlign: 'center',
-    color: colors.white,
+    color: colors.secondary,
   },
   answersContainer: {
-    flex: 1,
     width: '100%',
   },
-  answersContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   answerButton: {
+    borderRadius: sizes.radius,
+    marginLeft: spacing.m,
+    marginRight: spacing.m,
+    marginBottom: spacing.l,
     padding: 15,
-    marginBottom: 20,
-    borderRadius: 25,
-    width: '80%',
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: colors.black,
+    elevation: 5,
+    textAlign: 'center',
+    width: '250',
   },
   answerButtonText: {
-    fontSize: 18,
-    color: '#1c1c1c',
-    fontWeight: 'bold',
+    fontSize: sizes.h3,
+    color: colors.secondary,
+    fontFamily: 'MontserratBold',
+    textAlign: 'center',
   },
 });
 
