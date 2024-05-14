@@ -11,6 +11,7 @@ const TrackScreen = () => {
   const [trackingData, setTrackingData] = useState({ objective: '', progress: 0 });
   const [preferences, setPreferences] = useState([]);
   const navigation = useNavigation();
+  const BrightMindsMascot = require('../assets/Track_icons/trophy_icon.png');
 
   const handleReadyScreenPress = () => {
     navigation.navigate('Ready');
@@ -52,35 +53,38 @@ const TrackScreen = () => {
 
   return (
     <ScrollView style={styles.container} >
-
-      {/* Track Progress Section */}
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>
-          <Text style={styles.boldBlueText}>{trackingData.objective}</Text> progress
-        </Text>
-        <ProgressBar progress={trackingData.progress} color={colors.darkblue} style={styles.progressBar} />
-            <View>
-            {preferences.length > 0 && (
-                <VictoryPie 
-                data={preferences}
-                colorScale="qualitative"
-                innerRadius={55}
-                labelRadius={({ innerRadius }) => (Dimensions.get('window').width * 0.4 + innerRadius) / 2.5}
-                style={{ labels: { fill: 'white', fontSize: 14, fontFamily: 'MontserratBold', justifyContent: 'center', alignItems: 'center'} }}
-                labels={({ datum }) => datum.y > 5 ? `${datum.x}` : ''}
-                width={Dimensions.get('window').width}
-                />
-            )}
-            </View>
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoText}>Be part of accelerating research</Text>
+        <View style={styles.infoBottomContainer}>
+          <View style={styles.infoBottomContainerLeft}>
+          <Text style={styles.questionsansweredNumber}>45</Text>
+          <Text style={styles.questionsansweredText}>Things learned</Text>
+          </View>
+          <View style={styles.infoBottomContainerRight}>
+            <Image source={{BrightMindsMascot}} style={styles.infoImage}/>
+          </View>
+        </View>
       </View>
-
-      {/* Evaluation */}
-      <View style={styles.sectionContainer}>
-        <TouchableOpacity style={styles.buttonStartWeeklyEvaluation} onPress={handleReadyScreenPress}>
-          <Text style={styles.buttonText}>Take Test</Text>
-        </TouchableOpacity>
+      <Text style={styles.sectionTitle}>
+        <Text style={styles.boldBlueText}>{trackingData.objective}</Text> progress
+      </Text>
+      <ProgressBar progress={trackingData.progress} color={colors.darkblue} style={styles.progressBar} />
+      <View>
+      {preferences.length > 0 && (
+          <VictoryPie 
+          data={preferences}
+          colorScale="qualitative"
+          innerRadius={55}
+          labelRadius={({ innerRadius }) => (Dimensions.get('window').width * 0.4 + innerRadius) / 2.5}
+          style={{ labels: { fill: 'white', fontSize: 14, fontFamily: 'MontserratBold', justifyContent: 'center', alignItems: 'center'} }}
+          labels={({ datum }) => datum.y > 5 ? `${datum.x}` : ''}
+          width={Dimensions.get('window').width}
+          />
+      )}
       </View>
-
+      <TouchableOpacity style={styles.buttonStartWeeklyEvaluation} onPress={handleReadyScreenPress}>
+        <Text style={styles.buttonText}>Take Test</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -94,8 +98,50 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  sectionContainer: {
-    padding: spacing.l,
+  infoContainer: {
+    padding: spacing.s,
+    marginVertical: spacing.m,
+    backgroundColor: colors.darkblue,
+    marginLeft: spacing.m,
+    marginRight: spacing.m,
+    marginBottom: spacing.m,
+    marginTop: spacing.m,
+    borderRadius: sizes.radius,
+    elevation: 5,
+  },
+  infoBottomContainer: {
+    flexDirection: 'row',
+  },
+  infoBottomContainerLeft: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  infoBottomContainerRight: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  infoImage: {
+  },
+  questionsansweredNumber: {
+    fontSize: sizes.title,
+    textAlign: 'center',
+    fontFamily: 'MontserratBold',
+    color: colors.primaryBis,
+    marginTop: spacing.xs,
+  },
+  questionsansweredText: {
+    fontSize: sizes.h4,
+    textAlign: 'center',
+    fontFamily: 'Montserrat',
+    color: colors.primaryBis,
+    marginTop: spacing.xs, 
+  },
+  infoText: {
+    fontSize: sizes.h3,
+    textAlign: 'center',
+    fontFamily: 'Montserrat',
+    color: colors.primaryBis,
+    marginTop: spacing.xs,
   },
   sectionTitle: {
     fontSize: sizes.h2,
