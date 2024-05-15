@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: sizes.h3,
     color: colors.primaryBis,
-    fontFamily: 'Montserrat',
+    fontFamily: 'MontserratBold',
   },
   imageContainer: {
     justifyContent: 'center',

@@ -159,7 +159,6 @@ const TakeTest = ({ route, navigation }) => {
       animateIncorrectAnswer();
     }
 
-    // Wait for 1 second and then move to the next question
     setTimeout(() => {
       setSelectedAnswer(null);
       setIsCorrect(null);
@@ -182,7 +181,14 @@ const TakeTest = ({ route, navigation }) => {
     <View style={styles.container}>
       <Gauge total={questions.length} current={currentQuestionIndex} />
       <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>{displayedQuestion}</Text>
+      <Text
+          style={styles.questionText}
+          numberOfLines={5}
+          adjustsFontSizeToFit
+          minimumFontScale={0.5}
+        >
+          {displayedQuestion}
+        </Text>
       </View>
       <ScrollView
         style={styles.answersContainer}
@@ -230,13 +236,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryBis,
   },
   questionContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop:spacing.s,
     marginBottom: spacing.s,
     marginLeft: spacing.s,
     marginRight: spacing.s,
+    height: '30%',
   },
   questionText: {
     fontSize: sizes.h2,

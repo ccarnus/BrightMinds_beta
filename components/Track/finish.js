@@ -44,7 +44,6 @@ const Finish = ({ route, navigation }) => {
       </Animated.View>
 
       <Text style={styles.resultRate}>{successRate}%</Text>
-      <Text style={styles.infoText}>The next test available in 11 hours</Text>
 
       <TouchableOpacity 
         style={styles.button} 
@@ -81,12 +80,6 @@ const styles = StyleSheet.create({
     color: colors.darkblue,
     fontFamily: 'MontserratBold',
     marginBottom: spacing.s,
-  },
-  infoText: {
-    fontSize: sizes.h3,
-    color: colors.secondary,
-    marginBottom: spacing.m,
-    fontFamily: 'Montserrat',
   },
   button: {
     marginTop: spacing.l,
