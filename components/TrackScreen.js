@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, ScrollView, ProgressBarAndroid } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { colors, sizes, spacing } from './theme';
@@ -10,7 +10,7 @@ const USERID = "6474e4001eec5ee1ecd40180";
 
 const TrackScreen = () => {
   const [trackingData, setTrackingData] = useState({ objective: '', progress: 0 });
-  const [preferences, setPreferences] = useState([]);
+  const [history, setHistory] = useState([]);
   const [answeredCount, setAnsweredCount] = useState(0);
   const navigation = useNavigation();
   const BrightMindsMascot = require('../assets/Track_icons/BrightMindsMascot.png');
@@ -30,22 +30,12 @@ const TrackScreen = () => {
             objective: data.tracking.objective,
             progress: data.tracking.progress / 100,
           });
+          if (data.tracking.history) {
+            setHistory(data.tracking.history.map(history => ({ x: history.category, y: history.count })));
+          }
         }
       } catch (error) {
         console.error('Error fetching tracking data:', error);
-      }
-    };
-
-    // Fetch preferences
-    const fetchPreferences = async () => {
-      try {
-        const response = await fetch(`http://3.17.219.54/user/${USERID}/preferences`);
-        const data = await response.json();
-        if (data.preferences) {
-          setPreferences(data.preferences.map(preference => ({ x: preference.category, y: preference.weight })));
-        }
-      } catch (error) {
-        console.error('Error fetching preferences:', error);
       }
     };
 
@@ -64,12 +54,11 @@ const TrackScreen = () => {
     };
 
     fetchData();
-    fetchPreferences();
     fetchUserData();
   }, []);
 
   return (
-    <ScrollView style={styles.container} >
+    <ScrollView style={styles.container}>
       <LinearGradient
         colors={[colors.lightblue, colors.darkblue]}
         start={{ x: 0, y: 0 }}
@@ -79,8 +68,8 @@ const TrackScreen = () => {
         <Text style={styles.infoText}>Understand the research shaping tomorrow's world</Text>
         <View style={styles.infoBottomContainer}>
           <View style={styles.infoBottomContainerLeft}>
-          <Text style={styles.questionsansweredNumber}>{answeredCount}</Text>
-          <Text style={styles.questionsansweredText}>Things learned</Text>
+            <Text style={styles.questionsansweredNumber}>{answeredCount}</Text>
+            <Text style={styles.questionsansweredText}>Things learned</Text>
           </View>
           <View style={styles.infoBottomContainerRight}>
             <Image source={BrightMindsMascot} style={styles.infoImage}/>
@@ -93,18 +82,21 @@ const TrackScreen = () => {
         </Text>
         <ProgressBar progress={trackingData.progress} color={colors.darkblue} style={styles.progressBar} />
       </View>
-      <View>
-      {preferences.length > 0 && (
-          <VictoryPie 
-          data={preferences}
-          colorScale="qualitative"
-          innerRadius={55}
-          labelRadius={({ innerRadius }) => (Dimensions.get('window').width * 0.4 + innerRadius) / 2.5}
-          style={{ labels: { fill: 'white', fontSize: 14, fontFamily: 'MontserratBold', justifyContent: 'center', alignItems: 'center'} }}
-          labels={({ datum }) => datum.y > 5 ? `${datum.x}` : ''}
-          width={Dimensions.get('window').width}
-          />
-      )}
+      <View style={styles.ChartTitleContainer}>
+        <Text style={styles.sectionTitle}>Your Leanrnings</Text>
+        <View>
+          {history.length > 0 && (
+            <VictoryPie 
+              data={history}
+              colorScale="qualitative"
+              innerRadius={55}
+              labelRadius={({ innerRadius }) => (Dimensions.get('window').width * 0.4 + innerRadius) / 2.5}
+              style={{ labels: { fill: 'white', fontSize: 14, fontFamily: 'MontserratBold', justifyContent: 'center', alignItems: 'center'} }}
+              labels={({ datum }) => datum.y > 0.1 ? `${datum.x}` : ''}
+              width={Dimensions.get('window').width}
+            />
+          )}
+        </View>
       </View>
       <TouchableOpacity style={styles.buttonStartWeeklyEvaluation} onPress={handleReadyScreenPress}>
         <Text style={styles.buttonText}>Take Test</Text>
@@ -152,7 +144,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   questionsansweredNumber: {
-    fontSize: sizes.title*2,
+    fontSize: sizes.title * 2,
     textAlign: 'center',
     fontFamily: 'MontserratBold',
     color: colors.primaryBis,
@@ -187,13 +179,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: spacing.m,
+    marginBottom: spacing.l,
     elevation: 5,
     width: '80%',
     marginLeft: '10%',
     padding: 15,
     borderRadius: sizes.radius,
-    marginBottom: spacing.m,
+    marginTop: spacing.m,
   },
   buttonText: {
     fontSize: sizes.h3,
@@ -211,8 +203,28 @@ const styles = StyleSheet.create({
     color: colors.secondary,
   },
   ProgressContainer: {
-    width: '90%',
-    marginLeft: '5%',
+    backgroundColor: colors.primary,
+    padding: spacing.m,
+    marginVertical: spacing.m,
+    marginLeft: spacing.m,
+    marginRight: spacing.m,
+    marginBottom: spacing.m,
+    marginTop: spacing.m,
+    borderRadius: sizes.radius,
+    elevation: 5,
+  },
+  ChartTitleContainer: {
+    backgroundColor: colors.primary,
+    padding: spacing.s,
+    marginVertical: spacing.m,
+    marginLeft: spacing.m,
+    marginRight: spacing.m,
+    marginBottom: spacing.m,
+    marginTop: spacing.m,
+    borderRadius: sizes.radius,
+    elevation: 5,
+    alignItems: 'center', // Align horizontally
+    justifyContent: 'center', // Align vertically
   }
 });
 
