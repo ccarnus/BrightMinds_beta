@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image, ActivityIndicator } from 'react-native';
 import { Button, TextInput, Portal, Provider, Modal } from 'react-native-paper';
 import { colors, shadow, sizes, spacing } from '../theme';
-import types from '../../lists/types';
+import categories from '../../lists/categories';
 import visibilityCategories from '../../lists/visibilityCategories';
 import Slider from '@react-native-community/slider';
 
@@ -10,11 +10,10 @@ const PostArticle = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [department, setDepartment] = useState('');
-  const [type, setType] = useState('');
-  const [university, setUniversity] = useState('Georgia Tech'); // Default or selection
   const [category, setCategory] = useState('');
+  const [university, setUniversity] = useState('Georgia Tech');
   const [visibility, setVisibility] = useState(1);
-  const [isTypeModalVisible, setTypeModalVisible] = useState(false);
+  const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [duration, setDuration] = useState(0);
   const [loading, setLoading] = useState(false);
   const [articleImageUrl, setArticleImageUrl] = useState('');
@@ -33,7 +32,7 @@ const PostArticle = ({ navigation }) => {
     let missingFields = [];
     if (!title.trim()) missingFields.push("Title");
     if (!description.trim()) missingFields.push("Description");
-    if (!type.trim()) missingFields.push("Type");
+    if (!category.trim()) missingFields.push("Category");
 
     if (missingFields.length > 0) {
         Alert.alert('Missing Information', 'Please fill in all the required fields:\n\n ' + missingFields.join('\n\n '));
@@ -45,9 +44,8 @@ const PostArticle = ({ navigation }) => {
         title,
         articleDescription: description,
         department: 'Robotics',
-        type,
         university: 'Georgia Tech',
-        category: 'Breakthrough',
+        category,
         brightmindid: 101,
         visibility,
         duration: calculateReadingTime(description),
@@ -102,19 +100,19 @@ return (
           <Button
               icon="menu-down"
               mode="outlined"
-              onPress={() => setTypeModalVisible(true)}
+              onPress={() => setCategoryModalVisible(true)}
               style={styles.dropdownButton}
               contentStyle={styles.dropdownContent}
               labelStyle={styles.dropdownLabel}
           >
-              {type || "Select Type"}
+              {category || "Select Category"}
           </Button>
           <Portal>
-            <Modal visible={isTypeModalVisible} onDismiss={() => setTypeModalVisible(false)} contentContainerStyle={styles.modalContainer}>
-              {types.map((item, index) => (
+            <Modal visible={isCategoryModalVisible} onDismiss={() => setCategoryModalVisible(false)} contentContainerStyle={styles.modalContainer}>
+              {categories.map((item, index) => (
                 <Button 
                   key={index} 
-                  onPress={() => { setType(item); setTypeModalVisible(false); }}
+                  onPress={() => { setCategory(item); setCategoryModalVisible(false); }}
                   style={styles.modalItem}
                   labelStyle={styles.modalItemLabel}
                 >

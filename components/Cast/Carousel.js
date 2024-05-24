@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const CARD_WIDTH = sizes.width /1.5;
 const CARD_HEIGHT = 180;
-const CARD_HEIGHT_TOTAL = 200;
+const CARD_HEIGHT_TOTAL = 215;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
 
 const Carousel = ({ list, carouselType}) => {
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   titleBox: {
     position: 'absolute',
     borderRadius: 5,
-    top: CARD_HEIGHT_TOTAL - 15,
+    top: CARD_HEIGHT_TOTAL - 30,
     maxHeight: 50,
     width: '100%',
   },

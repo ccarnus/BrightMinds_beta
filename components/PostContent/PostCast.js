@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image, ActivityIndicator, Dimensions, Modal as ModalReact} from 'react-native';
 import { Button, TextInput, Portal, Provider, Modal } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
-import types from '../../lists/types';
+import categories from '../../lists/categories';
 import {colors, shadow, sizes, spacing} from '../theme';
 import Slider from '@react-native-community/slider';
 import visibilityCategories from '../../lists/visibilityCategories';
@@ -10,13 +10,13 @@ import visibilityCategories from '../../lists/visibilityCategories';
 const PostCast = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [type, setType] = useState('');
+  const [category, setCategory] = useState('');
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [thumbnailUri, setThumbnailUri] = useState(null);
   const [visibility, setVisibility] = useState(1);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isTypeModalVisible, setTypeModalVisible] = useState(false);
+  const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [customAlertVisible, setCustomAlertVisible] = useState(false);
   const [customAlertMessage, setCustomAlertMessage] = useState("");
 
@@ -72,7 +72,7 @@ const PostCast = ({navigation}) => {
   
     if (!title.trim()) missingFields.push("Title");
     if (!description.trim()) missingFields.push("Description");
-    if (!type.trim()) missingFields.push("Type");
+    if (!category.trim()) missingFields.push("Category");
     if (!video) missingFields.push("Video");
   
     if (missingFields.length > 0) {
@@ -87,7 +87,7 @@ const PostCast = ({navigation}) => {
       title,
       description,
       department: 'Robotics',
-      type,
+      category,
       university: 'GeorgiaTech',
       category: 'Breakthrough',
       brightmindid: '101',
@@ -155,19 +155,19 @@ const PostCast = ({navigation}) => {
         <Button 
           icon="menu-down" 
           mode="outlined" 
-          onPress={() => setTypeModalVisible(true)} 
+          onPress={() => setCategoryModalVisible(true)} 
           style={styles.dropdownButton}
           contentStyle={styles.dropdownContent}
           labelStyle={styles.dropdownLabel}
         >
-          {type || "Select Type"}
+          {category || "Select Category"}
         </Button>
         <Portal>
-          <Modal visible={isTypeModalVisible} onDismiss={() => setTypeModalVisible(false)} contentContainerStyle={styles.modalContainer}>
-            {types.map((item, index) => (
+          <Modal visible={isCategoryModalVisible} onDismiss={() => setCategoryModalVisible(false)} contentContainerStyle={styles.modalContainer}>
+            {categories.map((item, index) => (
               <Button 
                 key={index} 
-                onPress={() => { setType(item); setTypeModalVisible(false); }}
+                onPress={() => { setCategory(item); setCategoryModalVisible(false); }}
                 style={styles.modalItem}
                 labelStyle={styles.modalItemLabel}
               >

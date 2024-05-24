@@ -126,18 +126,20 @@ const DiscoverScreen = ({ navigation }) => {
               style={{ flex: 1 }}
               onPress={togglePlayVideoFocused}
             >
-              <Video
-                ref={ref => (videoRefs.current[focusedIndex] = ref)}
-                source={{ uri: videos[focusedIndex].casturl }}
-                shouldPlay={videoStatus[focusedIndex]}
-                resizeMode="cover"
-                style={{ width: '100%', height: '100%' }}
-                onPlaybackStatusUpdate={(status) => {
-                  if (status.didJustFinish) {
-                    handleCastDonePlaying();
-                  }
-                }}
-              />
+              <View style={{ flex: 1, backgroundColor: colors.secondary }}>
+                <Video
+                  ref={ref => (videoRefs.current[focusedIndex] = ref)}
+                  source={{ uri: videos[focusedIndex].casturl }}
+                  shouldPlay={videoStatus[focusedIndex]}
+                  resizeMode="contain" // Ensure video maintains aspect ratio
+                  style={{ width: '100%', height: '100%' }}
+                  onPlaybackStatusUpdate={(status) => {
+                    if (status.didJustFinish) {
+                      handleCastDonePlaying();
+                    }
+                  }}
+                />
+              </View>
             </TouchableOpacity>
           </Modal>
         </>

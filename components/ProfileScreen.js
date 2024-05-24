@@ -184,12 +184,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: spacing.l,
   },
-  department: {
-    fontSize: sizes.h2,
-    color: colors.white,
-    marginBottom: 10,
-    textAlign: 'center',
-  },
   buttonContainer: {
     backgroundColor: colors.primary,
     borderRadius: sizes.radius,
