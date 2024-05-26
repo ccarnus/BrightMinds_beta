@@ -43,8 +43,8 @@ const PostArticle = ({ navigation }) => {
     const articleData = {
         title,
         articleDescription: description,
-        department: 'Robotics',
-        university: 'Georgia Tech',
+        department: 'Engineering',
+        university: 'GeorgiaTech',
         category,
         brightmindid: 101,
         visibility,

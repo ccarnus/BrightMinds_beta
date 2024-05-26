@@ -86,7 +86,7 @@ const PostCast = ({navigation}) => {
     const castData = {
       title,
       description,
-      department: 'Robotics',
+      department: 'Engineering',
       category,
       university: 'GeorgiaTech',
       category: 'Breakthrough',

@@ -170,17 +170,29 @@ const CastScreen = () => {
                 <Image source={forYou} style={styles.categoryIcon} />
                 <Text style={styles.categoryTitle}>For you</Text>
               </View>
-              <Carousel list={SuggestedCastData} carouselType="suggested" />
+              {SuggestedCastData.length > 0 ? (
+                <Carousel list={SuggestedCastData} carouselType="suggested" />
+              ) : (
+                <Text style={styles.noDataText}>No data.</Text>
+              )}
               <View style={styles.categoryHeader}>
                 <Image source={trendingIcon} style={styles.categoryIcon} />
                 <Text style={styles.categoryTitle}>Trending</Text>
               </View>
-              <Carousel list={TrendingCastData} carouselType="trending" />
+              {TrendingCastData.length > 0 ? (
+                <Carousel list={TrendingCastData} carouselType="trending" />
+              ) : (
+                <Text style={styles.noDataText}>No data.</Text>
+              )}
               <View style={styles.categoryHeader}>
                 <Image source={articleIcon} style={styles.categoryIcon} />
                 <Text style={styles.categoryTitle}>Articles</Text>
               </View>
-              <ArticleCarousel list={articleData} />
+              {articleData.length > 0 ? (
+                <ArticleCarousel list={articleData} />
+              ) : (
+                <Text style={styles.noDataText}>No data.</Text>
+              )}
             </>
           )}
         </ScrollView>
@@ -300,6 +312,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     textAlign: 'center',
     marginTop: 20,
+  },
+  noDataText: {
+    color: colors.secondary,
+    fontSize: sizes.h3,
+    fontFamily: 'Montserrat',
+    textAlign: 'center',
+    marginTop: 20,
+    lineHeight: 150,
   },
 });
 
