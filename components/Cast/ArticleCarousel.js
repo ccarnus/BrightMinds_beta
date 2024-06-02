@@ -23,6 +23,7 @@ const ArticleCarousel = ({ list }) => {
         <TouchableOpacity
           style={{
             marginLeft: spacing.l,
+            marginBottom: spacing.xl,
             marginRight: index === list.length - 1 ? spacing.l : 0,
           }}
           onPress={() => navigation.navigate('ArticleDetails', { selectedArticleId: item._id })}>
@@ -70,10 +71,11 @@ const styles = StyleSheet.create({
         top: CARD_HEIGHT_TOTAL - 30,
         maxHeight: 50,
         width: '100%',
+        marginBottom: 50,
       },
       title: {
         fontSize: sizes.h45,
-        color: colors.white,
+        color: colors.secondary,
         paddingRight: 10,
         textAlign: 'left',
         marginLeft: 10,
