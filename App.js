@@ -57,5 +57,4 @@ const theme = {
   // You can also customize colors, roundness, etc.
 };
 
-
 export default App;
