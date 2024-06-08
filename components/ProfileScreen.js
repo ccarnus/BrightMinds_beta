@@ -13,18 +13,15 @@ const ProfileScreen = () => {
   const [userData, setUserData] = useState(null);
   const [userPreferences, setUserPreferences] = useState([]);
   const [trackingData, setTrackingData] = useState({ objective: '', progress: 0 });
+  const [userId, setUserId] = useState(null);
   const streak = 5;
 
   useEffect(() => {
-    const fetchUserId = async () => {
-      const storedUserId = await AsyncStorage.getItem('userId');
-      if (storedUserId) {
-        setUserId(storedUserId);
-        console.log(`http://3.17.219.54/user/${userId}`);
-      }
+    const getUserId = async () => {
+      const storedUserId = await AsyncStorage.getItem('userId');  
+      setUserId(storedUserId);   
     };
-
-    fetchUserId();
+    getUserId();
   }, []);
 
   useEffect(() => {

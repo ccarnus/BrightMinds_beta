@@ -29,8 +29,7 @@ const MainNavigator = () => {
 
   useEffect(() => {
     const checkLoginStatus = async () => {
-      const userId = await AsyncStorage.getItem('userId');
-      console.log(`http://3.17.219.54/user/${userId}/tracking`);      
+      const userId = await AsyncStorage.getItem('userId');     
       setIsLoggedIn(!!userId);
     };
     checkLoginStatus();
