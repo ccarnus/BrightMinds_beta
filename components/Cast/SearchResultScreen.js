@@ -138,7 +138,7 @@ const SearchResultScreen = ({ route, navigation }) => {
               ref={ref => (videoRefs.current[index] = ref)}
               source={{ uri: video.casturl }}
               shouldPlay={videoStatus[index]}
-              resizeMode="cover"
+              resizeMode="contain"
               style={styles.video}
               onPlaybackStatusUpdate={(status) => {
                 if (status.didJustFinish) {
@@ -180,7 +180,7 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     overflow: 'hidden',
   },
   scrollView: {

@@ -181,7 +181,7 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     overflow: 'hidden',
   },
   scrollView: {
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   icon: {
     width: 32,
     height: 32,
-    tintColor: colors.lightblue,
+    tintColor: colors.darkblue,
     marginHorizontal: 12,
   },
   universityIcon: {
@@ -234,7 +234,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 50,
   },
-  
 });
 
 export default TrendingScreen;

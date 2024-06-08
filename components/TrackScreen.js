@@ -83,7 +83,7 @@ const TrackScreen = () => {
         <ProgressBar progress={trackingData.progress} color={colors.darkblue} style={styles.progressBar} />
       </View>
       <View style={styles.ChartTitleContainer}>
-        <Text style={styles.sectionTitle}>Your Leanrnings</Text>
+        <Text style={styles.sectionTitle}>Your Learnings</Text>
         <View>
           {history.length > 0 && (
             <VictoryPie 

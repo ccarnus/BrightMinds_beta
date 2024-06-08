@@ -5,13 +5,13 @@ import { colors, sizes, spacing } from './theme';
 import Carousel from './Cast/Carousel';
 import ArticleCarousel from './Cast/ArticleCarousel';
 import { RefreshControl } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CastScreen = () => {
   const navigation = useNavigation();
   const [SuggestedCastData, setSuggestedCastData] = useState([]);
   const [TrendingCastData, setTrendingCastData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const USER_ID = "6474e4001eec5ee1ecd40180";
   const [refreshing, setRefreshing] = useState(false);
   const [allCasts, setAllCasts] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
@@ -21,16 +21,36 @@ const CastScreen = () => {
   const articleIcon = require('../assets/Cast_screen_icons/article_logo.png');
   const podcastIcon = require('../assets/Cast_screen_icons/podcast_logo.png');
   const [articleData, setArticleData] = useState([]);
+  const [userId, setUserId] = useState(null);
 
+  useEffect(() => {
+    const getUserId = async () => {
+      const storedUserId = await AsyncStorage.getItem('userId');  
+      console.log('userId retrieved:', storedUserId); // Log the userId retrieved
+      setUserId(storedUserId);   
+    };
+    getUserId();
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      fetchSuggestedCastData();
+      fetchTrendingCastData();
+      fetchAllCastData();
+      fetchArticleData();
+    }
+  }, [userId]);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    fetchSuggestedCastData();
-    fetchTrendingCastData();
-    fetchAllCastData();
-    fetchArticleData();
-    setRefreshing(false);
-  }, []);
+    if (userId) {
+      setRefreshing(true);
+      fetchSuggestedCastData();
+      fetchTrendingCastData();
+      fetchAllCastData();
+      fetchArticleData();
+      setRefreshing(false);
+    }
+  }, [userId]);
 
   const handleSearch = (text) => {
     setSearchQuery(text);
@@ -75,12 +95,18 @@ const CastScreen = () => {
   };
 
   const fetchSuggestedCastData = () => {
-    const endpoint_suggested_for_you = `http://3.17.219.54/user/${USER_ID}/suggested/for/you`;
+    const endpoint_suggested_for_you = `http://3.17.219.54/user/${userId}/suggested/for/you`;
     setIsLoading(true);
 
     fetch(endpoint_suggested_for_you)
       .then((response) => response.json())
       .then((data) => {
+        if (!Array.isArray(data)) {
+          console.error('Unexpected data format:', data);
+          setSuggestedCastData([]);
+          setIsLoading(false);
+          return;
+        }
         const formattedData = data.map((cast) => ({
           id: cast._id,
           image: cast.castimageurl,
@@ -97,12 +123,18 @@ const CastScreen = () => {
   };
 
   const fetchTrendingCastData = () => {
-    const endpoint_suggested_for_you = `http://3.17.219.54/cast/trending/right/now`;
+    const endpoint_trending = `http://3.17.219.54/cast/trending/right/now`;
     setIsLoading(true);
 
-    fetch(endpoint_suggested_for_you)
+    fetch(endpoint_trending)
       .then((response) => response.json())
       .then((data) => {
+        if (!Array.isArray(data)) {
+          console.error('Unexpected data format:', data);
+          setTrendingCastData([]);
+          setIsLoading(false);
+          return;
+        }
         const formattedData = data.map((cast) => ({
           id: cast._id,
           image: cast.castimageurl,
@@ -117,13 +149,6 @@ const CastScreen = () => {
         setIsLoading(false);
       });
   };
-
-  useEffect(() => {
-    fetchSuggestedCastData();
-    fetchTrendingCastData();
-    fetchAllCastData();
-    fetchArticleData(); 
-  }, []);
 
   return (
     <View style={styles.container}>

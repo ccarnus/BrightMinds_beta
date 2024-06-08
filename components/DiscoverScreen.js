@@ -12,6 +12,7 @@ const DiscoverScreen = ({ navigation }) => {
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [videoStatus, setVideoStatus] = useState([]);
   const [showVideo, setShowVideo] = useState(false);
+  const [bookmarkedCasts, setBookmarkedCasts] = useState([]);
   const videoRefs = useRef([]);
   const userId = "6474e4001eec5ee1ecd40180";
 
@@ -19,7 +20,6 @@ const DiscoverScreen = ({ navigation }) => {
     fetch('http://3.17.219.54/cast')
       .then(response => response.json())
       .then(data => {
-        console.log('Data fetched:', data); // Log fetched data
         if (data && data.length > 0) {
           const fetchUniversityLogosAndApprovalStatus = data.map(cast =>
             Promise.all([
@@ -42,17 +42,16 @@ const DiscoverScreen = ({ navigation }) => {
       .catch(error => {
         console.error('Fetching error:', error);
       });
-  }, []);
-
-  const handleCastDonePlaying = () => {
-    const castId = videos[focusedIndex]._id;
 
     axios
-      .post(`http://3.17.219.54/user/add/content/${userId}`, { contentId: castId, type: "cast" })
+      .get(`http://3.17.219.54/user/bookmarks/${userId}`)
+      .then(response => {
+        setBookmarkedCasts(response.data);
+      })
       .catch(error => {
         console.error(error);
       });
-  };
+  }, []);
 
   const togglePlay = () => {
     setShowVideo(true);
@@ -70,6 +69,16 @@ const DiscoverScreen = ({ navigation }) => {
     }
   };
 
+  const handleCastDonePlaying = () => {
+    const castId = videos[focusedIndex]._id;
+
+    axios
+      .post(`http://3.17.219.54/user/add/content/${userId}`, { contentId: castId, type: "cast" })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
   const formatDuration = (duration) => {
     const minutes = Math.floor(duration);
     const seconds = Math.round((duration - minutes) * 60);
@@ -80,6 +89,34 @@ const DiscoverScreen = ({ navigation }) => {
     const nextIndex = (focusedIndex + 1) % videos.length;
     setFocusedIndex(nextIndex);
     setVideoStatus(videoStatus.map((_, idx) => idx === nextIndex ? false : false));
+  };
+
+  const handleBookmarkPress = () => {
+    const castId = videos[focusedIndex]._id;
+
+    if (bookmarkedCasts.some(cast => cast.castId === castId)) {
+      axios
+        .delete(`http://3.17.219.54/user/remove/bookmarks/${userId}/${castId}`)
+        .then(response => {
+          setBookmarkedCasts(bookmarkedCasts.filter(cast => cast.castId !== castId));
+          videos[focusedIndex].bookmarkIcon = require('../assets/Cast_icons/bookmark_icon.png');
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      return;
+    }
+
+    videos[focusedIndex].bookmarkIcon = require('../assets/Cast_icons/bookmark_filled_icon.png');
+
+    axios
+      .post(`http://3.17.219.54/user/add/bookmarks/${userId}`, { castId: castId })
+      .then(response => {
+        setBookmarkedCasts([...bookmarkedCasts, { castId }]);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   return (
@@ -126,12 +163,12 @@ const DiscoverScreen = ({ navigation }) => {
               style={{ flex: 1 }}
               onPress={togglePlayVideoFocused}
             >
-              <View style={{ flex: 1, backgroundColor: colors.secondary }}>
+              <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Video
                   ref={ref => (videoRefs.current[focusedIndex] = ref)}
                   source={{ uri: videos[focusedIndex].casturl }}
                   shouldPlay={videoStatus[focusedIndex]}
-                  resizeMode="contain" // Ensure video maintains aspect ratio
+                  resizeMode="contain"
                   style={{ width: '100%', height: '100%' }}
                   onPlaybackStatusUpdate={(status) => {
                     if (status.didJustFinish) {
@@ -139,6 +176,25 @@ const DiscoverScreen = ({ navigation }) => {
                     }
                   }}
                 />
+                <View style={styles.buttonUniversityContainer}>
+                  <Image
+                    source={{ uri: videos[focusedIndex].universityLogo }}
+                    style={styles.universityIcon}
+                    resizeMode="contain"
+                  />
+                </View>
+                <View style={styles.buttonBookmarkContainer}>
+                  <TouchableOpacity style={styles.buttonBookmark} onPress={handleBookmarkPress}>
+                    <Image
+                      source={
+                        bookmarkedCasts.some(cast => cast.castId === videos[focusedIndex]._id)
+                          ? require('../assets/Cast_icons/bookmark_filled_icon.png')
+                          : require('../assets/Cast_icons/bookmark_icon.png')
+                      }
+                      style={styles.iconBookmark}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </TouchableOpacity>
           </Modal>
@@ -153,7 +209,7 @@ const DiscoverScreen = ({ navigation }) => {
             {videos[focusedIndex] && videos[focusedIndex].universityLogo && (
               <Image
                 source={{ uri: videos[focusedIndex].universityLogo }}
-                style={styles.universityIcon}
+                style={styles.universityIconMain}
                 resizeMode="contain"
               />
             )}
@@ -177,7 +233,7 @@ const DiscoverScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primaryBis,
+    backgroundColor: colors.primary,
   },
   bottomSection: {
     flex: 1,
@@ -206,9 +262,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  universityIcon: {
-    width: 54,
-    height: 54,
+  universityIconMain: {
+    width: 72,
+    height: 72,
   },
   durationText: {
     fontSize: sizes.h3,
@@ -260,6 +316,42 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     textAlign: 'center',
   },
+  buttonBookmarkContainer: {
+    position: 'absolute',
+    bottom: spacing.m,
+    right: spacing.m,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 64,
+    backgroundColor: colors.primaryBis,
+  },
+  buttonUniversityContainer: {
+    width: 54,
+    height: 54,
+    position: 'absolute',
+    bottom: spacing.m + 64,
+    right: spacing.m,
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 50,
+  },
+  icon: {
+    width: 42,
+    height: 42,
+    tintColor: colors.darkblue,
+    marginHorizontal: 12,
+  },
+  universityIcon: {
+    width: "100%",
+    height: "100%",
+    marginHorizontal: 12,
+  },  
+  iconBookmark: {
+    width: 32,
+    height: 32,
+    tintColor: colors.darkblue,
+    marginHorizontal: 12,
+  }
 });
 
 export default DiscoverScreen;

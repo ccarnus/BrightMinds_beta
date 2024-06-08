@@ -4,6 +4,7 @@ import axios from 'axios';
 import Slider from '@react-native-community/slider';
 import { colors, shadow, sizes, spacing } from './theme';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
@@ -12,30 +13,46 @@ const ProfileScreen = () => {
   const [userData, setUserData] = useState(null);
   const [userPreferences, setUserPreferences] = useState([]);
   const [trackingData, setTrackingData] = useState({ objective: '', progress: 0 });
+  const [userId, setUserId] = useState(null);
   const streak = 5;
 
   useEffect(() => {
-    // Fetch user data
-    axios
-      .get('http://3.17.219.54/user/6474e4001eec5ee1ecd40180')
-      .then(response => setUserData(response.data))
-      .catch(error => console.error('Error fetching user data:', error));
-
-    // Fetch user preferences
-    axios
-      .get('http://3.17.219.54/user/6474e4001eec5ee1ecd40180/preferences')
-      .then(response => setUserPreferences(response.data.preferences))
-      .catch(error => console.error('Error fetching user preferences:', error));
-    
-      // Fetch tracking data
-    axios
-    .get('http://3.17.219.54/user/6474e4001eec5ee1ecd40180/tracking')
-    .then(response => setTrackingData(response.data.tracking))
-    .catch(error => console.error('Error fetching tracking data:', error));
+    const getUserId = async () => {
+      const storedUserId = await AsyncStorage.getItem('userId');  
+      setUserId(storedUserId);   
+    };
+    getUserId();
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      // Fetch user data
+      axios
+        .get(`http://3.17.219.54/user/${userId}`)
+        .then(response => setUserData(response.data))
+        .catch(error => console.error('Error fetching user data:', error));
+
+      // Fetch user preferences
+      axios
+        .get(`http://3.17.219.54/user/${userId}/preferences`)
+        .then(response => setUserPreferences(response.data.preferences))
+        .catch(error => console.error('Error fetching user preferences:', error));
+      
+        // Fetch tracking data
+      axios
+      .get(`http://3.17.219.54/user/${userId}/tracking`)
+      .then(response => setTrackingData(response.data.tracking))
+      .catch(error => console.error('Error fetching tracking data:', error));
+    }
+  }, [userId]);
 
   const handleSliderComplete = (category, newValue) => {
     Alert.alert(`Section ${category} updated to ${newValue.toFixed(2)}`);
+  };
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('userId');
+    navigation.navigate('LoginScreen');
   };
 
   return (
@@ -48,7 +65,6 @@ const ProfileScreen = () => {
               style={styles.profileImage}
             />
             <Text style={styles.overlayUsername}>{userData.username}</Text>
-            {/*<Text style={styles.score}>{userData.score} xp</Text>*/}
           </View>
           <View style={styles.scoreContainer}>
             <View style={styles.buttonContainer}>
@@ -104,6 +120,12 @@ const ProfileScreen = () => {
               </TouchableOpacity>
             </View>
           </View>
+          <TouchableOpacity 
+            style={styles.logoutContainer}
+            onPress={handleLogout}
+          >
+            <Text style={styles.buttonLogout}>Log Out</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     </View>
@@ -145,7 +167,6 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: spacing.l,
     paddingHorizontal: spacing.m,
-    overflow: 'visible',
   },
   profileImage: {
     width: width * 0.4,
@@ -242,6 +263,24 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontFamily: 'Montserrat',
   },
+  logoutContainer: {
+    backgroundColor: colors.primaryBis,
+    borderColor: colors.secondary,
+    borderWidth: 2,
+    borderRadius: sizes.radius,
+    paddingVertical: 10,
+    width: width * 0.5,
+    justifyContent: 'center',
+    flexDirection: "row",
+    marginBottom: spacing.l,
+    marginTop: spacing.l,
+    alignSelf: 'center',
+  },
+  buttonLogout: {
+    fontSize: sizes.h2,
+    color: colors.secondary,
+    fontFamily: 'Montserrat',
+  }
 });
 
 export default ProfileScreen;
