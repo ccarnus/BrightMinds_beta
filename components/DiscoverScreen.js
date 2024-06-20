@@ -131,7 +131,7 @@ const DiscoverScreen = ({ navigation }) => {
             <Image
               source={{ uri: videos[focusedIndex].castimageurl }}
               style={{ width: width, height: width /1.5 }}
-              resizeMode="cover"
+              resizeMode="contain"
             />
             {!videoStatus[focusedIndex] && (
               <View style={styles.playIconContainer}>

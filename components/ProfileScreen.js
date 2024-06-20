@@ -18,8 +18,8 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     const getUserId = async () => {
-      const storedUserId = await AsyncStorage.getItem('userId');  
-      setUserId(storedUserId);   
+      const storedUserId = await AsyncStorage.getItem('userId');
+      setUserId(storedUserId);
     };
     getUserId();
   }, []);
@@ -37,12 +37,12 @@ const ProfileScreen = () => {
         .get(`http://3.17.219.54/user/${userId}/preferences`)
         .then(response => setUserPreferences(response.data.preferences))
         .catch(error => console.error('Error fetching user preferences:', error));
-      
-        // Fetch tracking data
+
+      // Fetch tracking data
       axios
-      .get(`http://3.17.219.54/user/${userId}/tracking`)
-      .then(response => setTrackingData(response.data.tracking))
-      .catch(error => console.error('Error fetching tracking data:', error));
+        .get(`http://3.17.219.54/user/${userId}/tracking`)
+        .then(response => setTrackingData(response.data.tracking))
+        .catch(error => console.error('Error fetching tracking data:', error));
     }
   }, [userId]);
 
@@ -52,9 +52,13 @@ const ProfileScreen = () => {
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('userId');
+    await AsyncStorage.removeItem('userRole');
+    setUserData(null);
+    setUserPreferences([]);
+    setTrackingData({ objective: '', progress: 0 });
     navigation.navigate('LoginScreen');
   };
-
+  
   return (
     <View style={styles.container}>
       {userData && (
@@ -77,10 +81,10 @@ const ProfileScreen = () => {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('LeaderBoard')}>
-              <Image
-                source={require('../assets/Profile_icons/podium_icon.png')}
-                style={styles.streakImage}
-              />
+                <Image
+                  source={require('../assets/Profile_icons/podium_icon.png')}
+                  style={styles.streakImage}
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -90,24 +94,28 @@ const ProfileScreen = () => {
         <ScrollView style={styles.lowerSectionScrollView}>
           <View style={styles.lowerSectionContainer}>
             <Text style={styles.preferencesTitle}>Preferences</Text>
-            {userPreferences.map(pref => (
-              <View key={pref._id} style={styles.preferenceContainer}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.preferenceText}>{pref.category}</Text>
+            {userPreferences.length > 0 ? (
+              userPreferences.map(pref => (
+                <View key={pref._id} style={styles.preferenceContainer}>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.preferenceText}>{pref.category}</Text>
+                  </View>
+                  <View style={styles.sliderContainer}>
+                    <Slider
+                      style={styles.slider}
+                      value={pref.weight / 100}
+                      onSlidingComplete={(newValue) => handleSliderComplete(pref.category, newValue * 100)}
+                      minimumValue={0}
+                      maximumValue={1}
+                      minimumTrackTintColor={colors.black}
+                      maximumTrackTintColor={colors.white}
+                    />
+                  </View>
                 </View>
-                <View style={styles.sliderContainer}>
-                  <Slider
-                    style={styles.slider}
-                    value={pref.weight / 100}
-                    onSlidingComplete={(newValue) => handleSliderComplete(pref.category, newValue * 100)}
-                    minimumValue={0}
-                    maximumValue={1}
-                    minimumTrackTintColor={colors.black}
-                    maximumTrackTintColor={colors.white}
-                  />
-                </View>
-              </View>
-            ))}
+              ))
+            ) : (
+              <Text style={styles.noDataText}>No preferences set just yet..</Text>
+            )}
           </View>
           <View style={[styles.lowerSectionContainer, styles.shadow]}>
             <View style={styles.objectiveContainer}>
@@ -223,16 +231,16 @@ const styles = StyleSheet.create({
   },
   overlayUsername: {
     position: 'absolute',
-    bottom: -30,
+    bottom: -20,
     alignSelf: 'center',
     backgroundColor: colors.secondary,
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: sizes.radius,
     fontSize: sizes.h3,
-    fontWeight: 'bold',
     borderWidth: 1,
     color: colors.primary,
+    fontFamily: 'MontserratBold',
   },
   preferencesTitle: {
     fontSize: sizes.h2,
@@ -280,6 +288,14 @@ const styles = StyleSheet.create({
     fontSize: sizes.h2,
     color: colors.secondary,
     fontFamily: 'Montserrat',
+  },
+  noDataText: {
+    color: colors.secondary,
+    fontSize: sizes.h3,
+    fontFamily: 'Montserrat',
+    textAlign: 'center',
+    marginTop: spacing.l,
+    marginBottom: spacing.xl
   }
 });
 

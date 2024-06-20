@@ -6,6 +6,7 @@ import Carousel from './Cast/Carousel';
 import ArticleCarousel from './Cast/ArticleCarousel';
 import { RefreshControl } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const CastScreen = () => {
   const navigation = useNavigation();
@@ -22,16 +23,21 @@ const CastScreen = () => {
   const podcastIcon = require('../assets/Cast_screen_icons/podcast_logo.png');
   const [articleData, setArticleData] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [userRole, setUserRole] = useState('');
 
-  useEffect(() => {
-    const getUserId = async () => {
-      const storedUserId = await AsyncStorage.getItem('userId');  
-      console.log('userId retrieved:', storedUserId); // Log the userId retrieved
-      setUserId(storedUserId);   
-    };
-    getUserId();
-  }, []);
-
+  useFocusEffect(
+    React.useCallback(() => {
+      const getUserIdAndRole = async () => {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        const storedUserRole = await AsyncStorage.getItem('userRole');
+        console.log('User Role:', storedUserRole); // Debug line to show the role
+        setUserId(storedUserId);
+        setUserRole(storedUserRole);
+      };
+      getUserIdAndRole();
+    }, [])
+  );
+  
   useEffect(() => {
     if (userId) {
       fetchSuggestedCastData();
@@ -222,12 +228,14 @@ const CastScreen = () => {
           )}
         </ScrollView>
       )}
-      <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('CastTypeChoice')}>
-        <Image 
-          source={require('../assets/Cast_screen_icons/plus_icon.png')} 
-          style={styles.imageIcon} 
-        />
-      </TouchableOpacity>
+      {(userRole === 'Professor' || userRole === 'Researcher' || userRole === 'PhD Student') && (
+        <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('CastTypeChoice')}>
+          <Image 
+            source={require('../assets/Cast_screen_icons/plus_icon.png')} 
+            style={styles.imageIcon} 
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

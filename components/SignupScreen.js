@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import { Button, TextInput, Modal, Portal, Provider } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker';
@@ -85,67 +85,73 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     <Provider>
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Sign Up</Text>
-        <TextInput
-          label="Email"
-          style={styles.input}
-          value={email}
-          onChangeText={setEmail}
-          mode="outlined"
-        />
-        <TextInput
-          label="Password"
-          style={styles.input}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          mode="outlined"
-        />
-        <TextInput
-          label="Username"
-          style={styles.input}
-          value={username}
-          onChangeText={setUsername}
-          mode="outlined"
-        />
-        <Picker
-          selectedValue={role}
-          style={styles.input}
-          onValueChange={(itemValue) => setRole(itemValue)}
-        >
-          <Picker.Item label="College Student" value="College Student" />
-          <Picker.Item label="Professor" value="Professor" />
-          <Picker.Item label="Researcher" value="Researcher" />
-          <Picker.Item label="Learning Enthusiast" value="Learning Enthusiast" />
-          <Picker.Item label="PhD Student" value="PhD Student" />
-        </Picker>
-        <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
-          {profilePicture ? (
-            <Image source={{ uri: profilePicture.uri }} style={styles.profileImage} />
-          ) : (
-            <Text style={styles.imagePickerText}>Select Profile Picture</Text>
-          )}
-        </TouchableOpacity>
-        <Button 
-          mode="contained" 
-          onPress={handleSignup} 
-          loading={loading} 
-          style={styles.button} 
-          disabled={isButtonDisabled}
-        >
-          Sign Up
-        </Button>
-        <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
-          <Text style={styles.signupText}>Already have an account? Login</Text>
-        </TouchableOpacity>
-        <Portal>
-          <Modal visible={customAlertVisible} onDismiss={() => setCustomAlertVisible(false)} contentContainerStyle={styles.modalContainer}>
-            <Text>{customAlertMessage}</Text>
-            <Button onPress={() => setCustomAlertVisible(false)}>OK</Button>
-          </Modal>
-        </Portal>
-      </ScrollView>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+      >
+        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+          <Text style={styles.title}>Sign Up</Text>
+          <TextInput
+            label="Email"
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            mode="outlined"
+          />
+          <TextInput
+            label="Password"
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            mode="outlined"
+          />
+          <TextInput
+            label="Username"
+            style={styles.input}
+            value={username}
+            onChangeText={setUsername}
+            mode="outlined"
+          />
+          <Picker
+            selectedValue={role}
+            style={styles.input}
+            onValueChange={(itemValue) => setRole(itemValue)}
+          >
+            <Picker.Item label="College Student" value="College Student" />
+            <Picker.Item label="Professor" value="Professor" />
+            <Picker.Item label="Researcher" value="Researcher" />
+            <Picker.Item label="Learning Enthusiast" value="Learning Enthusiast" />
+            <Picker.Item label="PhD Student" value="PhD Student" />
+          </Picker>
+          <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
+            {profilePicture ? (
+              <Image source={{ uri: profilePicture.uri }} style={styles.profileImage} />
+            ) : (
+              <Text style={styles.imagePickerText}>Select Profile Picture</Text>
+            )}
+          </TouchableOpacity>
+          <Button 
+            mode="contained" 
+            onPress={handleSignup} 
+            loading={loading} 
+            style={styles.button} 
+            disabled={isButtonDisabled}
+          >
+            Sign Up
+          </Button>
+          <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+            <Text style={styles.signupText}>Already have an account? Login</Text>
+          </TouchableOpacity>
+          <Portal>
+            <Modal visible={customAlertVisible} onDismiss={() => setCustomAlertVisible(false)} contentContainerStyle={styles.modalContainer}>
+              <Text>{customAlertMessage}</Text>
+              <Button onPress={() => setCustomAlertVisible(false)}>OK</Button>
+            </Modal>
+          </Portal>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Provider>
   );
 };
@@ -167,6 +173,7 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 15,
     backgroundColor: 'transparent',
+    fontFamily: 'Montserrat',
   },
   imagePicker: {
     marginBottom: 15,
@@ -193,6 +200,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'center',
     color: colors.secondary,
+    fontFamily: 'Montserrat',
   },
   modalContainer: {
     backgroundColor: 'white',
