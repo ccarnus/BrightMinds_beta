@@ -29,7 +29,15 @@ const LoginScreen = ({ navigation }) => {
       const userRole = userDetailsResponse.data.role;
       await AsyncStorage.setItem('userRole', userRole);
 
-      navigation.navigate('BottomNav');
+      // Check if user has preferences defined
+      const userPreferencesResponse = await axios.get(`http://3.17.219.54/user/${userId}/preferences`);
+      const userPreferences = userPreferencesResponse.data.preferences;
+
+      if (userPreferences.length === 0) {
+        navigation.navigate('PreferencesScreen');
+      } else {
+        navigation.navigate('BottomNav');
+      }
     } catch (error) {
       const errorMessage = error.response?.data?.error || 'Invalid credentials';
       showCustomAlert(errorMessage);

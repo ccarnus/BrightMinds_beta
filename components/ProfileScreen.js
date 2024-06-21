@@ -92,6 +92,17 @@ const ProfileScreen = () => {
       )}
       <View style={styles.lowerSection}>
         <ScrollView style={styles.lowerSectionScrollView}>
+        <View style={[styles.lowerSectionContainer, styles.shadow]}>
+            <View style={styles.objectiveContainer}>
+              <Text style={styles.preferencesTitle}>My Learning Path</Text>
+              <TouchableOpacity
+                style={styles.buttonObjectiveContainer}
+                onPress={() => navigation.navigate('Objective', { objective: trackingData.objective })}
+              >
+                <Text style={styles.objectiveText}>{trackingData.objective}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
           <View style={styles.lowerSectionContainer}>
             <Text style={styles.preferencesTitle}>Preferences</Text>
             {userPreferences.length > 0 ? (
@@ -117,17 +128,7 @@ const ProfileScreen = () => {
               <Text style={styles.noDataText}>No preferences set just yet..</Text>
             )}
           </View>
-          <View style={[styles.lowerSectionContainer, styles.shadow]}>
-            <View style={styles.objectiveContainer}>
-              <Text style={styles.preferencesTitle}>My Learning Path</Text>
-              <TouchableOpacity
-                style={styles.buttonObjectiveContainer}
-                onPress={() => navigation.navigate('Objective', { objective: trackingData.objective })}
-              >
-                <Text style={styles.objectiveText}>{trackingData.objective}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          
           <TouchableOpacity 
             style={styles.logoutContainer}
             onPress={handleLogout}
@@ -151,7 +152,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     height: height / 3,
-    backgroundColor: colors.primaryBis,
+    backgroundColor: colors.primary,
+    elevation: 5,
   },
   lowerSection: {
     flex: 2,
@@ -204,11 +206,11 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   sliderContainer: {
-    width: "75%",
+    width: "66%",
     marginRight: 5,
   },
   textContainer: {
-    width: "25%",
+    width: "33%",
     marginLeft: 5,
     textAlign: "center",
     marginBottom: spacing.l,
@@ -261,13 +263,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     borderRadius: sizes.radius,
     paddingVertical: 10,
-    width: width * 0.5,
+    paddingHorizontal: 20,
     justifyContent: 'center',
     flexDirection: "row",
     marginBottom: spacing.m,
   },
   objectiveText: {
-    fontSize: sizes.h2,
+    fontSize: sizes.h3,
     color: colors.primary,
     fontFamily: 'Montserrat',
   },
@@ -276,16 +278,16 @@ const styles = StyleSheet.create({
     borderColor: colors.secondary,
     borderWidth: 2,
     borderRadius: sizes.radius,
-    paddingVertical: 10,
-    width: width * 0.5,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
     justifyContent: 'center',
     flexDirection: "row",
-    marginBottom: spacing.l,
-    marginTop: spacing.l,
+    marginBottom: spacing.s,
+    marginTop: spacing.s,
     alignSelf: 'center',
   },
   buttonLogout: {
-    fontSize: sizes.h2,
+    fontSize: sizes.h3,
     color: colors.secondary,
     fontFamily: 'Montserrat',
   },

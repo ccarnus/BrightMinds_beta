@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     color: colors.secondary,
     fontSize: 18,
     flex: 1,
-    fontFamily: 'MontserratBold',
+    fontFamily: 'Montserrat',
   },
   iconContainer: {
     padding: 10,

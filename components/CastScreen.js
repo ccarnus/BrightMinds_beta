@@ -30,7 +30,6 @@ const CastScreen = () => {
       const getUserIdAndRole = async () => {
         const storedUserId = await AsyncStorage.getItem('userId');
         const storedUserRole = await AsyncStorage.getItem('userRole');
-        console.log('User Role:', storedUserRole); // Debug line to show the role
         setUserId(storedUserId);
         setUserRole(storedUserRole);
       };

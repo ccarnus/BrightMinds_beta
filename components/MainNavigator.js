@@ -21,6 +21,7 @@ import VirtualLab from './VirtualLab/VirtualLab';
 import ArticleDetailsScreen from './Cast/ArticleDetailsScreen';
 import LoginScreen from './LoginScreen';
 import SignupScreen from './SignupScreen';
+import PreferencesScreen from './PreferencesScreen';
 
 const Stack = createStackNavigator();
 
@@ -65,6 +66,7 @@ const MainNavigator = () => {
         <Stack.Screen name="Objective" component={Objective} options={{ headerShown: false, tabBarVisible: false }} />
         <Stack.Screen name="VirtualLab" component={VirtualLab} options={{ headerShown: false, tabBarVisible: false }} />
         <Stack.Screen name="ArticleDetails" component={ArticleDetailsScreen} options={{ headerShown: false, tabBarVisible: false }} />
+        <Stack.Screen name="PreferencesScreen" component={PreferencesScreen} options={{ headerShown: false, tabBarVisible: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
