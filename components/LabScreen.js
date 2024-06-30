@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, Text, TouchableOpacity, Animated } from 'react-native'; // Import Animated from react-native
 import { useNavigation } from '@react-navigation/native';
 import { colors, sizes, spacing } from './theme';
 import departments from '../lists/departments'; // Adjust the import path as needed
@@ -38,12 +38,20 @@ const departmentImages = {
 const LabScreen = () => {
   const navigation = useNavigation();
   const [labs, setLabs] = useState([]);
+  const [fadeAnim] = useState(new Animated.Value(0)); // Initialize fade animation value
 
   useEffect(() => {
-    // Simulating asynchronous fetching of departments
-    setTimeout(() => {
-      setLabs(departments);
-    }, 1000); // Adjust delay as per your application needs
+    // Simulate staggered appearance with setTimeout
+    const timeoutIds = departments.map((department, index) => {
+      return setTimeout(() => {
+        setLabs((prevLabs) => [...prevLabs, department]);
+      }, index * 200);
+    });
+
+    // Clean up timeouts
+    return () => {
+      timeoutIds.forEach((timeoutId) => clearTimeout(timeoutId));
+    };
   }, []);
 
   const renderLab = (lab, index) => {

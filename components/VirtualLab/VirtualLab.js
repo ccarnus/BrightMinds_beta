@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get('window');
 
 const VirtualLab = ({ route }) => {
   const { labId } = route.params;
-  const [labData, setLabData] = useState(null);
+  const [labData, setLabData] = useState([]);
 
   useEffect(() => {
     fetchLabData();
@@ -19,7 +19,7 @@ const VirtualLab = ({ route }) => {
 
   const fetchLabData = async () => {
     try {
-      const response = await fetch(`http://3.17.219.54/cast/${labId}`);
+      const response = await fetch(`http://3.17.219.54/cast/department/${labId}`);
       const data = await response.json();
       setLabData(data);
     } catch (error) {
@@ -30,7 +30,7 @@ const VirtualLab = ({ route }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={[colors.white, colors.lightblue, colors.darkblue]}
+        colors={[colors.primary, colors.lightblue, colors.darkblue]}
         style={styles.topSection}>
         <Image source={MainIcebergIcon} style={styles.mainIcebergIcon} />
         <View style={styles.titleOverlay}>
@@ -47,6 +47,16 @@ const VirtualLab = ({ route }) => {
         </View>
       </LinearGradient>
       <ScrollView style={styles.bottomSection}>
+        {labData.length === 0 ? (
+          <Text style={styles.noDataText}>No data available.</Text>
+        ) : (
+          labData.map((cast, index) => (
+            <TouchableOpacity key={index} style={styles.castContainer}>
+              <Image source={{ uri: cast.castimageurl }} style={styles.castImage} />
+              <Text style={styles.castTitle}>{cast.title}</Text>
+            </TouchableOpacity>
+          ))
+        )}
       </ScrollView>
     </View>
   );
@@ -57,17 +67,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topSection: {
-    height: height / 3, // Static top 1/3 of the screen
-    justifyContent: 'center',
+    height: height / 3,
     alignItems: 'center',
-    position: 'relative',
     backgroundColor: colors.secondary,
+    elevation: 5,
   },
   mainIcebergIcon: {
-    position: 'relative',
-    marginBottom: -100,
-    width: '100%', // Ensure it spans the entire width
-    resizeMode: 'contain', // Keep aspect ratio
+    width: '80%',
+    height: '100%',
+    resizeMode: 'contain',
   },
   titleOverlay: {
     position: 'absolute',
@@ -91,13 +99,43 @@ const styles = StyleSheet.create({
     color: colors.darkblue,
     textAlign: 'center',
     marginTop: 60,
-    marginLeft:10,
-    marginRight:10,
-    fontFamily: "MontserratBold",
+    marginLeft: 10,
+    marginRight: 10,
+    fontFamily: 'MontserratBold',
   },
   bottomSection: {
     backgroundColor: colors.primaryBis,
     height: (2 * height) / 3,
+    paddingVertical: spacing.m,
+    width: width,
+  },
+  castContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.s,
+    width: '90%',
+    paddingHorizontal: spacing.m,
+  },
+  castTitle: {
+    marginLeft: spacing.m,
+    fontSize: sizes.h3,
+    color: colors.darkblue,
+    fontFamily: 'MontserratBold',
+    flex: 1,
+    flexWrap: 'wrap',
+    maxWidth: '80%',
+  },
+  castImage: {
+    width: 80,
+    height: 80,
+    borderRadius: sizes.radius,
+    resizeMode: 'cover',
+  },
+  noDataText: {
+    fontSize: sizes.body,
+    color: colors.darkblue,
+    textAlign: 'center',
+    marginTop: spacing.m,
   },
   topRightIcon: {
     width: 30,
