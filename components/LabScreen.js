@@ -2,34 +2,59 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, Image, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { colors, sizes, spacing } from './theme';
+import departments from '../lists/departments'; // Adjust the import path as needed
+
+// Mapping object for department images
+const departmentImages = {
+  'Physics': require('../assets/Virtual_labs/Physics.png'),
+  'Chemistry': require('../assets/Virtual_labs/Chemistry.png'),
+  'Robotics': require('../assets/Virtual_labs/Robotics.png'),
+  'Biology': require('../assets/Virtual_labs/Biology.png'),
+  'EarthSciences': require('../assets/Virtual_labs/EarthSciences.png'),
+  'Geology': require('../assets/Virtual_labs/Geology.png'),
+  'Oceanography': require('../assets/Virtual_labs/Oceanography.png'),
+  'AstronomyandSpaceScience': require('../assets/Virtual_labs/AstronomyandSpaceScience.png'),
+  'EnvironmentalScience': require('../assets/Virtual_labs/EnvironmentalScience.png'),
+  'Mathematics': require('../assets/Virtual_labs/Mathematics.png'),
+  'ComputerScience': require('../assets/Virtual_labs/ComputerScience.png'),
+  'Statistics': require('../assets/Virtual_labs/Statistics.png'),
+  'Psychology': require('../assets/Virtual_labs/Psychology.png'),
+  'Sociology': require('../assets/Virtual_labs/Sociology.png'),
+  'Anthropology': require('../assets/Virtual_labs/Anthropology.png'),
+  'Economics': require('../assets/Virtual_labs/Economics.png'),
+  'PoliticalScience': require('../assets/Virtual_labs/PoliticalScience.png'),
+  'Engineering': require('../assets/Virtual_labs/Engineering.png'),
+  'MedicineandHealthSciences': require('../assets/Virtual_labs/MedicineandHealthSciences.png'),
+  'Agricultural Sciences': require('../assets/Virtual_labs/AgriculturalSciences.png'),
+  'History': require('../assets/Virtual_labs/History.png'),
+  'Philosophy': require('../assets/Virtual_labs/Philosophy.png'),
+  'Linguistics': require('../assets/Virtual_labs/Linguistics.png'),
+  'Neuroscience': require('../assets/Virtual_labs/Neuroscience.png'),
+  'Biophysics': require('../assets/Virtual_labs/Biophysics.png'),
+  'DataScience': require('../assets/Virtual_labs/DataScience.png'),
+  'ArtificialIntelligence': require('../assets/Virtual_labs/ArtificialIntelligence.png')
+};
 
 const LabScreen = () => {
   const navigation = useNavigation();
   const [labs, setLabs] = useState([]);
 
   useEffect(() => {
-    const fetchLabs = async () => {
-      try {
-        const response = await fetch('http://3.17.219.54/virtual/lab');
-        const data = await response.json();
-        setLabs(data);
-      } catch (error) {
-        console.error('Error fetching lab data:', error);
-      }
-    };
-
-    fetchLabs();
+    // Simulating asynchronous fetching of departments
+    setTimeout(() => {
+      setLabs(departments);
+    }, 1000); // Adjust delay as per your application needs
   }, []);
 
-  const renderLab = (lab) => {
+  const renderLab = (lab, index) => {
     return (
       <TouchableOpacity
-      key={lab._id}
-      style={styles.labContainer}
-      onPress={() => navigation.navigate('VirtualLab', { labId: lab._id })}
+        key={index}
+        style={styles.labContainer}
+        onPress={() => navigation.navigate('VirtualLab', { labId: lab.name, labDisplayName: lab.display })}
       >
-        <Image source={{ uri: lab.iconurl }} style={styles.labImage} resizeMode="contain" />
-        <Text style={styles.labText}>{lab.name}</Text>
+        <Image source={departmentImages[lab.name]} style={styles.labImage} resizeMode="contain" />
+        <Text style={styles.labText}>{lab.display}</Text>
       </TouchableOpacity>
     );
   };

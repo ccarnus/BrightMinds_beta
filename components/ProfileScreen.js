@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, Alert, ScrollView, Button, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import Slider from '@react-native-community/slider';
 import { colors, shadow, sizes, spacing } from './theme';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import departments from '../lists/departments';
 
 const { width, height } = Dimensions.get('window');
+
+const departmentMapping = departments.reduce((map, dept) => {
+  map[dept.name] = dept.display;
+  return map;
+}, {});
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -47,7 +53,7 @@ const ProfileScreen = () => {
   }, [userId]);
 
   const handleSliderComplete = (category, newValue) => {
-    Alert.alert(`Section ${category} updated to ${newValue.toFixed(2)}`);
+    Alert.alert(`Section ${departmentMapping[category]} updated to ${newValue.toFixed(2)}`);
   };
 
   const handleLogout = async () => {
@@ -58,7 +64,7 @@ const ProfileScreen = () => {
     setTrackingData({ objective: '', progress: 0 });
     navigation.navigate('LoginScreen');
   };
-  
+
   return (
     <View style={styles.container}>
       {userData && (
@@ -92,7 +98,7 @@ const ProfileScreen = () => {
       )}
       <View style={styles.lowerSection}>
         <ScrollView style={styles.lowerSectionScrollView}>
-        <View style={[styles.lowerSectionContainer, styles.shadow]}>
+          <View style={[styles.lowerSectionContainer, styles.shadow]}>
             <View style={styles.objectiveContainer}>
               <Text style={styles.preferencesTitle}>My Learning Path</Text>
               <TouchableOpacity
@@ -109,7 +115,7 @@ const ProfileScreen = () => {
               userPreferences.map(pref => (
                 <View key={pref._id} style={styles.preferenceContainer}>
                   <View style={styles.textContainer}>
-                    <Text style={styles.preferenceText}>{pref.category}</Text>
+                    <Text style={styles.preferenceText}>{departmentMapping[pref.category]}</Text>
                   </View>
                   <View style={styles.sliderContainer}>
                     <Slider
@@ -128,7 +134,6 @@ const ProfileScreen = () => {
               <Text style={styles.noDataText}>No preferences set just yet..</Text>
             )}
           </View>
-          
           <TouchableOpacity 
             style={styles.logoutContainer}
             onPress={handleLogout}

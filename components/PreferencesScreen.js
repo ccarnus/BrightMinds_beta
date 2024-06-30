@@ -43,22 +43,22 @@ const PreferencesScreen = ({ navigation }) => {
       <Text style={styles.title}>What are your interests?</Text>
       <Text style={styles.subtitle}>Select at least 3</Text>
       <View style={styles.bubbleContainer}>
-        {departments.map((department) => (
+        {departments.map(({ display, name }) => (
           <TouchableOpacity
-            key={department}
+            key={name}
             style={[
               styles.bubble,
-              selectedDepartments.includes(department) && styles.bubbleSelected
+              selectedDepartments.includes(name) && styles.bubbleSelected
             ]}
-            onPress={() => toggleDepartmentSelection(department)}
+            onPress={() => toggleDepartmentSelection(name)}
           >
             <Text
               style={[
                 styles.bubbleText,
-                selectedDepartments.includes(department) && styles.bubbleTextSelected
+                selectedDepartments.includes(name) && styles.bubbleTextSelected
               ]}
             >
-              {department}
+              {display}
             </Text>
           </TouchableOpacity>
         ))}
